@@ -20,6 +20,7 @@ import PlaceAndDatePicker from "./components/PlaceAndDatePicker";
 FiveInitialize();
 
 const CustomField = (props: CustomFieldProps) => {
+  const [activeStep, setActiveStep] = React.useState(0);
   const { theme, value, variant, five } = props;
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [admitted, setAdmitted] = React.useState(null);
@@ -32,15 +33,33 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const officeName = five.stack.OfficeName;
 
+  const totalSteps = 5;
+
   // Getting Database Definition from Five
-  let databases = []
+  let databases = [];
   //@ts-ignore
   console.log("Data Sources of the application");
-    //@ts-ignore
-    five.five.dataSources.forEach((item) => { const arrItem = [item.dataSourceId(), item.key()]
-      databases.push(arrItem)
-    })
-  console.log(databases)
+  //@ts-ignore
+  five.five.dataSources.forEach((item) => {
+    const arrItem = [item.dataSourceId(), item.key()];
+    databases.push(arrItem);
+  });
+  console.log(databases);
+
+
+  const handleNext = () => {
+    if(activeStep < totalSteps - 1 ) {
+        setActiveStep((preActiveStep) => preActiveStep + 1)
+    }
+  }
+
+/*  const handleBack = () =>  {
+    if(activeStep > 0) {
+        setActiveStep((preActiveStep) => preActiveStep - 1)
+    }
+  } */
+
+
 
 
   const handleRadioChange = (value) => {
@@ -48,6 +67,8 @@ const CustomField = (props: CustomFieldProps) => {
       setAdmitted(true);
     } else setAdmitted(false);
   };
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,6 +98,8 @@ const CustomField = (props: CustomFieldProps) => {
           {"Insurance Verification Request"}
         </DialogTitle>
         <DialogContent>
+          {activeStep === 0 && (
+            <div>
           <div
             className="patient-details"
             style={{
@@ -145,6 +168,8 @@ const CustomField = (props: CustomFieldProps) => {
               <PlaceAndDatePicker />
             )}
           </div>
+          </div>
+          )}
           <Button
             onClick={handleDialogClose}
             style={{
@@ -153,11 +178,25 @@ const CustomField = (props: CustomFieldProps) => {
               background: "#285C79",
               position: "absolute",
               bottom: "5%",
-              left: "50%",
+              left: "35%",
               color: "white",
             }}
           >
             Close
+          </Button>
+          <Button
+            onClick={handleNext}
+            style={{
+              padding: "15px 65px",
+              borderRadius: "0px",
+              background: "#285C79",
+              position: "absolute",
+              bottom: "5%",
+              left: "55%",
+              color: "white",
+            }}
+          >
+            Next
           </Button>
         </DialogContent>
         <DialogActions>
