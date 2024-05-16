@@ -11,6 +11,7 @@ const MedicareForm = () => {
       setMedicare(false);
     } else setMedicare(true);
   };
+  
   return (
     <div className="medicare">
       <p>Do you know if the patient had Medicare Part A or Medicare Part B</p>
@@ -34,10 +35,12 @@ const MedicareForm = () => {
         <PlaceAndDatePicker/>
       ) : (
         <p style = {{color: 'red'}}>
+
           This treatment will not be eligible for coverage, Please do not
           continue with verification request
+
         </p>
-      )}
+      )} 
     </div>
   );
 };

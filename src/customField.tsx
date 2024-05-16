@@ -16,6 +16,7 @@ import { CustomFieldProps } from "../../../common";
 import { Radio, RadioGroup } from "@mui/material";
 import MedicareForm from "./components/MedicareForm";
 import PlaceAndDatePicker from "./components/PlaceAndDatePicker";
+import Insurance from "./components/Insurance";
 
 FiveInitialize();
 
@@ -45,30 +46,32 @@ const CustomField = (props: CustomFieldProps) => {
     databases.push(arrItem);
   });
   console.log(databases);
+  console.log("Logging items");
+  const patientKey = databases.find((item) => {
+    console.log(item);
+    return item[0] === "Patient";
+  });
 
+  console.log(patientKey);
+  //@ts-ignore
 
   const handleNext = () => {
-    if(activeStep < totalSteps - 1 ) {
-        setActiveStep((preActiveStep) => preActiveStep + 1)
+    if (activeStep < totalSteps - 1) {
+      setActiveStep((preActiveStep) => preActiveStep + 1);
     }
-  }
+  };
 
-/*  const handleBack = () =>  {
+  /*  const handleBack = () =>  {
     if(activeStep > 0) {
         setActiveStep((preActiveStep) => preActiveStep - 1)
     }
   } */
-
-
-
 
   const handleRadioChange = (value) => {
     if (value === "Yes") {
       setAdmitted(true);
     } else setAdmitted(false);
   };
-
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -100,76 +103,80 @@ const CustomField = (props: CustomFieldProps) => {
         <DialogContent>
           {activeStep === 0 && (
             <div>
-          <div
-            className="patient-details"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              margin: "20px 0", // Adjust as needed
-            }}
-          >
-            <p>
-              <strong>{form?.NameFull}</strong> <br /> {form?.AddressStreet}
-              <br /> {form?.AddressCity}
-              <br /> {form?.AddressState}
-              <br /> {form?.AddressZip} <br />
-              Gender: {form?.Gender}
-            </p>
-            <p>{officeName}</p>
-          </div>
-          <div
-            className="IVR-page-1"
-            style={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center", // Adjust as needed
-            }}
-          >
-            <p>
-              Has this patient been admited to a Skilled Nursing Facility within
-              the past 100 days?
-            </p>
-            <FormControl component="fieldset">
-              <RadioGroup
-                name="exclusive-options"
+              <div
+                className="patient-details"
                 style={{
-                  width: "auto",
                   display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  marginLeft: "10px",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  margin: "20px 0", // Adjust as needed
                 }}
-                onChange={(event) => handleRadioChange(event.target.value)}
               >
-                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                <FormControlLabel
-                  value="No"
-                  control={<Radio />}
-                  label="No"
-                  defaultChecked
-                />
-              </RadioGroup>
-            </FormControl>
-          </div>
-          <div
-            className="medicare-form"
-            style={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center", // Adjust as needed
-            }}
-          >
-            {admitted === null ? null : admitted ? (
-              <MedicareForm />
-            ) : (
-              <PlaceAndDatePicker />
-            )}
-          </div>
-          </div>
-          )}
+                <p>
+                  <strong>{form?.NameFull}</strong> <br /> {form?.AddressStreet}
+                  <br /> {form?.AddressCity}
+                  <br /> {form?.AddressState}
+                  <br /> {form?.AddressZip} <br />
+                  Gender: {form?.Gender}
+                </p>
+                <p>{officeName}</p>
+              </div>
+              <div
+                className="IVR-page-1"
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center", // Adjust as needed
+                }}
+              >
+                <p>
+                  Has this patient been admited to a Skilled Nursing Facility
+                  within the past 100 days?
+                </p>
+                <FormControl component="fieldset">
+                  <RadioGroup
+                    name="exclusive-options"
+                    style={{
+                      width: "auto",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                      marginLeft: "10px",
+                    }}
+                    onChange={(event) => handleRadioChange(event.target.value)}
+                  >
+                    <FormControlLabel
+                      value="Yes"
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value="No"
+                      control={<Radio />}
+                      label="No"
+                      defaultChecked
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </div>
+              <div
+                className="medicare-form"
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center", // Adjust as needed
+                }}
+              >
+                {admitted === null ? null : admitted ? (
+                  <MedicareForm />
+                ) : (
+                  <PlaceAndDatePicker />
+                )}
+              </div>
+            </div>
+          )}{activeStep === 1 && (<Insurance/>)}
           <Button
             onClick={handleDialogClose}
             style={{
