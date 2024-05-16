@@ -17,6 +17,7 @@ import { Radio, RadioGroup } from "@mui/material";
 import MedicareForm from "./components/MedicareForm";
 import PlaceAndDatePicker from "./components/PlaceAndDatePicker";
 import Insurance from "./components/Insurance";
+import Products from "./components/Products";
 
 FiveInitialize();
 
@@ -61,11 +62,11 @@ const CustomField = (props: CustomFieldProps) => {
     }
   };
 
-  /*  const handleBack = () =>  {
-    if(activeStep > 0) {
-        setActiveStep((preActiveStep) => preActiveStep - 1)
+  const handleBack = () => {
+    if (activeStep > 0) {
+      setActiveStep((preActiveStep) => preActiveStep - 1);
     }
-  } */
+  };
 
   const handleRadioChange = (value) => {
     if (value === "Yes") {
@@ -176,35 +177,56 @@ const CustomField = (props: CustomFieldProps) => {
                 )}
               </div>
             </div>
-          )}{activeStep === 1 && (<Insurance/>)}
-          <Button
-            onClick={handleDialogClose}
-            style={{
-              padding: "15px 65px",
-              borderRadius: "0px",
-              background: "#285C79",
-              position: "absolute",
-              bottom: "5%",
-              left: "35%",
-              color: "white",
-            }}
-          >
-            Close
-          </Button>
-          <Button
-            onClick={handleNext}
-            style={{
-              padding: "15px 65px",
-              borderRadius: "0px",
-              background: "#285C79",
-              position: "absolute",
-              bottom: "5%",
-              left: "55%",
-              color: "white",
-            }}
-          >
-            Next
-          </Button>
+          )}
+          {activeStep === 1 && <Insurance />}
+          {activeStep === 2 && <Products />}
+          {admitted === null ? (
+            <Button
+              onClick={handleDialogClose}
+              style={{
+                padding: "15px 65px",
+                borderRadius: "0px",
+                background: "#285C79",
+                position: "absolute",
+                bottom: "5%",
+                left: "35%",
+                color: "white",
+              }}
+            >
+              Close
+            </Button>
+          ) : (
+            <Button
+              onClick={handleBack}
+              style={{
+                padding: "15px 65px",
+                borderRadius: "0px",
+                background: "#285C79",
+                position: "absolute",
+                bottom: "5%",
+                left: "35%",
+                color: "white",
+              }}
+            >
+              Previous
+            </Button>
+          )}
+          {admitted === null ? null : (
+            <Button
+              onClick={handleNext}
+              style={{
+                padding: "15px 65px",
+                borderRadius: "0px",
+                background: "#285C79",
+                position: "absolute",
+                bottom: "5%",
+                left: "55%",
+                color: "white",
+              }}
+            >
+              Next
+            </Button>
+          )}
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleDialogClose} color="primary">
