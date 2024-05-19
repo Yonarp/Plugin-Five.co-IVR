@@ -70,7 +70,7 @@ const Insurance = () => {
       {selectedPayors.map((payor, index) => (
         <div key={index}>
           <Typography variant="subtitle1" gutterBottom>
-            {getPayorLabel(index)}
+           <strong> {getPayorLabel(index)}</strong>
           </Typography>
           <Typography variant="body1">{payor.name}</Typography>
         </div>

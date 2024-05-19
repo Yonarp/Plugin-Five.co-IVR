@@ -67,6 +67,7 @@ const CustomField = (props: CustomFieldProps) => {
       setActiveStep((preActiveStep) => preActiveStep - 1);
     }
   };
+  
 
   const handleRadioChange = (value) => {
     if (value === "Yes") {
@@ -80,7 +81,11 @@ const CustomField = (props: CustomFieldProps) => {
         fullWidth
         variant={variant}
         value={value}
-        onClick={handleDialogOpen} // Open the dialog on button click
+        onClick={handleDialogOpen}
+        style={{
+          background: "#1d343d",
+          color: "white",
+        }} // Open the dialog on button click
       >
         Start IVR
       </Button>
@@ -189,7 +194,8 @@ const CustomField = (props: CustomFieldProps) => {
                 background: "#285C79",
                 position: "absolute",
                 bottom: "5%",
-                left: "35%",
+                left: "50%",
+                transform: 'translate(-50%,-50%)',
                 color: "white",
               }}
             >
