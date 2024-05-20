@@ -31,6 +31,7 @@ const CustomField = (props: CustomFieldProps) => {
   const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => setDialogOpen(false);
 
+
   //@ts-ignore
   const form = five.form.Patients;
   //@ts-ignore
@@ -191,7 +192,8 @@ const CustomField = (props: CustomFieldProps) => {
             <Button
               onClick={handleDialogClose}
               style={{
-                padding: "15px 65px",
+                width: '100px',
+                height: '50px',
                 borderRadius: "0px",
                 background: "#285C79",
                 position: "absolute",
@@ -207,7 +209,8 @@ const CustomField = (props: CustomFieldProps) => {
             <Button
               onClick={handleBack}
               style={{
-                padding: "15px 65px",
+                width: '100px',
+                height: '50px',
                 borderRadius: "0px",
                 background: "#285C79",
                 position: "absolute",
@@ -223,7 +226,8 @@ const CustomField = (props: CustomFieldProps) => {
             <Button
               onClick={handleNext}
               style={{
-                padding: "15px 65px",
+                width: '100px',
+                height: '50px',
                 borderRadius: "0px",
                 background: "#285C79",
                 position: "absolute",
