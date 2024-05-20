@@ -18,6 +18,7 @@ import MedicareForm from "./components/MedicareForm";
 import PlaceAndDatePicker from "./components/PlaceAndDatePicker";
 import Insurance from "./components/Insurance";
 import Products from "./components/Products";
+import CPTCode from "./components/CPTCode";
 
 FiveInitialize();
 
@@ -138,7 +139,7 @@ const CustomField = (props: CustomFieldProps) => {
               >
                 <p>
                   Has this patient been admited to a Skilled Nursing Facility
-                  within the past 100 days?
+                  within the past 100 day
                 </p>
                 <FormControl component="fieldset">
                   <RadioGroup
@@ -185,6 +186,7 @@ const CustomField = (props: CustomFieldProps) => {
           )}
           {activeStep === 1 && <Insurance />}
           {activeStep === 2 && <Products />}
+          {activeStep === 3 && <CPTCode/>}
           {admitted === null ? (
             <Button
               onClick={handleDialogClose}
@@ -197,9 +199,9 @@ const CustomField = (props: CustomFieldProps) => {
                 left: "50%",
                 transform: 'translate(-50%,-50%)',
                 color: "white",
-              }}
+               }}
             >
-              Close
+              Close 
             </Button>
           ) : (
             <Button
