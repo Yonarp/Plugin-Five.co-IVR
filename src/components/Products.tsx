@@ -5,7 +5,7 @@ import {
   Grid,
   MenuItem,
   Select,
-  TextField,
+ // TextField,
   Typography,
 } from "../FivePluginApi";
 
@@ -40,11 +40,11 @@ const Products = () => {
     setSelectedProducts(newProducts);
   };
 
-  const handleQtyChange = (index, event) => {
+  /* const handleQtyChange = (index, event) => {
     const newProducts = [...selectedProducts];
     newProducts[index].qty = event.target.value;
     setSelectedProducts(newProducts);
-  };
+  }; */
 
   const handleAddProduct = () => {
     setSelectedProducts([...selectedProducts, { name: "", qty: "" }]);
@@ -78,15 +78,6 @@ const Products = () => {
                 </MenuItem>
               ))}
             </Select>
-          </Grid>
-          <Grid item xs={3}>
-            <TextField
-              fullWidth
-              type="number"
-              value={product.qty}
-              onChange={(event) => handleQtyChange(index, event)}
-              placeholder="Qty"
-            />
           </Grid>
           <Grid item xs={2}>
             <Button

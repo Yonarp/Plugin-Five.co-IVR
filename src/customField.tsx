@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Button,
@@ -19,6 +19,8 @@ import PlaceAndDatePicker from "./components/PlaceAndDatePicker";
 import Insurance from "./components/Insurance";
 import Products from "./components/Products";
 import CPTCode from "./components/CPTCode";
+import Patient from "./components/Patient";
+
 
 FiveInitialize();
 
@@ -27,16 +29,15 @@ const CustomField = (props: CustomFieldProps) => {
   const { theme, value, variant, five } = props;
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [admitted, setAdmitted] = React.useState(null);
+  const [patientSelected, setPatientSelected] = React.useState(true);
 
   const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => setDialogOpen(false);
-
 
   //@ts-ignore
   const form = five.form.Patients;
   //@ts-ignore
   const officeName = five.stack.OfficeName;
-
 
   const totalSteps = 5;
 
@@ -70,13 +71,24 @@ const CustomField = (props: CustomFieldProps) => {
       setActiveStep((preActiveStep) => preActiveStep - 1);
     }
   };
-  
 
   const handleRadioChange = (value) => {
     if (value === "Yes") {
       setAdmitted(true);
     } else setAdmitted(false);
   };
+
+  const handlePatientSelected = () => {
+    setPatientSelected(true)
+  }
+
+  useEffect(() => {
+    //@ts-ignore
+    if (five.stack.Patient === undefined) {
+      setPatientSelected(false);
+    }
+    //@ts-ignore
+  }, [five.stack]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -110,108 +122,152 @@ const CustomField = (props: CustomFieldProps) => {
           {"Insurance Verification Request"}
         </DialogTitle>
         <DialogContent>
-          {activeStep === 0 && (
-            <div>
+          {!patientSelected ? (
+            <div className="container" style={{width: '100%'}}>
+              <Patient />
               <div
-                className="patient-details"
+                className="patient-buttons"
+                style={{ position: "absolute", bottom: "5%", width: '100%', display:'flex', flexDirection: 'row', justifyContent:'center', alignItems: "center" }}
+              >
+                <Button
+                onClick={handleDialogClose}
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  margin: "20px 0", // Adjust as needed
+                  width: "100px",
+                  margin: '0 20px',
+                  height: "50px",
+                  borderRadius: "0px",
+                  background: "#285C79",
+                  color: "white",
                 }}
               >
-                <p>
-                  <strong>{form?.NameFull}</strong> <br /> {form?.AddressStreet}
-                  <br /> {form?.AddressCity}
-                  <br /> {form?.AddressState}
-                  <br /> {form?.AddressZip} <br />
-                  Gender: {form?.Gender}
-                </p>
-                <p>{officeName}</p>
-              </div>
-              <div
-                className="IVR-page-1"
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center", // Adjust as needed
-                }}
-              >
-                <p>
-                  Has this patient been admited to a Skilled Nursing Facility
-                  within the past 100 day
-                </p>
-                <FormControl component="fieldset">
-                  <RadioGroup
-                    name="exclusive-options"
-                    style={{
-                      width: "auto",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-around",
-                      marginLeft: "10px",
-                    }}
-                    onChange={(event) => handleRadioChange(event.target.value)}
-                  >
-                    <FormControlLabel
-                      value="Yes"
-                      control={<Radio />}
-                      label="Yes"
-                    />
-                    <FormControlLabel
-                      value="No"
-                      control={<Radio />}
-                      label="No"
-                      defaultChecked
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </div>
-              <div
-                className="medicare-form"
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center", // Adjust as needed
-                }}
-              >
-                {admitted === null ? null : admitted ? (
-                  <MedicareForm />
-                ) : (
-                  <PlaceAndDatePicker />
-                )}
+                Close
+              </Button>
+              <Button
+              onClick={handlePatientSelected}
+              style={{
+                width: "100px",
+                height: "50px",
+                margin: '0 20px',
+                borderRadius: "0px",
+                background: "#285C79",
+                color: "white",
+              }}
+            >
+              Next
+            </Button>
+
+
               </div>
             </div>
+          ) : (
+            activeStep === 0 && (
+              <div>
+                <div
+                  className="patient-details"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    margin: "20px 0", // Adjust as needed
+                  }}
+                >
+                  <p>
+                    <strong>{form?.NameFull}</strong> <br />{" "}
+                    {form?.AddressStreet}
+                    <br /> {form?.AddressCity}
+                    <br /> {form?.AddressState}
+                    <br /> {form?.AddressZip} <br />
+                    Gender: {form?.Gender}
+                  </p>
+                  <p>{officeName}</p>
+                </div>
+                <div
+                  className="IVR-page-1"
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center", // Adjust as needed
+                  }}
+                >
+                  <p>
+                    Has this patient been admited to a Skilled Nursing Facility
+                    within the past 100 day
+                  </p>
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      name="exclusive-options"
+                      style={{
+                        width: "auto",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginLeft: "10px",
+                      }}
+                      onChange={(event) =>
+                        handleRadioChange(event.target.value)
+                      }
+                    >
+                      <FormControlLabel
+                        value="Yes"
+                        control={<Radio />}
+                        label="Yes"
+                      />
+                      <FormControlLabel
+                        value="No"
+                        control={<Radio />}
+                        label="No"
+                        defaultChecked
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+                <div
+                  className="medicare-form"
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center", // Adjust as needed
+                  }}
+                >
+                  {admitted === null ? null : admitted ? (
+                    <MedicareForm />
+                  ) : (
+                    <PlaceAndDatePicker />
+                  )}
+                </div>
+              </div>
+            )
           )}
           {activeStep === 1 && <Insurance />}
           {activeStep === 2 && <Products />}
-          {activeStep === 3 && <CPTCode/>}
-          {admitted === null ? (
-            <Button
-              onClick={handleDialogClose}
-              style={{
-                width: '100px',
-                height: '50px',
-                borderRadius: "0px",
-                background: "#285C79",
-                position: "absolute",
-                bottom: "5%",
-                left: "50%",
-                transform: 'translate(-50%,-50%)',
-                color: "white",
-               }}
-            >
-              Close 
-            </Button>
-          ) : (
+          {activeStep === 3 && <CPTCode />}
+          {admitted === null ? ( patientSelected === true ? (
+      
+              <Button
+                onClick={handleDialogClose}
+                style={{
+                  width: "100px",
+                  height: "50px",
+                  borderRadius: "0px",
+                  background: "#285C79",
+                  position: "absolute",
+                  bottom: "5%",
+                  left: "50%",
+                  transform: "translate(-50%,-50%)",
+                  color: "white",
+                }}
+              >
+                Close
+              </Button> 
+     
+         ):<></> ) : (
             <Button
               onClick={handleBack}
               style={{
-                width: '100px',
-                height: '50px',
+                width: "100px",
+                height: "50px",
                 borderRadius: "0px",
                 background: "#285C79",
                 position: "absolute",
@@ -227,8 +283,8 @@ const CustomField = (props: CustomFieldProps) => {
             <Button
               onClick={handleNext}
               style={{
-                width: '100px',
-                height: '50px',
+                width: "100px",
+                height: "50px",
                 borderRadius: "0px",
                 background: "#285C79",
                 position: "absolute",
