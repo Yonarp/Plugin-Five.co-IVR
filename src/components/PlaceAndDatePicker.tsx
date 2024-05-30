@@ -1,11 +1,11 @@
 import React from 'react'
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '../FivePluginApi'
+import { FormControl, InputLabel, MenuItem, Select } from '../FivePluginApi'
 
 
 const PlaceAndDatePicker = () => {
 
     const [placeOfService, setPlaceOfService] = React.useState('')
-    const [dateOfService, setDateOfService] = React.useState('');
+   /*  const [dateOfService, setDateOfService] = React.useState(''); */
 
     const placesOfService = [
         { code: 11, label: 'Office Visit' },
@@ -19,9 +19,9 @@ const PlaceAndDatePicker = () => {
             setPlaceOfService(value);
     }
 
-    const handleDateChange = (value) => {
+/*     const handleDateChange = (value) => {
         setDateOfService(value)
-    }
+    } */
 
     return (
         <div style={{display: 'flex', width: '40vw', flexDirection: 'column', margin: '10px 0px' }}>
@@ -40,14 +40,6 @@ const PlaceAndDatePicker = () => {
                     ))}
                 </Select>
             </FormControl>
-            <TextField
-                label="Date of Service"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                value={dateOfService}
-                onChange={(event) => handleDateChange(event.target.value)}
-                style={{marginTop: '10px'}}
-            />
             </div>
     )
 }

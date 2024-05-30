@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import {
   Button,
@@ -20,75 +20,90 @@ import Insurance from "./components/Insurance";
 import Products from "./components/Products";
 import CPTCode from "./components/CPTCode";
 import Patient from "./components/Patient";
-
+import Practitioner from "./components/Practitioner";
 
 FiveInitialize();
 
 const CustomField = (props: CustomFieldProps) => {
-  const [activeStep, setActiveStep] = React.useState(0);
+  // Initialize states
+  const [activeStep, setActiveStep] = useState(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [admitted, setAdmitted] = useState(null);
+  const [patientSelected, setPatientSelected] = useState(true);
+  const [databases, setDatabases] = useState([]);
+
+
   const { theme, value, variant, five } = props;
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [admitted, setAdmitted] = React.useState(null);
-  const [patientSelected, setPatientSelected] = React.useState(true);
 
   const handleDialogOpen = () => setDialogOpen(true);
   const handleDialogClose = () => setDialogOpen(false);
-
   //@ts-ignore
   const form = five.form.Patients;
   //@ts-ignore
   const officeName = five.stack.OfficeName;
+  //@ts-ignore
+  const accountKey = five.stack.Account.AccountKey;
+
+  const account = {
+    'AccountKey': accountKey
+  }
+
 
   const totalSteps = 5;
 
-  // Getting Database Definition from Five
-  let databases = [];
-  //@ts-ignore
-  console.log("Data Sources of the application");
-  //@ts-ignore
-  five.five.dataSources.forEach((item) => {
-    const arrItem = [item.dataSourceId(), item.key()];
-    databases.push(arrItem);
-  });
-  console.log(databases);
-  console.log("Logging items");
-  const patientKey = databases.find((item) => {
-    console.log(item);
-    return item[0] === "Patient";
-  });
-
-  console.log(patientKey);
-  //@ts-ignore
-
-  const handleNext = () => {
-    if (activeStep < totalSteps - 1) {
-      setActiveStep((preActiveStep) => preActiveStep + 1);
-    }
-  };
-
-  const handleBack = () => {
-    if (activeStep > 0) {
-      setActiveStep((preActiveStep) => preActiveStep - 1);
-    }
-  };
-
-  const handleRadioChange = (value) => {
-    if (value === "Yes") {
-      setAdmitted(true);
-    } else setAdmitted(false);
-  };
-
-  const handlePatientSelected = () => {
-    setPatientSelected(true)
-  }
-
+  // Revised useEffect
   useEffect(() => {
+    console.log("useEffect triggered");
+
+    // Fetch data sources
+    //@ts-ignore
+    const dataSources = five.five.dataSources.map((item) => [
+      item.dataSourceId(),
+      item.key(),
+    ]);
+    setDatabases(dataSources);
+    console.log(databases);
+    // Check patient selection status
     //@ts-ignore
     if (five.stack.Patient === undefined) {
       setPatientSelected(false);
     }
+
+    // Execute external function
     //@ts-ignore
-  }, [five.stack]);
+    const results = five.executeFunction("GetMembers", account, null, null, null, (result) => {
+      console.log("Loggin to memeb results")
+      console.log(JSON.parse(result.serverResponse.results))
+      console.log(typeof(result.serverResponse.results))
+    });
+ 
+ 
+    
+    console.log("useEffect completed");
+  }, []); // Empty dependency array
+
+
+  // Define handleNext and handleBack using useCallback to ensure stability
+ const handleNext = useCallback(() => {
+    if (activeStep < totalSteps - 1) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+  }, [activeStep, totalSteps]);
+
+  const handleBack = useCallback(() => {
+    if (activeStep > 0) {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
+  }, [activeStep]);
+
+  // Event handlers
+  const handleRadioChange = useCallback((value) => {
+    setAdmitted(value === "Yes");
+  }, []);
+
+  const handlePatientSelected = useCallback(() => {
+    setPatientSelected(true);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -123,40 +138,46 @@ const CustomField = (props: CustomFieldProps) => {
         </DialogTitle>
         <DialogContent>
           {!patientSelected ? (
-            <div className="container" style={{width: '100%'}}>
+            <div className="container" style={{ width: "100%" }}>
               <Patient />
               <div
                 className="patient-buttons"
-                style={{ position: "absolute", bottom: "5%", width: '100%', display:'flex', flexDirection: 'row', justifyContent:'center', alignItems: "center" }}
-              >
-                <Button
-                onClick={handleDialogClose}
                 style={{
-                  width: "100px",
-                  margin: '0 20px',
-                  height: "50px",
-                  borderRadius: "0px",
-                  background: "#285C79",
-                  color: "white",
+                  position: "absolute",
+                  bottom: "5%",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                Close
-              </Button>
-              <Button
-              onClick={handlePatientSelected}
-              style={{
-                width: "100px",
-                height: "50px",
-                margin: '0 20px',
-                borderRadius: "0px",
-                background: "#285C79",
-                color: "white",
-              }}
-            >
-              Next
-            </Button>
-
-
+                <Button
+                  onClick={handleDialogClose}
+                  style={{
+                    width: "100px",
+                    margin: "0 20px",
+                    height: "50px",
+                    borderRadius: "0px",
+                    background: "#285C79",
+                    color: "white",
+                  }}
+                >
+                  Close
+                </Button>
+                <Button
+                  onClick={handlePatientSelected}
+                  style={{
+                    width: "100px",
+                    height: "50px",
+                    margin: "0 20px",
+                    borderRadius: "0px",
+                    background: "#285C79",
+                    color: "white",
+                  }}
+                >
+                  Next
+                </Button>
               </div>
             </div>
           ) : (
@@ -192,7 +213,7 @@ const CustomField = (props: CustomFieldProps) => {
                 >
                   <p>
                     Has this patient been admited to a Skilled Nursing Facility
-                    within the past 100 day
+                    within the past 100 day.
                   </p>
                   <FormControl component="fieldset">
                     <RadioGroup
@@ -240,11 +261,12 @@ const CustomField = (props: CustomFieldProps) => {
               </div>
             )
           )}
-          {activeStep === 1 && <Insurance />}
-          {activeStep === 2 && <Products />}
-          {activeStep === 3 && <CPTCode />}
-          {admitted === null ? ( patientSelected === true ? (
-      
+          {activeStep === 1 && <Practitioner account = {account}/>}
+          {activeStep === 2 && <Insurance />}
+          {activeStep === 3 && <Products />}
+          {activeStep === 4 && <CPTCode />}
+          {admitted === null ? (
+            patientSelected === true ? (
               <Button
                 onClick={handleDialogClose}
                 style={{
@@ -260,9 +282,11 @@ const CustomField = (props: CustomFieldProps) => {
                 }}
               >
                 Close
-              </Button> 
-     
-         ):<></> ) : (
+              </Button>
+            ) : (
+              <></>
+            )
+          ) : (
             <Button
               onClick={handleBack}
               style={{

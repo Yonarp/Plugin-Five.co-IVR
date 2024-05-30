@@ -5,7 +5,7 @@ import {
   Grid,
   MenuItem,
   Select,
- // TextField,
+  // TextField,
   Typography,
 } from "../FivePluginApi";
 
@@ -16,6 +16,29 @@ const Products = () => {
   ]);
 
   const products = [
+    "ZNG-0202",
+    "ZNG-0203",
+    "ZNG-0404",
+    "ZNG-0406",
+    "ZNG-0408",
+    "IMP-0202",
+    "IMP-0203",
+    "IMP-0404",
+    "IMP-0406",
+    "IMP-0408",
+    "ORI-0202",
+    "ORI-0203",
+    "ORI-0404",
+    "ORI-0406",
+    "ORI-0408",
+    "SFT-0203",
+    "SFT-0204",
+    "SFT-0404",
+    "SFT-0406",
+    "SFT-0408",
+  ];
+  /* 
+  const productsSimple = [
     "Impax Dual Layer Graft 2x2 cm",
     "Impax Dual Layer Graft 2x3 cm",
     "Impax Dual Layer Graft 4x4 cm",
@@ -32,7 +55,7 @@ const Products = () => {
     "Zenith Graft 4x4 cm",
     "Zenith Graft 4x6 cm",
     "Zenith Graft 4x8 cm",
-  ];
+  ] */
 
   const handleProductChange = (index, event) => {
     const newProducts = [...selectedProducts];
