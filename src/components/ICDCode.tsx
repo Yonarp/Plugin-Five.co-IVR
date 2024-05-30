@@ -7,6 +7,7 @@ import {
   Select,
   TextField,
 } from "../FivePluginApi";
+import LCode from "./LCode";
 
 const ICDCode = () => {
   const woundTypes = [
@@ -100,6 +101,9 @@ const ICDCode = () => {
   const [vluCondition, setVluCondition] = React.useState("");
   const [vluLocation, setVluLocation] = React.useState("");
   const [vluSide, setVluSide] = React.useState("");
+  const [lLocation, setLLocation] = React.useState("");
+  const [lSide, setLSide] = React.useState("");
+  const [lSeverity, setLSeverity] = React.useState("");
 
   const handleWoundType = (event) => {
     setWoundType(event.target.value);
@@ -192,6 +196,14 @@ const ICDCode = () => {
             variant="outlined"
             fullWidth
           />
+           <LCode
+          location={lLocation}
+          setLocation={setLLocation}
+          side={lSide}
+          setSide={setLSide}
+          severity={lSeverity}
+          setSeverity={setLSeverity}
+          />
         </Box>
       )}
       {woundType === "venous_leg_ulcer" && (
@@ -199,7 +211,7 @@ const ICDCode = () => {
           <FormControl
             fullWidth
             variant="outlined"
-            sx={{ marginBottom: "20px" }}
+            sx={{ marginBottom: "20px", width: "100%" }}
           >
             <Box
               sx={{
@@ -208,7 +220,7 @@ const ICDCode = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 width: "100%",
-                marginBottom: '10px'
+                marginBottom: "10px",
               }}
             >
               <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
@@ -218,6 +230,7 @@ const ICDCode = () => {
                 value={vluCondition}
                 displayEmpty
                 onChange={handleVluCondition}
+                sx={{ width: "50%" }}
               >
                 <MenuItem value="" disabled>
                   <em>---</em>
@@ -236,7 +249,7 @@ const ICDCode = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 width: "100%",
-                marginBottom: '10px'
+                marginBottom: "10px",
               }}
             >
               <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
@@ -246,6 +259,7 @@ const ICDCode = () => {
                 value={vluLocation}
                 displayEmpty
                 onChange={handleVluLocation}
+                sx={{ width: "50%" }}
               >
                 <MenuItem value="" disabled>
                   <em>---</em>
@@ -266,10 +280,10 @@ const ICDCode = () => {
                 width: "100%",
               }}
             >
-              <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
+              <Typography variant="subtitle1" >
                 Select Side:{" "}
               </Typography>
-              <Select value={vluSide} displayEmpty onChange={handleVluSide}>
+              <Select value={vluSide} displayEmpty onChange={handleVluSide} sx={{  width: "50%" }}>
                 <MenuItem value="" disabled>
                   <em>---</em>
                 </MenuItem>
@@ -280,8 +294,27 @@ const ICDCode = () => {
                 ))}
               </Select>
             </Box>
+          <LCode
+          location={lLocation}
+          setLocation={setLLocation}
+          side={lSide}
+          setSide={setLSide}
+          severity={lSeverity}
+          setSeverity={setLSeverity}
+          />
           </FormControl>
         </Box>
+        
+      )}
+       {woundType === "mohs" && (
+        <LCode
+          location={lLocation}
+          setLocation={setLLocation}
+          side={lSide}
+          setSide={setLSide}
+          severity={lSeverity}
+          setSeverity={setLSeverity}
+        />
       )}
     </Container>
   );
