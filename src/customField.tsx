@@ -21,6 +21,7 @@ import Products from "./components/Products";
 import CPTCode from "./components/CPTCode";
 import Patient from "./components/Patient";
 import Practitioner from "./components/Practitioner";
+import ICDCode from "./components/ICDCode";
 
 FiveInitialize();
 
@@ -49,7 +50,7 @@ const CustomField = (props: CustomFieldProps) => {
   }
 
 
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   // Revised useEffect
   useEffect(() => {
@@ -264,7 +265,8 @@ const CustomField = (props: CustomFieldProps) => {
           {activeStep === 1 && <Practitioner account = {account}/>}
           {activeStep === 2 && <Insurance />}
           {activeStep === 3 && <Products />}
-          {activeStep === 4 && <CPTCode />}
+          {activeStep === 4 && <ICDCode />}
+          {activeStep === 5 && <CPTCode />}
           {admitted === null ? (
             patientSelected === true ? (
               <Button
