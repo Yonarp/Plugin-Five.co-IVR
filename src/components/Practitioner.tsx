@@ -1,33 +1,26 @@
 import { Container, ListItemButton } from "@mui/material";
-import React, { useEffect } from "react";
-import { List, ListItemText, Typography } from "../FivePluginApi";
-import { CustomFieldProps } from "../../../../common";
+import React from "react";
+import {
+  CircularProgress,
+  List,
+  ListItemText,
+  Typography,
+} from "../FivePluginApi";
 
-const Practitioner = ( account, props: CustomFieldProps ) => {
+const Practitioner = ({ members}) => {
   const [selectedIndex, setSelectedIndex] = React.useState([]);
-  const [practitioners, setPractitioners] = React.useState([]);
-    //@ts-ignore
-  const { theme, value, variant, five } = props;
+  //@ts-ignore
 
   const handleClick = (index) => {
     setSelectedIndex(index);
   };
 
-
-  console.log(account)
-
-  useEffect(() => {
   
-      setPractitioners(() => {
-        return [
-          { NameFull: 'Bob Brown', Title: '' },
-          { NameFull: 'Member 1', Title: '' },
-          { NameFull: 'Member 2', Title: '' }
-        ];
-      })
-  }, []);
 
-
+  if (members === null) {
+    return <CircularProgress />;
+  }
+  
 
   return (
     <Container>
@@ -38,29 +31,33 @@ const Practitioner = ( account, props: CustomFieldProps ) => {
         Select A Practitioner for this request
       </Typography>
       <List>
-        {practitioners.map((practitioner, index) => {
-          return (
-            <ListItemButton
-              key={index}
-              //@ts-ignore
-              selected={selectedIndex === index}
-              onClick={() => handleClick(index)}
-              sx={{
-                borderBottom: "1px solid #00000033",
-                "&.Mui-selected": {
-                  backgroundColor: "#F4F8D0",
-                  color: "black",
-                  "&:hover": {
-                    backgroundColor: "lightblue",
+        {members ? (
+          members.map((practitioner, index) => {
+            return (
+              <ListItemButton
+                key={index}
+                //@ts-ignore
+                selected={selectedIndex === index}
+                onClick={() => handleClick(index)}
+                sx={{
+                  borderBottom: "1px solid #00000033",
+                  "&.Mui-selected": {
+                    backgroundColor: "#F4F8D0",
+                    color: "black",
+                    "&:hover": {
+                      backgroundColor: "lightblue",
+                    },
                   },
-                },
-              }}
-            >
-              <ListItemText primary={practitioner.NameFull} />
-              <ListItemText primary={practitioner.Title} />
-            </ListItemButton>
-          );
-        })}
+                }}
+              >
+                <ListItemText primary={practitioner.NameFull} />
+                <ListItemText primary={practitioner.Title} />
+              </ListItemButton>
+            );
+          })
+        ) : (
+          <CircularProgress />
+        )}
       </List>
     </Container>
   );

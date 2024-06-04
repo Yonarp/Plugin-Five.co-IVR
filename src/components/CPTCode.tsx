@@ -14,20 +14,20 @@ const CPTCode = () => {
         { label: "Face, Scalp, Eyelids, Mouth, Neck, Ears, Orbits, Genitalia, Hands, Feet", value: 2 }
     ];
 
-    const woundTypes = [
+/*     const woundTypes = [
         { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
         { label: "Venous leg ulcer", value: "venous_leg_ulcer" },
         { label: "Pressure ulcer or chronic wound", value: "pressure_ulcer" },
         { label: "Other...", value: "other" }
-    ];
+    ]; */
 
     const [woundLocation, setWoundLocation] = useState("");
     const [woundSize, setWoundSize] = useState("");
     const [cptCode, setCptCode] = useState("");
-    const [woundType, setWoundType] = useState("");
+ /*    const [woundType, setWoundType] = useState("");
     const [eCode, setECode] = useState("");
     const [iCode, setICode] = useState("");
-    const [lCode, setLCode] = useState("");
+    const [lCode, setLCode] = useState(""); */
 
     useEffect(() => {
         calculateCPTCode();
@@ -39,22 +39,6 @@ const CPTCode = () => {
 
     const handleWoundSizeChange = (event) => {
         setWoundSize(event.target.value);
-    };
-
-    const handleWoundTypeChange = (event) => {
-        setWoundType(event.target.value);
-    };
-
-    const handleECodeChange = (event) => {
-        setECode(event.target.value);
-    };
-
-    const handleICodeChange = (event) => {
-        setICode(event.target.value);
-    };
-
-    const handleLCodeChange = (event) => {
-        setLCode(event.target.value);
     };
 
     const cptCodeLookup = {
@@ -119,7 +103,7 @@ const CPTCode = () => {
                     }}
                 />
             </Box>
-            <FormControl fullWidth variant="outlined" sx={{ marginBottom: '20px' }}>
+          {/*   <FormControl fullWidth variant="outlined" sx={{ marginBottom: '20px' }}>
                 <Select value={woundType} onChange={handleWoundTypeChange} displayEmpty>
                     <MenuItem value="" disabled>
                         <em>Wound type</em>
@@ -185,7 +169,7 @@ const CPTCode = () => {
                     onChange={handleLCodeChange}
                     sx={{ marginBottom: '20px' }}
                 />
-            )}
+            )} */}
         </Box>
     );
 };

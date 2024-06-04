@@ -1,3 +1,4 @@
-import { CustomFieldProps } from "../../../../common";
-declare const Practitioner: (account: any, props: CustomFieldProps) => JSX.Element;
+declare const Practitioner: ({ members }: {
+    members: any;
+}) => JSX.Element;
 export default Practitioner;

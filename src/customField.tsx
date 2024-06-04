@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -32,7 +33,8 @@ const CustomField = (props: CustomFieldProps) => {
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
   const [databases, setDatabases] = useState([]);
-
+  const [members, setMembers] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { theme, value, variant, five } = props;
 
@@ -46,46 +48,52 @@ const CustomField = (props: CustomFieldProps) => {
   const accountKey = five.stack.Account.AccountKey;
 
   const account = {
-    'AccountKey': accountKey
-  }
-
+    AccountKey: accountKey,
+  };
 
   const totalSteps = 6;
 
   // Revised useEffect
   useEffect(() => {
-    console.log("useEffect triggered");
-
-    // Fetch data sources
-    //@ts-ignore
-    const dataSources = five.five.dataSources.map((item) => [
-      item.dataSourceId(),
-      item.key(),
-    ]);
-    setDatabases(dataSources);
-    console.log(databases);
-    // Check patient selection status
-    //@ts-ignore
-    if (five.stack.Patient === undefined) {
-      setPatientSelected(false);
+    if (members === null) {
+      setLoading(true);
+      console.log("useEffect triggered");
+      // Fetch data sources
+      //@ts-ignore
+      const dataSources = five.five.dataSources.map((item) => [
+        item.dataSourceId(),
+        item.key(),
+      ]);
+      setDatabases(dataSources);
+      console.log(databases);
+      // Check patient selection status
+      //@ts-ignore
+      if (five.stack.Patient === undefined) {
+        setPatientSelected(false);
+      }
+      // Execute external function
+      //@ts-ignore
+      const results = five.executeFunction(
+        "GetMembers",
+        //@ts-ignore
+        account,
+        null,
+        null,
+        null,
+        (result) => {
+          console.log("Loggin to memeber results");
+          console.log(JSON.parse(result.serverResponse.results));
+          setMembers(JSON.parse(result.serverResponse.results));
+          setLoading(false);
+        }
+      );
+      console.log("useEffect completed");
     }
-
-    // Execute external function
-    //@ts-ignore
-    const results = five.executeFunction("GetMembers", account, null, null, null, (result) => {
-      console.log("Loggin to memeb results")
-      console.log(JSON.parse(result.serverResponse.results))
-      console.log(typeof(result.serverResponse.results))
-    });
- 
- 
-    
-    console.log("useEffect completed");
   }, []); // Empty dependency array
-
-
+  
+  console.log("members", members);
   // Define handleNext and handleBack using useCallback to ensure stability
- const handleNext = useCallback(() => {
+  const handleNext = useCallback(() => {
     if (activeStep < totalSteps - 1) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -105,6 +113,10 @@ const CustomField = (props: CustomFieldProps) => {
   const handlePatientSelected = useCallback(() => {
     setPatientSelected(true);
   }, []);
+
+  if (loading) {
+    return <CircularProgress />;
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -262,7 +274,7 @@ const CustomField = (props: CustomFieldProps) => {
               </div>
             )
           )}
-          {activeStep === 1 && <Practitioner account = {account}/>}
+          {activeStep === 1 && (members !== null ? (<Practitioner  members = {members} />): <CircularProgress/>)}
           {activeStep === 2 && <Insurance />}
           {activeStep === 3 && <Products />}
           {activeStep === 4 && <ICDCode />}
@@ -282,7 +294,7 @@ const CustomField = (props: CustomFieldProps) => {
                   transform: "translate(-50%,-50%)",
                   color: "white",
                 }}
-              >
+               >
                 Close
               </Button>
             ) : (
