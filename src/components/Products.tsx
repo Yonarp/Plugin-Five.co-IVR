@@ -1,13 +1,15 @@
 import { Container } from "@mui/material";
 import React, { useState } from "react";
 import {
+  Box,
   Button,
-  Grid,
   MenuItem,
   Select,
   // TextField,
   Typography,
 } from "../FivePluginApi";
+
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Products = () => {
   const [selectedProducts, setSelectedProducts] = useState([
@@ -79,48 +81,69 @@ const Products = () => {
   };
 
   return (
-    <Container>
+    <Container
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
       <Typography variant="h6" gutterBottom>
         Select the product needed for this request.
       </Typography>
       {selectedProducts.map((product, index) => (
-        <Grid container spacing={2} key={index} alignItems="center">
-          <Grid item xs={5}>
-            <Select
-              fullWidth
-              value={product.name}
-              onChange={(event) => handleProductChange(index, event)}
-              displayEmpty
-            >
-              <MenuItem value="" disabled>
-                Select a product
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "50%",
+          }}
+        >
+          <Select
+            fullWidth
+            sx={{ margin: "10px 5px" }}
+            value={product.name}
+            onChange={(event) => handleProductChange(index, event)}
+            displayEmpty
+          >
+            <MenuItem value="" disabled>
+              Select a product
+            </MenuItem>
+            {products.map((product, idx) => (
+              <MenuItem key={idx} value={product}>
+                {product}
               </MenuItem>
-              {products.map((product, idx) => (
-                <MenuItem key={idx} value={product}>
-                  {product}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => handleRemoveProduct(index)}
-            >
-              Remove
-            </Button>
-          </Grid>
-        </Grid>
+            ))}
+          </Select>
+
+          <DeleteIcon
+            htmlColor="red"
+            onClick={() => handleRemoveProduct(index)}
+            sx={{
+              fill: "!important red",
+              cursor: "pointer",
+              "&:hover": {
+                fill: "!important darkred",
+                opacity: 0.5, // Change the color on hover
+              },
+            }}
+          />
+        </Box>
       ))}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleAddProduct}
-        style={{ marginTop: "20px" }}
-      >
-        Add Product
-      </Button>
+      <Box style={{ width: "50%" }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddProduct}
+          style={{ marginTop: "20px", borderRadius: '50px' }}
+        >
+          +
+        </Button>
+      </Box>
     </Container>
   );
 };

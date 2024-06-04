@@ -1,7 +1,8 @@
-import { ThemeProvider } from "@mui/system";
+//import { ThemeProvider } from "@mui/system";
 import React, { useCallback, useEffect, useState } from "react";
 
 import {
+  Box,
   Button,
   CircularProgress,
   Dialog,
@@ -36,6 +37,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [members, setMembers] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  //@ts-ignore
   const { theme, value, variant, five } = props;
 
   const handleDialogOpen = () => setDialogOpen(true);
@@ -119,7 +121,7 @@ const CustomField = (props: CustomFieldProps) => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <Box>
       <Button
         fullWidth
         variant={variant}
@@ -341,7 +343,7 @@ const CustomField = (props: CustomFieldProps) => {
           </Button> */}
         </DialogActions>
       </Dialog>
-    </ThemeProvider>
+    </Box>
   );
 };
 
