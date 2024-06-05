@@ -18,27 +18,12 @@ const Products = () => {
   ]);
 
   const products = [
-    "ZNG-0202",
-    "ZNG-0203",
-    "ZNG-0404",
-    "ZNG-0406",
-    "ZNG-0408",
-    "IMP-0202",
-    "IMP-0203",
-    "IMP-0404",
-    "IMP-0406",
-    "IMP-0408",
-    "ORI-0202",
-    "ORI-0203",
-    "ORI-0404",
-    "ORI-0406",
-    "ORI-0408",
-    "SFT-0203",
-    "SFT-0204",
-    "SFT-0404",
-    "SFT-0406",
-    "SFT-0408",
-  ];
+    { Description: "Zenith - Q4523", QCode: "Q4523", Brand: "Zenith" },
+    { Description: "Impax - Q4262", QCode: "Q4262", Brand: "Impax" },
+    { Description: "Orion - Q4276", QCode: "Q4276", Brand: "Orion" },
+    { Description: "Surgraft - Q4268", QCode: "Q4268", Brand: "Surgraft" }
+];
+
   /* 
   const productsSimple = [
     "Impax Dual Layer Graft 2x2 cm",
@@ -114,8 +99,8 @@ const Products = () => {
               Select a product
             </MenuItem>
             {products.map((product, idx) => (
-              <MenuItem key={idx} value={product}>
-                {product}
+              <MenuItem key={idx} value={product.Description}>
+                {product.Description}
               </MenuItem>
             ))}
           </Select>

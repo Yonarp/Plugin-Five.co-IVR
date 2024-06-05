@@ -106,7 +106,7 @@ const CPTCode = () => {
                     }}
                 />
             </Box>
-          {/*   <FormControl fullWidth variant="outlined" sx={{ marginBottom: '20px' }}>
+          {/*<FormControl fullWidth variant="outlined" sx={{ marginBottom: '20px' }}>
                 <Select value={woundType} onChange={handleWoundTypeChange} displayEmpty>
                     <MenuItem value="" disabled>
                         <em>Wound type</em>
