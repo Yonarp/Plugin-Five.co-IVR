@@ -1,19 +1,44 @@
 import { Container, ListItemButton } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   CircularProgress,
   List,
   ListItemText,
   Typography,
 } from "../FivePluginApi";
-
-const Practitioner = ({ members}) => {
+const Practitioner = ({five}) => {
   const [selectedIndex, setSelectedIndex] = React.useState([]);
-  //@ts-ignore
+  const members = [
+    { NameFull: 'Bob Brown', Title: '' },
+    { NameFull: 'Member 1', Title: '' },
+    { NameFull: 'Member 2', Title: '' }
+  ];
+  
+  console.log("Logging Five", five)
 
   const handleClick = (index) => {
     setSelectedIndex(index);
   };
+
+
+  useEffect(() => {
+
+    //@ts-ignore
+    const results = five.executeFunction(
+      "TesDataFunction",
+      null,
+      null,
+      null,
+      null,
+      (result) => {
+        console.log("Loggin From Practitioners");
+        console.log(result.serverResponse.results)
+        console.log(JSON.parse(result.serverResponse.results));
+      
+      }
+    );
+
+  }, [])
 
   
 

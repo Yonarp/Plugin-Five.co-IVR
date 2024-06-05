@@ -7,6 +7,8 @@ import {
   TextField,
   Typography,
 } from "../FivePluginApi";
+import Container from "@mui/material/Container";
+
 
 const CPTCode = () => {
     const woundLocations = [
@@ -62,7 +64,8 @@ const CPTCode = () => {
     };
 
     return (
-        <Box sx={{ maxWidth: '600px', margin: 'auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', textAlign: 'center' }}>
+        <Container style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+        <Box>
             <Typography variant="h6" gutterBottom>
                 Determine the CPT and ICD 10 Codes
             </Typography>
@@ -171,6 +174,7 @@ const CPTCode = () => {
                 />
             )} */}
         </Box>
+        </Container>
     );
 };
 

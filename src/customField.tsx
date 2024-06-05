@@ -33,7 +33,10 @@ const CustomField = (props: CustomFieldProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
-  const [databases, setDatabases] = useState([]);
+  //@ts-ignore
+  const [patient, setPatient] = useState('')
+  const [data, setData] = useState(null);
+  //@ts-ignore
   const [members, setMembers] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -47,17 +50,19 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const officeName = five.stack.OfficeName;
   //@ts-ignore
-  const accountKey = five.stack.Account.AccountKey;
+  //const accountKey = five.stack.Account.AccountKey;
+  const accountKey = '5973932E-88D8-4ACA-9FFC-C17D037B5D66';
 
   const account = {
     AccountKey: accountKey,
   };
 
+
   const totalSteps = 6;
 
   // Revised useEffect
   useEffect(() => {
-    if (members === null) {
+    if (data === null) {
       setLoading(true);
       console.log("useEffect triggered");
       // Fetch data sources
@@ -66,26 +71,28 @@ const CustomField = (props: CustomFieldProps) => {
         item.dataSourceId(),
         item.key(),
       ]);
-      setDatabases(dataSources);
-      console.log(databases);
+     // setDatabases(dataSources);
+      console.log("All Data Sources",dataSources);
       // Check patient selection status
       //@ts-ignore
       if (five.stack.Patient === undefined) {
         setPatientSelected(false);
       }
+
       // Execute external function
       //@ts-ignore
       const results = five.executeFunction(
-        "GetMembers",
+        "getAccountPatients",
         //@ts-ignore
         account,
         null,
         null,
         null,
         (result) => {
-          console.log("Loggin to memeber results");
+          console.log("Loggin to member results");
+          console.log(result.serverResponse.results)
           console.log(JSON.parse(result.serverResponse.results));
-          setMembers(JSON.parse(result.serverResponse.results));
+          setData(JSON.parse(result.serverResponse.results));
           setLoading(false);
         }
       );
@@ -93,7 +100,7 @@ const CustomField = (props: CustomFieldProps) => {
     }
   }, []); // Empty dependency array
   
-  console.log("members", members);
+  console.log("data", data);
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
     if (activeStep < totalSteps - 1) {
@@ -115,6 +122,12 @@ const CustomField = (props: CustomFieldProps) => {
   const handlePatientSelected = useCallback(() => {
     setPatientSelected(true);
   }, []);
+  
+  const handlePatient = useCallback((patientKey) => {
+    setPatient(patientKey);
+  }, []);
+
+  console.log('loggin patient key', patient)
 
   if (loading) {
     return <CircularProgress />;
@@ -154,17 +167,18 @@ const CustomField = (props: CustomFieldProps) => {
         <DialogContent>
           {!patientSelected ? (
             <div className="container" style={{ width: "100%" }}>
-              <Patient />
+              <Patient patients={data.response.value} handlePatient={handlePatient}/>
               <div
                 className="patient-buttons"
                 style={{
                   position: "absolute",
-                  bottom: "5%",
+                  bottom: "1%",
                   width: "100%",
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
+                  backgroundColor: 'white',
                 }}
               >
                 <Button
@@ -276,7 +290,7 @@ const CustomField = (props: CustomFieldProps) => {
               </div>
             )
           )}
-          {activeStep === 1 && (members !== null ? (<Practitioner  members = {members} />): <CircularProgress/>)}
+          {activeStep === 1 && <Practitioner five={five}/>}
           {activeStep === 2 && <Insurance />}
           {activeStep === 3 && <Products />}
           {activeStep === 4 && <ICDCode />}
