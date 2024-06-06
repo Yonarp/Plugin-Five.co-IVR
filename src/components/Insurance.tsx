@@ -16,10 +16,10 @@ const Insurance = ({ patient, five }) => {
   const [loading, setLoading] = useState(false);
 
   const handlePayorClick = (payor) => {
-    const isSelected = selectedPayors.some((p) => p.id === payor.id);
+    const isSelected = selectedPayors.some((p) => p.PayorID === payor.PayorID);
 
     if (isSelected) {
-      setSelectedPayors(selectedPayors.filter((p) => p.id !== payor.id));
+      setSelectedPayors(selectedPayors.filter((p) => p.PayorID !== payor.PayorID));
     } else {
       if (selectedPayors.length < 3) {
         setSelectedPayors([...selectedPayors, payor]);
@@ -44,24 +44,70 @@ const Insurance = ({ patient, five }) => {
     if (payors === null) {
       setLoading(true);
       const fetchData = async () => {
-        if (patient.__PAY1 !== null) {
-          const payorObj = {
-            PayKey: patient.__PAY1,
-          };
-          await five.executeFunction(
-            "getPatientInsurance",
-            payorObj,
-            null,
-            null,
-            null,
-            (result) => {
-              const payorData = JSON.parse(result.serverResponse.results);
-              setPayors(payorData.response.value);
-              setLoading(false);
-            }
-          );
-        } else {
-          setLoading(false)
+        if (
+          patient.__PAY1 === null &&
+          patient.__PAY2 === null &&
+          patient.__PAY3 === null
+          ) {
+            setLoading(false);
+            } else {
+          let payorArray = []
+          if (patient.__PAY1 !== null) {
+            const payorObj = {
+              PayKey: patient.__PAY1,
+            };
+            await five.executeFunction(
+              "getPatientInsurance",
+              payorObj,
+              null,
+              null,
+              null,
+              (result) => {
+                const payorData = JSON.parse(result.serverResponse.results);
+                //setPayors(payorData.response.value);
+                payorArray.push(payorData.response.value[0])
+                //setLoading(false);
+              }
+            );
+          }
+          if (patient.__PAY2 !== null) {
+            const payorObj = {
+              PayKey: patient.__PAY2,
+            };
+            await five.executeFunction(
+              "getPatientInsurance",
+              payorObj,
+              null,
+              null,
+              null,
+              (result) => {
+                const payorData = JSON.parse(result.serverResponse.results);
+                //setPayors(payorData.response.value);
+                payorArray.push(payorData.response.value[0])
+                //setLoading(false);
+              }
+            );
+          }
+          if (patient.__PAY3 !== null) {
+            const payorObj = {
+              PayKey: patient.__PAY3,
+            };
+            await five.executeFunction(
+              "getPatientInsurance",
+              payorObj,
+              null,
+              null,
+              null,
+              (result) => {
+                const payorData = JSON.parse(result.serverResponse.results);
+               // setPayors(payorData.response.value);
+               payorArray.push(payorData.response.value[0])
+                //setLoading(false);
+              }
+            );
+          }
+        setPayors(payorArray)
+        setLoading(false)
         }
       };
       fetchData();
@@ -92,33 +138,43 @@ const Insurance = ({ patient, five }) => {
       <List>
         {
           //@ts-ignore
-          payors ? 
-          payors.map((payor, index) => (
-            <ListItem
-              key={index}
-              button
-              onClick={() => handlePayorClick(payor)}
-              selected={selectedPayors.some((p) => p.id === payor.id)}
-              sx={{
-                borderBottom: "1px solid #00000033",
-                "&.Mui-selected": {
-                  backgroundColor: "#F4F8D0",
-                  color: "black",
-                  "&:hover": {
-                    backgroundColor: "lightblue",
+          payors ? (
+            payors.map((payor, index) => (
+              <ListItem
+                key={index}
+                button
+                onClick={() => handlePayorClick(payor)}
+                selected={selectedPayors.some((p) => p.PayorID === payor.PayorID)}
+                sx={{
+                  borderBottom: "1px solid #00000033",
+                  "&.Mui-selected": {
+                    backgroundColor: "#F4F8D0",
+                    color: "black",
+                    "&:hover": {
+                      backgroundColor: "lightblue",
+                    },
                   },
-                },
+                }}
+              >
+                <ListItemText
+                  primary={payor.CompanyName}
+                  secondary={payor.PayorID}
+                />
+              </ListItem>
+            ))
+          ) : (
+            <Container
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <ListItemText
-                primary={payor.CompanyName}
-                secondary={payor.PayorID}
-              />
-            </ListItem>
-          ))
-        : (<Container style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            No Insurance found for this Patient
-        </Container>)}
+              No Insurance found for this Patient
+            </Container>
+          )
+        }
       </List>
 
       {selectedPayors.map((payor, index) => (
@@ -126,7 +182,7 @@ const Insurance = ({ patient, five }) => {
           <Typography variant="subtitle1" gutterBottom>
             <strong> {getPayorLabel(index)}</strong>
           </Typography>
-          <Typography variant="body1">{payor.name}</Typography>
+          <Typography variant="body1">{payor.CompanyName}</Typography>
         </div>
       ))}
     </Container>

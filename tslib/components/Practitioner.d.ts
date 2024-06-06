@@ -1,4 +1,5 @@
-declare const Practitioner: ({ five }: {
+import React from "react";
+declare const _default: React.MemoExoticComponent<({ five }: {
     five: any;
-}) => JSX.Element;
-export default Practitioner;
+}) => JSX.Element>;
+export default _default;

@@ -24,6 +24,8 @@ import CPTCode from "./components/CPTCode";
 import Patient from "./components/Patient";
 import Practitioner from "./components/Practitioner";
 import ICDCode from "./components/ICDCode";
+import Summary from "./components/Summary";
+import { Padding } from "@mui/icons-material";
 
 FiveInitialize();
 
@@ -34,7 +36,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
   //@ts-ignore
-  const [patient, setPatient] = useState()
+  const [patient, setPatient] = useState();
   const [data, setData] = useState(null);
   //@ts-ignore
   const [members, setMembers] = useState(null);
@@ -51,14 +53,13 @@ const CustomField = (props: CustomFieldProps) => {
   const officeName = five.stack.OfficeName;
   //@ts-ignore
   //const accountKey = five.stack.Account.AccountKey;
-  const accountKey = '5973932E-88D8-4ACA-9FFC-C17D037B5D66';
+  const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66";
 
   const account = {
     AccountKey: accountKey,
   };
 
-
-  const totalSteps = 6;
+  const totalSteps = 7;
 
   // Revised useEffect
   useEffect(() => {
@@ -71,7 +72,7 @@ const CustomField = (props: CustomFieldProps) => {
         setPatientSelected(false);
       }
       const fetchData = async () => {
-           await five.executeFunction(
+        await five.executeFunction(
           "getAccountPatients",
           //@ts-ignore
           account,
@@ -80,19 +81,18 @@ const CustomField = (props: CustomFieldProps) => {
           null,
           (result) => {
             console.log("Loggin to member results");
-            console.log(result.serverResponse.results)
+            console.log(result.serverResponse.results);
             console.log(JSON.parse(result.serverResponse.results));
             setData(JSON.parse(result.serverResponse.results));
             setLoading(false);
           }
         );
         console.log("useEffect completed");
-
-      }
-      fetchData()
+      };
+      fetchData();
     }
   }, []); // Empty dependency array
-  
+
   console.log("data", data);
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
@@ -115,12 +115,12 @@ const CustomField = (props: CustomFieldProps) => {
   const handlePatientSelected = useCallback(() => {
     setPatientSelected(true);
   }, []);
-  
+
   const handlePatient = useCallback((patientKey) => {
     setPatient(patientKey);
   }, []);
 
-  console.log('loggin patient key', patient)
+  console.log("loggin patient key", patient);
 
   if (loading) {
     return <CircularProgress />;
@@ -160,7 +160,11 @@ const CustomField = (props: CustomFieldProps) => {
         <DialogContent>
           {!patientSelected ? (
             <div className="container" style={{ width: "100%" }}>
-              <Patient patients={data.response.value} handlePatient={handlePatient} five={five}/>
+              <Patient
+                patients={data.response.value}
+                handlePatient={handlePatient}
+                five={five}
+              />
               <div
                 className="patient-buttons"
                 style={{
@@ -171,7 +175,7 @@ const CustomField = (props: CustomFieldProps) => {
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: 'white',
+                  backgroundColor: "white",
                 }}
               >
                 <Button
@@ -283,66 +287,83 @@ const CustomField = (props: CustomFieldProps) => {
               </div>
             )
           )}
-          {activeStep === 1 && <Practitioner five={five}/>}
-          {activeStep === 2 && <Insurance patient={patient} five={five}/>}
+          {activeStep === 1 && <Practitioner five={five} />}
+          {activeStep === 2 && <Insurance patient={patient} five={five} />}
           {activeStep === 3 && <Products />}
           {activeStep === 4 && <ICDCode />}
           {activeStep === 5 && <CPTCode />}
-          {admitted === null ? (
-            patientSelected === true ? (
+          {activeStep === 6 && <Summary />}
+    
+            {admitted === null ? (
+              patientSelected === true ? (
+                <Button
+                  onClick={handleDialogClose}
+                  style={{
+                    width: "100px",
+                    height: "50px",
+                    borderRadius: "0px",
+                    background: "#285C79",
+                    position: "absolute",
+                    
+                    bottom: "5%",
+                    left: "50%",
+                    transform: "translate(-50%,-50%)",
+                    color: "white",
+                  }}
+                >
+                  Close
+                </Button>
+              ) : (
+                <></>
+              )
+            ) : (
+              <Box
+              style={{
+                position: "absolute",
+                bottom: "1%",
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                backgroundColor: "white",
+                padding: 5,
+              }}
+            >
               <Button
-                onClick={handleDialogClose}
+                onClick={handleBack}
                 style={{
                   width: "100px",
                   height: "50px",
                   borderRadius: "0px",
                   background: "#285C79",
-                  position: "absolute",
-                  bottom: "5%",
-                  left: "50%",
-                  transform: "translate(-50%,-50%)",
+                  //position: "absolute",
+                  //bottom: "5%",
+                  //left: "35%",
                   color: "white",
                 }}
-               >
-                Close
+              >
+                Previous
               </Button>
-            ) : (
-              <></>
-            )
-          ) : (
-            <Button
-              onClick={handleBack}
-              style={{
-                width: "100px",
-                height: "50px",
-                borderRadius: "0px",
-                background: "#285C79",
-                position: "absolute",
-                bottom: "5%",
-                left: "35%",
-                color: "white",
-              }}
-            >
-              Previous
-            </Button>
-          )}
-          {admitted === null ? null : (
-            <Button
-              onClick={handleNext}
-              style={{
-                width: "100px",
-                height: "50px",
-                borderRadius: "0px",
-                background: "#285C79",
-                position: "absolute",
-                bottom: "5%",
-                left: "55%",
-                color: "white",
-              }}
-            >
-              Next
-            </Button>
-          )}
+               <Button
+               onClick={handleNext}
+               style={{
+                 width: "100px",
+                 height: "50px",
+                 borderRadius: "0px",
+                 background: "#285C79",
+                 //position: "absolute",
+                 //bottom: "5%",
+                 //left: "55%",
+                 color: "white",
+               }}
+             >
+               Next
+             </Button>
+             </Box>
+            )}
+            
+    
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleDialogClose} color="primary">

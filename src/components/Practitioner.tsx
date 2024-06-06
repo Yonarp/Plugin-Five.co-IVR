@@ -1,5 +1,5 @@
 import { Container, ListItemButton } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect,memo } from "react";
 import {
   CircularProgress,
   List,
@@ -98,4 +98,4 @@ const Practitioner = ({ five }) => {
   );
 };
 
-export default Practitioner;
+export default memo(Practitioner);
