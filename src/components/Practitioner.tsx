@@ -21,7 +21,7 @@ const Practitioner = ({ five }) => {
     if (practitioners === null) {
       setLoading(true);
       const fetchData = async () => {
-        five.executeFunction(
+          five.executeFunction(
           "getAccountPractitioners",
           null,
           null,

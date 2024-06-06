@@ -1,11 +1,12 @@
 import { Container } from "@mui/material";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { List, ListItem, ListItemText, /* MenuItem ,*/ /* Select, */ Typography } from "../FivePluginApi";
 
 
+//@ts-ignore
+const Insurance = ({patient, five}) => {
 
-const Insurance = () => {
-
+    console.log("From Insurance",patient)
     const [selectedPayors, setSelectedPayors] = useState([]);
 
   const payors = [
@@ -13,6 +14,23 @@ const Insurance = () => {
     { name: 'AARP', id: 'asdfg' },
     // Add more payors as needed
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+
+
+      await five.executeFunction(
+        "getPatient",
+        null,
+        null,
+        null,
+        (result) => {
+          
+        }
+      );
+
+    }   
+  },[])
 
   const handlePayorClick = (payor) => {
     const isSelected = selectedPayors.some(p => p.id === payor.id);

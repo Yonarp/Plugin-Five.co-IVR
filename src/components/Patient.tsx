@@ -1,13 +1,29 @@
 import { Container, ListItemButton, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { List, ListItemText } from "../FivePluginApi";
-
-const Patient = ({patients, handlePatient}) => {
+//@ts-ignore
+const Patient = ({patients, handlePatient, five}) => {
   const [selectedIndex, setSelectedIndex] = useState(null)
 
-    const handleClick = (index, patientKey) => {
+    const handleClick =  async(index, patient) => {
+        console.log("Logging Patient FROM PATIENT ", patient)
         setSelectedIndex(index)
-        handlePatient(patientKey)
+        const patientKey = {
+          PatientKey: patient
+        }
+        await five.executeFunction(
+          "getPatient",
+          patientKey,
+          null,
+          null,
+          null,
+          (result) => {
+            const patientData =  JSON.parse(result.serverResponse.results)
+            handlePatient(patientData.response.value[0]);
+          }
+        );
+
+
     }
 
   return (

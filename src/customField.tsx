@@ -65,38 +65,31 @@ const CustomField = (props: CustomFieldProps) => {
     if (data === null) {
       setLoading(true);
       console.log("useEffect triggered");
-      // Fetch data sources
-      //@ts-ignore
-      const dataSources = five.five.dataSources.map((item) => [
-        item.dataSourceId(),
-        item.key(),
-      ]);
-     // setDatabases(dataSources);
-      console.log("All Data Sources",dataSources);
       // Check patient selection status
       //@ts-ignore
       if (five.stack.Patient === undefined) {
         setPatientSelected(false);
       }
+      const fetchData = async () => {
+           await five.executeFunction(
+          "getAccountPatients",
+          //@ts-ignore
+          account,
+          null,
+          null,
+          null,
+          (result) => {
+            console.log("Loggin to member results");
+            console.log(result.serverResponse.results)
+            console.log(JSON.parse(result.serverResponse.results));
+            setData(JSON.parse(result.serverResponse.results));
+            setLoading(false);
+          }
+        );
+        console.log("useEffect completed");
 
-      // Execute external function
-      //@ts-ignore
-      const results = five.executeFunction(
-        "getAccountPatients",
-        //@ts-ignore
-        account,
-        null,
-        null,
-        null,
-        (result) => {
-          console.log("Loggin to member results");
-          console.log(result.serverResponse.results)
-          console.log(JSON.parse(result.serverResponse.results));
-          setData(JSON.parse(result.serverResponse.results));
-          setLoading(false);
-        }
-      );
-      console.log("useEffect completed");
+      }
+      fetchData()
     }
   }, []); // Empty dependency array
   
@@ -167,7 +160,7 @@ const CustomField = (props: CustomFieldProps) => {
         <DialogContent>
           {!patientSelected ? (
             <div className="container" style={{ width: "100%" }}>
-              <Patient patients={data.response.value} handlePatient={handlePatient}/>
+              <Patient patients={data.response.value} handlePatient={handlePatient} five={five}/>
               <div
                 className="patient-buttons"
                 style={{
@@ -291,7 +284,7 @@ const CustomField = (props: CustomFieldProps) => {
             )
           )}
           {activeStep === 1 && <Practitioner five={five}/>}
-          {activeStep === 2 && <Insurance />}
+          {activeStep === 2 && <Insurance patient={patient} five={five}/>}
           {activeStep === 3 && <Products />}
           {activeStep === 4 && <ICDCode />}
           {activeStep === 5 && <CPTCode />}
