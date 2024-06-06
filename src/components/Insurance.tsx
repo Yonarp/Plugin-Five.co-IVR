@@ -9,7 +9,7 @@ import {
 } from "../FivePluginApi";
 
 //@ts-ignore
-const Insurance = ({ patient, five }) => {
+const Insurance = ({ patient, five, setPayorsMain }) => {
   console.log("From Insurance", patient);
   const [selectedPayors, setSelectedPayors] = useState([]);
   const [payors, setPayors] = useState(null);

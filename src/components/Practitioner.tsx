@@ -6,15 +6,16 @@ import {
   ListItemText,
   Typography,
 } from "../FivePluginApi";
-const Practitioner = ({ five }) => {
+const Practitioner = ({ five, setPractitioner }) => {
   const [selectedIndex, setSelectedIndex] = React.useState([]);
   const [practitioners, setPractitioners] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
   console.log("Logging Five", five);
 
-  const handleClick = (index) => {
+  const handleClick = (index, practitioner) => {
     setSelectedIndex(index);
+    setPractitioner(practitioner)
   };
 
   useEffect(() => {
@@ -74,7 +75,7 @@ const Practitioner = ({ five }) => {
                 key={index}
                 //@ts-ignore
                 selected={selectedIndex === index}
-                onClick={() => handleClick(index)}
+                onClick={() => handleClick(index, practitioner)}
                 sx={{
                   borderBottom: "1px solid #00000033",
                   "&.Mui-selected": {

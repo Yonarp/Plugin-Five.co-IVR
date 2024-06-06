@@ -25,7 +25,7 @@ import Patient from "./components/Patient";
 import Practitioner from "./components/Practitioner";
 import ICDCode from "./components/ICDCode";
 import Summary from "./components/Summary";
-import { Padding } from "@mui/icons-material";
+
 
 FiveInitialize();
 
@@ -35,6 +35,12 @@ const CustomField = (props: CustomFieldProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
+  //@ts-ignore
+  const [payors, setPayors] = useState([])
+  //@ts-ignore
+  const [products, setProducts] = useState([])
+  //@ts-ignore
+  const [practitioner, setPractitioner] = useState()
   //@ts-ignore
   const [patient, setPatient] = useState();
   const [data, setData] = useState(null);
@@ -287,12 +293,12 @@ const CustomField = (props: CustomFieldProps) => {
               </div>
             )
           )}
-          {activeStep === 1 && <Practitioner five={five} />}
-          {activeStep === 2 && <Insurance patient={patient} five={five} />}
-          {activeStep === 3 && <Products />}
+          {activeStep === 1 && <Practitioner five={five} setPractitioner= {setPractitioner}/>}
+          {activeStep === 2 && <Insurance patient={patient} five={five} setPayorsMain= {setPayors} />}
+          {activeStep === 3 && <Products setProducts={setProducts} />}
           {activeStep === 4 && <ICDCode />}
           {activeStep === 5 && <CPTCode />}
-          {activeStep === 6 && <Summary />}
+          {activeStep === 6 && <Summary products = {products} practitioner = {practitioner}/>}
     
             {admitted === null ? (
               patientSelected === true ? (

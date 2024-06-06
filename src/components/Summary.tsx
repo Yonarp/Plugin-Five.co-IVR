@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   TextField,
@@ -7,11 +7,13 @@ import {
   Checkbox,
   FormControlLabel,
   Button,
-} from '@mui/material';
+} from "@mui/material";
 
-const Summary = () => {
+const Summary = ({ products, practitioner }) => {
   return (
-    <Box sx={{ p: 4, maxWidth: 800, mx: 'auto', boxShadow: 3, borderRadius: 2 }}>
+    <Box
+      sx={{ p: 4, maxWidth: 800, mx: "auto", boxShadow: 3, borderRadius: 2 }}
+    >
       <Typography variant="h6" gutterBottom>
         Insurance Verification Request
       </Typography>
@@ -25,12 +27,13 @@ const Summary = () => {
         }}
       />
       <TextField
-        label="Provider"
+        label="Practitioner"
         fullWidth
         margin="normal"
         InputProps={{
           readOnly: true,
         }}
+        value={practitioner.NameFull}
       />
       <TextField
         label="NPI"
@@ -60,13 +63,17 @@ const Summary = () => {
       <Grid container spacing={2} marginTop={2}>
         <Grid item xs={6}>
           <Typography variant="body1">Product 1</Typography>
-          <Typography variant="body2">Orion - Q4276</Typography>
+          <Typography variant="body2">{products[0].name}</Typography>
         </Grid>
-        <Grid item xs={6}>
-          <Typography variant="body1">Product 2</Typography>
-          <Typography variant="body2">Codes</Typography>
-          <Typography variant="body2">15271</Typography>
-        </Grid>
+
+        {products[1].name ? (
+          <Grid item xs={6}>
+            <Typography variant="body1">Product 2</Typography>
+            <Typography variant="body2">{products[1].name}</Typography>{" "}
+          </Grid>
+        ) : (
+          <></>
+        )}
       </Grid>
       <FormControlLabel
         control={<Checkbox />}

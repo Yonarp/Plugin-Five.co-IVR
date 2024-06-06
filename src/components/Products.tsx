@@ -11,7 +11,7 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const Products = () => {
+const Products = ({setProducts}) => {
   const [selectedProducts, setSelectedProducts] = useState([
     { name: "", qty: "" },
     { name: "", qty: "" },
@@ -48,6 +48,7 @@ const Products = () => {
     const newProducts = [...selectedProducts];
     newProducts[index].name = event.target.value;
     setSelectedProducts(newProducts);
+    setProducts(newProducts)
   };
 
   /* const handleQtyChange = (index, event) => {
