@@ -42,7 +42,7 @@ const Practitioner = ({ five }) => {
     }
   }, []);
 
-  if (loading === null) {
+  if (loading) {
     return (
       <Container
         style={{
