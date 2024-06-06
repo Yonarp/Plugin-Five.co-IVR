@@ -6,46 +6,57 @@ import {
   ListItemText,
   Typography,
 } from "../FivePluginApi";
-const Practitioner = ({five}) => {
+const Practitioner = ({ five }) => {
   const [selectedIndex, setSelectedIndex] = React.useState([]);
-  const members = [
-    { NameFull: 'Bob Brown', Title: '' },
-    { NameFull: 'Member 1', Title: '' },
-    { NameFull: 'Member 2', Title: '' }
-  ];
-  
-  console.log("Logging Five", five)
+  const [practitioners, setPractitioners] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  console.log("Logging Five", five);
 
   const handleClick = (index) => {
     setSelectedIndex(index);
   };
 
-
   useEffect(() => {
+    if (practitioners === null) {
+      setLoading(true);
+      const fetchData = async () => {
+        five.executeFunction(
+          "getAccountPractitioners",
+          null,
+          null,
+          null,
+          null,
+          (result) => {
+            console.log("Loggin From Practitioners");
+            console.log(result.serverResponse.results);
+            console.log(JSON.parse(result.serverResponse.results));
+            setPractitioners(JSON.parse(result.serverResponse.results));
+            setLoading(false);
+          }
+        );
+      };
+      //@ts-ignore
 
-    //@ts-ignore
-    const results = five.executeFunction(
-      "TesDataFunction",
-      null,
-      null,
-      null,
-      null,
-      (result) => {
-        console.log("Loggin From Practitioners");
-        console.log(result.serverResponse.results)
-        console.log(JSON.parse(result.serverResponse.results));
-      
-      }
+      fetchData();
+    }
+  }, []);
+
+  if (loading === null) {
+    return (
+      <Container
+        style={{
+          display: "flex",
+          width: "100vw",
+          height: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Container>
     );
-
-  }, [])
-
-  
-
-  if (members === null) {
-    return <CircularProgress />;
   }
-  
 
   return (
     <Container>
@@ -56,8 +67,8 @@ const Practitioner = ({five}) => {
         Select A Practitioner for this request
       </Typography>
       <List>
-        {members ? (
-          members.map((practitioner, index) => {
+        {practitioners ? (
+          practitioners.map((practitioner, index) => {
             return (
               <ListItemButton
                 key={index}
@@ -75,8 +86,7 @@ const Practitioner = ({five}) => {
                   },
                 }}
               >
-                <ListItemText primary={practitioner.NameFull} />
-                <ListItemText primary={practitioner.Title} />
+                <ListItemText primary={practitioner.NameFull} secondary={practitioner.Email} />
               </ListItemButton>
             );
           })

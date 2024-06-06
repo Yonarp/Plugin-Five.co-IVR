@@ -34,7 +34,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
   //@ts-ignore
-  const [patient, setPatient] = useState('')
+  const [patient, setPatient] = useState()
   const [data, setData] = useState(null);
   //@ts-ignore
   const [members, setMembers] = useState(null);

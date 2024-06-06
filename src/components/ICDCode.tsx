@@ -492,19 +492,18 @@ const ICDCode = () => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
-                alignItems: "center",
                 width: "100%",
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
+              <Typography variant="subtitle1" sx={{ marginRight: "10px", minWidth: "150px" }}>
                 Select Condition:{" "}
               </Typography>
               <Select
                 value={vluCondition}
                 displayEmpty
                 onChange={handleVluCondition}
-                sx={{ width: "50%" }}
+                sx={{ flex: 1 }}
               >
                 <MenuItem value="" disabled>
                   <em>---</em>
@@ -521,19 +520,18 @@ const ICDCode = () => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
-                alignItems: "center",
                 width: "100%",
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
+              <Typography variant="subtitle1" sx={{ marginRight: "10px", minWidth: "150px" }}>
                 Select Location:{" "}
               </Typography>
               <Select
                 value={vluLocation}
                 displayEmpty
                 onChange={handleVluLocation}
-                sx={{ width: "50%" }}
+                sx={{ flex: 1 }}
               >
                 <MenuItem value="" disabled>
                   <em>---</em>
@@ -550,18 +548,17 @@ const ICDCode = () => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
-                alignItems: "center",
                 width: "100%",
               }}
             >
-              <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
+              <Typography variant="subtitle1" sx={{ marginRight: "10px", minWidth: "150px" }}>
                 Select Side:{" "}
               </Typography>
               <Select
                 value={vluSide}
                 displayEmpty
                 onChange={handleVluSide}
-                sx={{ width: "50%" }}
+                sx={{ flex: 1 }}
               >
                 <MenuItem value="" disabled>
                   <em>---</em>
