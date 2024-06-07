@@ -32,7 +32,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
-  const [existingPatient, setExistingPatient] = useState(false)
+  // const [existingPatient, setExistingPatient] = useState(false)
   //@ts-ignore
   const [payors, setPayors] = useState([]);
   //@ts-ignore
@@ -50,7 +50,9 @@ const CustomField = (props: CustomFieldProps) => {
   const { theme, value, variant, five } = props;
 
   const handleDialogOpen = () => setDialogOpen(true);
-  const handleDialogClose = () => setDialogOpen(false);
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
   //@ts-ignore
   const form = five.form.Patients;
   //@ts-ignore
@@ -64,9 +66,11 @@ const CustomField = (props: CustomFieldProps) => {
   };
 
   const totalSteps = 8;
+  const existingPatient =
   //@ts-ignore
- 
-
+    five.internal.actionID !== "IVR" && five.internal.actionID !== "Accounts";
+  //@ts-ignore
+  console.log(five.internal);
   // Revised useEffect
   useEffect(() => {
     //@ts-ignore
@@ -77,18 +81,18 @@ const CustomField = (props: CustomFieldProps) => {
       setActiveStep(1);
     }
     if (data === null) {
+      //@ts-ignore
+      /*  if(five.internal.actionID === 'PatientsView') {
+        setExistingPatient(true)
+      } */
       setLoading(true);
       console.log("useEffect triggered");
       // Check patient selection status
       //@ts-ignore
       if (five.stack.Patient === undefined) {
         setPatientSelected(false);
-        
-        }
-      //@ts-ignore
-      if(five.internal.actionID === 'PatientsView') {
-        setExistingPatient(true)
       }
+
       const fetchData = async () => {
         await five.executeFunction(
           "getAccountPatients",
@@ -109,9 +113,7 @@ const CustomField = (props: CustomFieldProps) => {
       };
       fetchData();
     } //@ts-ignore
- 
-  
-  }, [dialogOpen, existingPatient, activeStep]); 
+  }, [dialogOpen, existingPatient, activeStep]);
 
   console.log("data", data);
   // Define handleNext and handleBack using useCallback to ensure stability
@@ -128,7 +130,7 @@ const CustomField = (props: CustomFieldProps) => {
       } else {
         return Math.max(prevActiveStep - 1, 0);
       }
-  })
+    });
   }, []);
 
   // Event handlers
@@ -192,17 +194,18 @@ const CustomField = (props: CustomFieldProps) => {
           {"Insurance Verification Request"}
         </DialogTitle>
         <DialogContent>
-         
-            {activeStep === 0 && (
-             <NewPatient data ={data} handlePatient={handlePatient} five={five}/>
-            )}
-        
-          {activeStep === 1 &&  <PatientDetails
-                form={form}
-                admitted={admitted}
-                handleRadioChange={handleRadioChange}
-                officeName={officeName}
-              />}
+          {activeStep === 0 && (
+            <NewPatient data={data} handlePatient={handlePatient} five={five} />
+          )}
+
+          {activeStep === 1 && (
+            <PatientDetails
+              form={form}
+              admitted={admitted}
+              handleRadioChange={handleRadioChange}
+              officeName={officeName}
+            />
+          )}
           {activeStep === 2 && (
             <Practitioner five={five} setPractitioner={setPractitioner} />
           )}
@@ -220,26 +223,25 @@ const CustomField = (props: CustomFieldProps) => {
             <Summary products={products} practitioner={practitioner} />
           )}
 
-          { 
-            patientSelected === true ? (
-              <Button
-                onClick={handleDialogClose}
-                style={{
-                  width: "100px",
-                  height: "50px",
-                  borderRadius: "0px",
-                  background: "#285C79",
-                  position: "absolute",
+          {patientSelected === true ? (
+            <Button
+              onClick={handleDialogClose}
+              style={{
+                width: "100px",
+                height: "50px",
+                borderRadius: "0px",
+                background: "#285C79",
+                position: "absolute",
 
-                  bottom: "5%",
-                  left: "50%",
-                  transform: "translate(-50%,-50%)",
-                  color: "white",
-                }}
-              >
-                Close
-              </Button>
-            )  : (
+                bottom: "5%",
+                left: "50%",
+                transform: "translate(-50%,-50%)",
+                color: "white",
+              }}
+            >
+              Close
+            </Button>
+          ) : (
             <Box
               style={{
                 position: "absolute",
@@ -253,34 +255,36 @@ const CustomField = (props: CustomFieldProps) => {
                 padding: 5,
               }}
             >
-              {activeStep === 0  ? (
-                 <Button
-                 onClick={handleDialogClose}
-                 style={{
-                  width: "100px",
-                  height: "50px",
-                  borderRadius: "0px",
-                  background: "#285C79",
-                  color: "white",
-                  margin: "0 20px",
-                 }}
-               >
-                 Close
-               </Button>
-              ) :  <Button
-              onClick={handleBack}
-              style={{
-                width: "100px",
-                height: "50px",
-                borderRadius: "0px",
-                background: "#285C79",
-                color: "white",
-                margin: "0 20px",
-              }}
-            >
-              Previous
-            </Button>}
-             
+              {activeStep === 0 ? (
+                <Button
+                  onClick={handleDialogClose}
+                  style={{
+                    width: "100px",
+                    height: "50px",
+                    borderRadius: "0px",
+                    background: "#285C79",
+                    color: "white",
+                    margin: "0 20px",
+                  }}
+                >
+                  Close
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleBack}
+                  style={{
+                    width: "100px",
+                    height: "50px",
+                    borderRadius: "0px",
+                    background: "#285C79",
+                    color: "white",
+                    margin: "0 20px",
+                  }}
+                >
+                  Previous
+                </Button>
+              )}
+
               <Button
                 onClick={handleNext}
                 style={{
