@@ -15,7 +15,7 @@ import {
 } from "./FivePluginApi";
 
 import { CustomFieldProps } from "../../../common";
-import { Radio, RadioGroup } from "@mui/material";
+import { Container, Radio, RadioGroup } from "@mui/material";
 import MedicareForm from "./components/MedicareForm";
 import PlaceAndDatePicker from "./components/PlaceAndDatePicker";
 import Insurance from "./components/Insurance";
@@ -25,7 +25,7 @@ import Patient from "./components/Patient";
 import Practitioner from "./components/Practitioner";
 import ICDCode from "./components/ICDCode";
 import Summary from "./components/Summary";
-
+import NewPatient from "./components/NewPatient";
 
 FiveInitialize();
 
@@ -36,11 +36,11 @@ const CustomField = (props: CustomFieldProps) => {
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
   //@ts-ignore
-  const [payors, setPayors] = useState([])
+  const [payors, setPayors] = useState([]);
   //@ts-ignore
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
   //@ts-ignore
-  const [practitioner, setPractitioner] = useState()
+  const [practitioner, setPractitioner] = useState();
   //@ts-ignore
   const [patient, setPatient] = useState();
   const [data, setData] = useState(null);
@@ -129,7 +129,17 @@ const CustomField = (props: CustomFieldProps) => {
   console.log("loggin patient key", patient);
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    );
   }
 
   return (
@@ -146,7 +156,7 @@ const CustomField = (props: CustomFieldProps) => {
       >
         Start IVR
       </Button>
-      <Dialog
+      <Dialog  
         open={dialogOpen}
         onClose={handleDialogClose}
         fullWidth
@@ -293,37 +303,48 @@ const CustomField = (props: CustomFieldProps) => {
               </div>
             )
           )}
-          {activeStep === 1 && <Practitioner five={five} setPractitioner= {setPractitioner}/>}
-          {activeStep === 2 && <Insurance patient={patient} five={five} setPayorsMain= {setPayors} />}
-          {activeStep === 3 && <Products setProducts={setProducts} />}
-          {activeStep === 4 && <ICDCode />}
-          {activeStep === 5 && <CPTCode />}
-          {activeStep === 6 && <Summary products = {products} practitioner = {practitioner}/>}
-    
-            {admitted === null ? (
-              patientSelected === true ? (
-                <Button
-                  onClick={handleDialogClose}
-                  style={{
-                    width: "100px",
-                    height: "50px",
-                    borderRadius: "0px",
-                    background: "#285C79",
-                    position: "absolute",
-                    
-                    bottom: "5%",
-                    left: "50%",
-                    transform: "translate(-50%,-50%)",
-                    color: "white",
-                  }}
-                >
-                  Close
-                </Button>
-              ) : (
-                <></>
-              )
+          {activeStep === 1 && (<NewPatient/>)}
+          {activeStep === 2 && (
+            <Practitioner five={five} setPractitioner={setPractitioner} />
+          )}
+          {activeStep === 3 && (
+            <Insurance
+              patient={patient}
+              five={five}
+              setPayorsMain={setPayors}
+            />
+          )}
+          {activeStep === 4 && <Products setProducts={setProducts} />}
+          {activeStep === 5 && <ICDCode />}
+          {activeStep === 6 && <CPTCode />}
+          {activeStep === 7 && (
+            <Summary products={products} practitioner={practitioner} />
+          )}
+
+          {admitted === null ? (
+            patientSelected === true ? (
+              <Button
+                onClick={handleDialogClose}
+                style={{
+                  width: "100px",
+                  height: "50px",
+                  borderRadius: "0px",
+                  background: "#285C79",
+                  position: "absolute",
+
+                  bottom: "5%",
+                  left: "50%",
+                  transform: "translate(-50%,-50%)",
+                  color: "white",
+                }}
+              >
+                Close
+              </Button>
             ) : (
-              <Box
+              <></>
+            )
+          ) : (
+            <Box
               style={{
                 position: "absolute",
                 bottom: "1%",
@@ -351,25 +372,23 @@ const CustomField = (props: CustomFieldProps) => {
               >
                 Previous
               </Button>
-               <Button
-               onClick={handleNext}
-               style={{
-                 width: "100px",
-                 height: "50px",
-                 borderRadius: "0px",
-                 background: "#285C79",
-                 //position: "absolute",
-                 //bottom: "5%",
-                 //left: "55%",
-                 color: "white",
-               }}
-             >
-               Next
-             </Button>
-             </Box>
-            )}
-            
-    
+              <Button
+                onClick={handleNext}
+                style={{
+                  width: "100px",
+                  height: "50px",
+                  borderRadius: "0px",
+                  background: "#285C79",
+                  //position: "absolute",
+                  //bottom: "5%",
+                  //left: "55%",
+                  color: "white",
+                }}
+              >
+                Next
+              </Button>
+            </Box>
+          )}
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleDialogClose} color="primary">
