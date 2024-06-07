@@ -10,22 +10,19 @@ import {
   DialogContent,
   DialogTitle,
   FiveInitialize,
-  FormControl,
-  FormControlLabel,
 } from "./FivePluginApi";
 
 import { CustomFieldProps } from "../../../common";
-import { Container, Radio, RadioGroup } from "@mui/material";
-import MedicareForm from "./components/MedicareForm";
-import PlaceAndDatePicker from "./components/PlaceAndDatePicker";
+import { Container } from "@mui/material";
 import Insurance from "./components/Insurance";
 import Products from "./components/Products";
 import CPTCode from "./components/CPTCode";
-import Patient from "./components/Patient";
+//import Patient from "./components/Patient";
 import Practitioner from "./components/Practitioner";
 import ICDCode from "./components/ICDCode";
 import Summary from "./components/Summary";
 import NewPatient from "./components/NewPatient";
+import PatientDetails from "./components/PatientDetails";
 
 FiveInitialize();
 
@@ -35,6 +32,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
+  const [existingPatient, setExistingPatient] = useState(false)
   //@ts-ignore
   const [payors, setPayors] = useState([]);
   //@ts-ignore
@@ -42,7 +40,7 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const [practitioner, setPractitioner] = useState();
   //@ts-ignore
-  const [patient, setPatient] = useState();
+  const [patient, setPatient] = useState(null);
   const [data, setData] = useState(null);
   //@ts-ignore
   const [members, setMembers] = useState(null);
@@ -65,10 +63,19 @@ const CustomField = (props: CustomFieldProps) => {
     AccountKey: accountKey,
   };
 
-  const totalSteps = 7;
+  const totalSteps = 8;
+  //@ts-ignore
+ 
 
   // Revised useEffect
   useEffect(() => {
+    //@ts-ignore
+    if (five.internal.actionID === "IVR") {
+      setDialogOpen(true);
+    }
+    if (existingPatient && activeStep === 0) {
+      setActiveStep(1);
+    }
     if (data === null) {
       setLoading(true);
       console.log("useEffect triggered");
@@ -76,6 +83,11 @@ const CustomField = (props: CustomFieldProps) => {
       //@ts-ignore
       if (five.stack.Patient === undefined) {
         setPatientSelected(false);
+        
+        }
+      //@ts-ignore
+      if(five.internal.actionID === 'PatientsView') {
+        setExistingPatient(true)
       }
       const fetchData = async () => {
         await five.executeFunction(
@@ -96,8 +108,10 @@ const CustomField = (props: CustomFieldProps) => {
         console.log("useEffect completed");
       };
       fetchData();
-    }
-  }, []); // Empty dependency array
+    } //@ts-ignore
+ 
+  
+  }, [dialogOpen, existingPatient, activeStep]); 
 
   console.log("data", data);
   // Define handleNext and handleBack using useCallback to ensure stability
@@ -108,16 +122,20 @@ const CustomField = (props: CustomFieldProps) => {
   }, [activeStep, totalSteps]);
 
   const handleBack = useCallback(() => {
-    if (activeStep > 0) {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    }
-  }, [activeStep]);
+    setActiveStep((prevActiveStep) => {
+      if (existingPatient && prevActiveStep === 1) {
+        return 1;
+      } else {
+        return Math.max(prevActiveStep - 1, 0);
+      }
+  })
+  }, []);
 
   // Event handlers
   const handleRadioChange = useCallback((value) => {
     setAdmitted(value === "Yes");
   }, []);
-
+  //@ts-ignore
   const handlePatientSelected = useCallback(() => {
     setPatientSelected(true);
   }, []);
@@ -156,7 +174,7 @@ const CustomField = (props: CustomFieldProps) => {
       >
         Start IVR
       </Button>
-      <Dialog  
+      <Dialog
         open={dialogOpen}
         onClose={handleDialogClose}
         fullWidth
@@ -174,136 +192,17 @@ const CustomField = (props: CustomFieldProps) => {
           {"Insurance Verification Request"}
         </DialogTitle>
         <DialogContent>
-          {!patientSelected ? (
-            <div className="container" style={{ width: "100%" }}>
-              <Patient
-                patients={data.response.value}
-                handlePatient={handlePatient}
-                five={five}
-              />
-              <div
-                className="patient-buttons"
-                style={{
-                  position: "absolute",
-                  bottom: "1%",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "white",
-                }}
-              >
-                <Button
-                  onClick={handleDialogClose}
-                  style={{
-                    width: "100px",
-                    margin: "0 20px",
-                    height: "50px",
-                    borderRadius: "0px",
-                    background: "#285C79",
-                    color: "white",
-                  }}
-                >
-                  Close
-                </Button>
-                <Button
-                  onClick={handlePatientSelected}
-                  style={{
-                    width: "100px",
-                    height: "50px",
-                    margin: "0 20px",
-                    borderRadius: "0px",
-                    background: "#285C79",
-                    color: "white",
-                  }}
-                >
-                  Next
-                </Button>
-              </div>
-            </div>
-          ) : (
-            activeStep === 0 && (
-              <div>
-                <div
-                  className="patient-details"
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "100%",
-                    margin: "20px 0", // Adjust as needed
-                  }}
-                >
-                  <p>
-                    <strong>{form?.NameFull}</strong> <br />{" "}
-                    {form?.AddressStreet}
-                    <br /> {form?.AddressCity}
-                    <br /> {form?.AddressState}
-                    <br /> {form?.AddressZip} <br />
-                    Gender: {form?.Gender}
-                  </p>
-                  <p>{officeName}</p>
-                </div>
-                <div
-                  className="IVR-page-1"
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center", // Adjust as needed
-                  }}
-                >
-                  <p>
-                    Has this patient been admited to a Skilled Nursing Facility
-                    within the past 100 day.
-                  </p>
-                  <FormControl component="fieldset">
-                    <RadioGroup
-                      name="exclusive-options"
-                      style={{
-                        width: "auto",
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginLeft: "10px",
-                      }}
-                      onChange={(event) =>
-                        handleRadioChange(event.target.value)
-                      }
-                    >
-                      <FormControlLabel
-                        value="Yes"
-                        control={<Radio />}
-                        label="Yes"
-                      />
-                      <FormControlLabel
-                        value="No"
-                        control={<Radio />}
-                        label="No"
-                        defaultChecked
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </div>
-                <div
-                  className="medicare-form"
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center", // Adjust as needed
-                  }}
-                >
-                  {admitted === null ? null : admitted ? (
-                    <MedicareForm />
-                  ) : (
-                    <PlaceAndDatePicker />
-                  )}
-                </div>
-              </div>
-            )
-          )}
-          {activeStep === 1 && (<NewPatient/>)}
+         
+            {activeStep === 0 && (
+             <NewPatient data ={data} handlePatient={handlePatient} five={five}/>
+            )}
+        
+          {activeStep === 1 &&  <PatientDetails
+                form={form}
+                admitted={admitted}
+                handleRadioChange={handleRadioChange}
+                officeName={officeName}
+              />}
           {activeStep === 2 && (
             <Practitioner five={five} setPractitioner={setPractitioner} />
           )}
@@ -321,7 +220,7 @@ const CustomField = (props: CustomFieldProps) => {
             <Summary products={products} practitioner={practitioner} />
           )}
 
-          {admitted === null ? (
+          { 
             patientSelected === true ? (
               <Button
                 onClick={handleDialogClose}
@@ -340,10 +239,7 @@ const CustomField = (props: CustomFieldProps) => {
               >
                 Close
               </Button>
-            ) : (
-              <></>
-            )
-          ) : (
+            )  : (
             <Box
               style={{
                 position: "absolute",
@@ -351,27 +247,40 @@ const CustomField = (props: CustomFieldProps) => {
                 width: "100%",
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "space-evenly",
+                justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: "white",
                 padding: 5,
               }}
             >
-              <Button
-                onClick={handleBack}
-                style={{
+              {activeStep === 0  ? (
+                 <Button
+                 onClick={handleDialogClose}
+                 style={{
                   width: "100px",
                   height: "50px",
                   borderRadius: "0px",
                   background: "#285C79",
-                  //position: "absolute",
-                  //bottom: "5%",
-                  //left: "35%",
                   color: "white",
-                }}
-              >
-                Previous
-              </Button>
+                  margin: "0 20px",
+                 }}
+               >
+                 Close
+               </Button>
+              ) :  <Button
+              onClick={handleBack}
+              style={{
+                width: "100px",
+                height: "50px",
+                borderRadius: "0px",
+                background: "#285C79",
+                color: "white",
+                margin: "0 20px",
+              }}
+            >
+              Previous
+            </Button>}
+             
               <Button
                 onClick={handleNext}
                 style={{
@@ -379,10 +288,8 @@ const CustomField = (props: CustomFieldProps) => {
                   height: "50px",
                   borderRadius: "0px",
                   background: "#285C79",
-                  //position: "absolute",
-                  //bottom: "5%",
-                  //left: "55%",
                   color: "white",
+                  margin: "0 20px",
                 }}
               >
                 Next
@@ -391,9 +298,17 @@ const CustomField = (props: CustomFieldProps) => {
           )}
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleDialogClose} color="primary">
-            Close
-          </Button> */}
+          {
+            //@ts-ignore
+            five.internal.actionID === "IVR" ? (
+              //@ts-ignore
+              <Button onClick={() => five.previousAction(true, 1)}>
+                Go Back To IVR
+              </Button>
+            ) : (
+              <></>
+            )
+          }
         </DialogActions>
       </Dialog>
     </Box>

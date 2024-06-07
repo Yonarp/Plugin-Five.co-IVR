@@ -19,7 +19,9 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
     const isSelected = selectedPayors.some((p) => p.PayorID === payor.PayorID);
 
     if (isSelected) {
-      setSelectedPayors(selectedPayors.filter((p) => p.PayorID !== payor.PayorID));
+      setSelectedPayors(
+        selectedPayors.filter((p) => p.PayorID !== payor.PayorID)
+      );
     } else {
       if (selectedPayors.length < 3) {
         setSelectedPayors([...selectedPayors, payor]);
@@ -45,13 +47,14 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
       setLoading(true);
       const fetchData = async () => {
         if (
-          patient.__PAY1 === null &&
-          patient.__PAY2 === null &&
-          patient.__PAY3 === null
-          ) {
-            setLoading(false);
-            } else {
-          let payorArray = []
+          (patient?.__PAY1 === null &&
+            patient?.__PAY2 === null &&
+            patient?.__PAY3 === null) ||
+          patient === null
+        ) {
+          setLoading(false);
+        } else {
+          let payorArray = [];
           if (patient.__PAY1 !== null) {
             const payorObj = {
               PayKey: patient.__PAY1,
@@ -65,7 +68,7 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
               (result) => {
                 const payorData = JSON.parse(result.serverResponse.results);
                 //setPayors(payorData.response.value);
-                payorArray.push(payorData.response.value[0])
+                payorArray.push(payorData.response.value[0]);
                 //setLoading(false);
               }
             );
@@ -83,7 +86,7 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
               (result) => {
                 const payorData = JSON.parse(result.serverResponse.results);
                 //setPayors(payorData.response.value);
-                payorArray.push(payorData.response.value[0])
+                payorArray.push(payorData.response.value[0]);
                 //setLoading(false);
               }
             );
@@ -100,14 +103,14 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
               null,
               (result) => {
                 const payorData = JSON.parse(result.serverResponse.results);
-               // setPayors(payorData.response.value);
-               payorArray.push(payorData.response.value[0])
+                // setPayors(payorData.response.value);
+                payorArray.push(payorData.response.value[0]);
                 //setLoading(false);
               }
             );
           }
-        setPayors(payorArray)
-        setLoading(false)
+          setPayors(payorArray);
+          setLoading(false);
         }
       };
       fetchData();
@@ -144,7 +147,9 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
                 key={index}
                 button
                 onClick={() => handlePayorClick(payor)}
-                selected={selectedPayors.some((p) => p.PayorID === payor.PayorID)}
+                selected={selectedPayors.some(
+                  (p) => p.PayorID === payor.PayorID
+                )}
                 sx={{
                   borderBottom: "1px solid #00000033",
                   "&.Mui-selected": {
