@@ -94,7 +94,7 @@ const LCodeSelector = ({ location, setLocation, side, setSide, severity, setSeve
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2, marginTop: 10 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2, marginTop: 2 }}>
         <FormControl sx={{ minWidth: 120 }}>
           <Select
             value={location}

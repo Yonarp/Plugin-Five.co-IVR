@@ -69,6 +69,9 @@ const CustomField = (props: CustomFieldProps) => {
   const existingPatient =
   //@ts-ignore
     five.internal.actionID !== "IVR" && five.internal.actionID !== "Accounts";
+    if(existingPatient) {
+
+    }
   //@ts-ignore
   console.log(five.internal);
   // Revised useEffect
@@ -174,33 +177,32 @@ const CustomField = (props: CustomFieldProps) => {
           color: "white",
         }} // Open the dialog on button click
       >
-        Start IVR
+        {existingPatient ? "Open IVR" : "Start IVR"}
       </Button>
       <Dialog
         open={dialogOpen}
         onClose={handleDialogClose}
         fullWidth
         fullScreen
-        maxWidth={false}
         PaperProps={{
           style: {
             width: "90%",
             height: "90%", // Sets the dialog to 90% of the screen width
-            maxWidth: "none",
+            maxWidth: "100vw",
           },
         }}
       >
         <DialogTitle style={{ backgroundColor: "#225D7A", color: "white" }}>
           {"Insurance Verification Request"}
         </DialogTitle>
-        <DialogContent>
+        <DialogContent style={{maxWidth:"100vw"}}>
           {activeStep === 0 && (
             <NewPatient data={data} handlePatient={handlePatient} five={five} />
           )}
 
           {activeStep === 1 && (
             <PatientDetails
-              form={form}
+              patient= {patient}
               admitted={admitted}
               handleRadioChange={handleRadioChange}
               officeName={officeName}
@@ -253,6 +255,7 @@ const CustomField = (props: CustomFieldProps) => {
                 alignItems: "center",
                 backgroundColor: "white",
                 padding: 5,
+                zIndex: 99
               }}
             >
               {activeStep === 0 ? (
@@ -264,7 +267,7 @@ const CustomField = (props: CustomFieldProps) => {
                     borderRadius: "0px",
                     background: "#285C79",
                     color: "white",
-                    margin: "0 20px",
+                    marginRight: "20px",
                   }}
                 >
                   Close
@@ -278,7 +281,7 @@ const CustomField = (props: CustomFieldProps) => {
                     borderRadius: "0px",
                     background: "#285C79",
                     color: "white",
-                    margin: "0 20px",
+                    marginRight: "20px"
                   }}
                 >
                   Previous
@@ -293,7 +296,7 @@ const CustomField = (props: CustomFieldProps) => {
                   borderRadius: "0px",
                   background: "#285C79",
                   color: "white",
-                  margin: "0 20px",
+                  margin: "20px"
                 }}
               >
                 Next

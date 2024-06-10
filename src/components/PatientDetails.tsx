@@ -4,8 +4,9 @@ import MedicareForm from './MedicareForm'
 import PlaceAndDatePicker from './PlaceAndDatePicker'
 import { Radio, RadioGroup } from '@mui/material'
 
-
-const PatientDetails = ({form, admitted, officeName, handleRadioChange}) => {
+//@ts-ignore
+const PatientDetails = ({ admitted, officeName, handleRadioChange, patient}) => {
+  console.log( "Comes from patiend Detail",patient)
     return(
         <Box>
         <div
@@ -17,15 +18,15 @@ const PatientDetails = ({form, admitted, officeName, handleRadioChange}) => {
             margin: "20px 0", // Adjust as needed
           }}
         >
-          <p>
-            <strong>{form?.NameFull}</strong> <br />{" "}
-            {form?.AddressStreet}
-            <br /> {form?.AddressCity}
-            <br /> {form?.AddressState}
-            <br /> {form?.AddressZip} <br />
-            Gender: {form?.Gender}
+          {patient ? ( 
+            <p>
+            <strong>{patient?.NameFirst + " " + patient?.NameLast} </strong> 
+            <br /> 
+            <br /> {patient?.AddressStreet + " " +  (patient.AddressStreet2 ? patient?.AddressStreet2 : "") } <br></br>{ patient?.AddressCity +  " " + patient?.AddressState + " "  + patient?.AddressZip}
           </p>
-          <p>{officeName}</p>
+          ): <></>}
+          
+          <p>Sunnyside</p>
         </div>
         <div
           className="IVR-page-1"

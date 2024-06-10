@@ -12,7 +12,8 @@ import {
 const Summary = ({ products, practitioner }) => {
   return (
     <Box
-      sx={{ p: 4, maxWidth: 800, mx: "auto", boxShadow: 3, borderRadius: 2 }}
+      sx={{ p: 2, maxWidth: 600, mx: "auto", boxShadow: 3, borderRadius: 2 }}
+      mt={10}
     >
       <Typography variant="h6" gutterBottom>
         Insurance Verification Request
@@ -21,67 +22,77 @@ const Summary = ({ products, practitioner }) => {
         label="Date of Service"
         type="date"
         fullWidth
-        margin="normal"
+        margin="dense"
         InputLabelProps={{
           shrink: true,
         }}
+        size="small"
       />
       <TextField
         label="Practitioner"
         fullWidth
-        margin="normal"
+        margin="dense"
         InputProps={{
           readOnly: true,
         }}
-        value={practitioner.NameFull}
+        value={practitioner ? practitioner.NameFull : ""}
+        size="small"
       />
       <TextField
         label="NPI"
         value="2468597750"
         fullWidth
-        margin="normal"
+        margin="dense"
         InputProps={{
           readOnly: true,
         }}
+        size="small"
       />
       <TextField
         label="Primary Payor"
         fullWidth
-        margin="normal"
+        margin="dense"
         InputProps={{
           readOnly: true,
         }}
+        size="small"
       />
       <TextField
         label="Secondary Payor"
         fullWidth
-        margin="normal"
+        margin="dense"
         InputProps={{
           readOnly: true,
         }}
+        size="small"
       />
-      <Grid container spacing={2} marginTop={2}>
-        <Grid item xs={6}>
-          <Typography variant="body1">Product 1</Typography>
-          <Typography variant="body2">{products[0].name}</Typography>
-        </Grid>
+      <Grid container spacing={1} marginTop={1}>
+        {products && products.length > 0 && products[0].name ? (
+          <Grid item xs={6}>
+            <Typography variant="body1">Product 1</Typography>
+            <Typography variant="body2">{products[0].name}</Typography>
+          </Grid>
+        ) : null}
 
-        {products[1].name ? (
+        {products && products.length > 1 && products[1].name ? (
           <Grid item xs={6}>
             <Typography variant="body1">Product 2</Typography>
-            <Typography variant="body2">{products[1].name}</Typography>{" "}
+            <Typography variant="body2">{products[1].name}</Typography>
           </Grid>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </Grid>
+
       <FormControlLabel
-        control={<Checkbox />}
-        label="I certify I have obtained a valid authorization under applicable law from the patient listed on this form (a) permitting me to release the patient’s protected health information to Legacy Medical and its contractors to research insurance coverage regarding Legacy Medical products, and to provide me with reimbursement assistance services regarding such products; and (b) authorizing the payer to disclose PHI to Legacy Medical and its contractors for the purposes of determining benefit coverage."
+        control={<Checkbox size="small" />}
+        label={
+          <Typography variant="body2" style={{fontSize:'11px'}}>
+            I certify I have obtained a valid authorization under applicable law from the patient listed on this form (a) permitting me to release the patient’s protected health information to Legacy Medical and its contractors to research insurance coverage regarding Legacy Medical products, and to provide me with reimbursement assistance services regarding such products; and (b) authorizing the payer to disclose PHI to Legacy Medical and its contractors for the purposes of determining benefit coverage.
+          </Typography>
+        }
         sx={{ mt: 2 }}
       />
-      <Box display="flex" justifyContent="space-between" mt={3}>
-        <Button variant="contained" color="primary">
+      <Box display="flex" justifyContent="space-between" mt={2}>
+        <Button variant="contained" color="primary" size="small">
           Submit
         </Button>
       </Box>

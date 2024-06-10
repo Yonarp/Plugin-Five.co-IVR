@@ -24,26 +24,6 @@ const Products = ({setProducts}) => {
     { Description: "Surgraft - Q4268", QCode: "Q4268", Brand: "Surgraft" }
 ];
 
-  /* 
-  const productsSimple = [
-    "Impax Dual Layer Graft 2x2 cm",
-    "Impax Dual Layer Graft 2x3 cm",
-    "Impax Dual Layer Graft 4x4 cm",
-    "Impax Dual Layer Graft 4x6 cm",
-    "Impax Dual Layer Graft 4x8 cm",
-    "Orion 2x2 cm",
-    "Orion 2x3 cm",
-    "Orion 4x4 cm",
-    "Orion 4x6 cm",
-    "Orion 4x8 cm",
-    "Surgraft 2x2 cm",
-    "Zenith Graft 2x2 cm",
-    "Zenith Graft 2x3 cm",
-    "Zenith Graft 4x4 cm",
-    "Zenith Graft 4x6 cm",
-    "Zenith Graft 4x8 cm",
-  ] */
-
   const handleProductChange = (index, event) => {
     const newProducts = [...selectedProducts];
     newProducts[index].name = event.target.value;
@@ -51,11 +31,6 @@ const Products = ({setProducts}) => {
     setProducts(newProducts)
   };
 
-  /* const handleQtyChange = (index, event) => {
-    const newProducts = [...selectedProducts];
-    newProducts[index].qty = event.target.value;
-    setSelectedProducts(newProducts);
-  }; */
 
   const handleAddProduct = () => {
     setSelectedProducts([...selectedProducts, { name: "", qty: "" }]);

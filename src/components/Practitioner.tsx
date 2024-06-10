@@ -65,7 +65,7 @@ const Practitioner = ({ five, setPractitioner }) => {
         variant="h5"
         style={{ textAlign: "center", marginBottom: "20px" }}
       >
-        Select A Practitioner for this request
+        Select a practitioner for this request
       </Typography>
       <List>
         {practitioners ? (
