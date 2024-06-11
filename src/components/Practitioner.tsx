@@ -6,9 +6,9 @@ import {
   ListItemText,
   Typography,
 } from "../FivePluginApi";
-const Practitioner = ({ five, setPractitioner }) => {
+const Practitioner = ({ five, setPractitioner, practitioner }) => {
   const [selectedIndex, setSelectedIndex] = React.useState([]);
-  const [practitioners, setPractitioners] = React.useState(null);
+  const [practitioners, setPractitioners] = React.useState( practitioner ? practitioner : null);
   const [loading, setLoading] = React.useState(false);
 
   console.log("Logging Five", five);
@@ -19,6 +19,13 @@ const Practitioner = ({ five, setPractitioner }) => {
   };
 
   useEffect(() => {
+
+    if(practitioner) {
+
+      setPractitioner(practitioner)
+      
+    }
+
     if (practitioners === null) {
       setLoading(true);
       const fetchData = async () => {

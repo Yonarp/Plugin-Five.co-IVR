@@ -209,7 +209,7 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
           {activeStep === 2 && (
-            <Practitioner five={five} setPractitioner={setPractitioner} />
+            <Practitioner five={five} setPractitioner={setPractitioner} practitioner={practitioner}/>
           )}
           {activeStep === 3 && (
             <Insurance

@@ -20,9 +20,9 @@ const PatientDetails = ({ admitted, officeName, handleRadioChange, patient}) => 
         >
           {patient ? ( 
             <p>
-            <strong>{patient?.NameFirst + " " + patient?.NameLast} </strong> 
+            <strong>{patient?.data.NameFirst + " " + patient?.data.NameLast} </strong> 
             <br /> 
-            <br /> {patient?.AddressStreet + " " +  (patient.AddressStreet2 ? patient?.AddressStreet2 : "") } <br></br>{ patient?.AddressCity +  " " + patient?.AddressState + " "  + patient?.AddressZip}
+            <br /> {patient?.data.AddressStreet + " " +  (patient.data.AddressStreet2 ? patient?.data.AddressStreet2 : "") } <br></br>{ patient?.data.AddressCity +  " " + patient?.data.AddressState + " "  + patient?.data.AddressZip}
           </p>
           ): <></>}
           
