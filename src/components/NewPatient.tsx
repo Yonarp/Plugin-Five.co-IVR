@@ -21,7 +21,7 @@ import {
 import Patient from "./Patient";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-const NewPatient = ({ data, handlePatient, five }) => {
+const NewPatient = ({ data, handlePatient, five, patient }) => {
   const [page, setPage] = useState(0);
   const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
@@ -307,6 +307,8 @@ const NewPatient = ({ data, handlePatient, five }) => {
             patients={data.response.value}
             handlePatient={handlePatient}
             five={five}
+            patientSaved = {patient}
+            setPage={setPage}
           />
         </div>
       )}

@@ -145,8 +145,8 @@ const CustomField = (props: CustomFieldProps) => {
     setPatientSelected(true);
   }, []);
 
-  const handlePatient = useCallback((patientKey) => {
-    setPatient(patientKey);
+  const handlePatient = useCallback((patientData, index) => {
+    setPatient({ data: patientData, index: index });
   }, []);
 
   console.log("loggin patient key", patient);
@@ -197,7 +197,7 @@ const CustomField = (props: CustomFieldProps) => {
         </DialogTitle>
         <DialogContent style={{maxWidth:"100vw"}}>
           {activeStep === 0 && (
-            <NewPatient data={data} handlePatient={handlePatient} five={five} />
+            <NewPatient data={data} handlePatient={handlePatient} five={five} patient={patient} />
           )}
 
           {activeStep === 1 && (

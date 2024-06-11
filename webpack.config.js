@@ -4,7 +4,7 @@ var APP_DIR = path.resolve(__dirname, 'src');
 module.exports = {
     mode: 'production',
      //mode: 'development',
-     devtool: 'inline-cheap-source-map', // debug ? "inline-sourcemap" : null,
+     //devtool: 'inline-cheap-source-map', // debug ? "inline-sourcemap" : null,
     entry: {
         D1: './src/customField.tsx',
     },
