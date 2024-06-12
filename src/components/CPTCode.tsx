@@ -22,10 +22,15 @@ const CPTCode = ({setCPTCodeMain}) => {
   const [woundLocation, setWoundLocation] = useState("");
   const [woundSize, setWoundSize] = useState("");
   const [cptCode, setCptCode] = useState("");
-  /*    const [woundType, setWoundType] = useState("");
-    const [eCode, setECode] = useState("");
-    const [iCode, setICode] = useState("");
-    const [lCode, setLCode] = useState(""); */
+
+
+  const handleCPTCode = (event) => {
+    const cptCodeSelected = event.target.value
+    setCptCode(cptCodeSelected)
+    setCPTCodeMain(cptCodeSelected)
+
+  }
+
 
   useEffect(() => {
     calculateCPTCode();
@@ -64,6 +69,8 @@ const CPTCode = ({setCPTCodeMain}) => {
     setCptCode(cptCode);
     setCPTCodeMain(cptCode)
   };
+
+
 
   return (
     <Container
@@ -123,7 +130,7 @@ const CPTCode = ({setCPTCodeMain}) => {
             variant="outlined"
             sx={{ width: "48%" }}
             value={cptCode}
-            onChange={(e) => setCptCode(e.target.value)}
+            onChange={handleCPTCode}
           >
             {cptCodes.map(code => (
                 <MenuItem key={code} value={code}>

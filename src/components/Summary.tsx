@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mui/material";
 
-const Summary = ({ products, practitioner }) => {
+const Summary = ({ products, practitioner, eCode, iCode, lCode, cdCode, cptCode }) => {
   return (
     <Box
       sx={{ p: 2, maxWidth: 600, mx: "auto", boxShadow: 3, borderRadius: 2 }}
@@ -67,19 +67,31 @@ const Summary = ({ products, practitioner }) => {
         size="small"
       />
       <Grid container spacing={1} marginTop={1}>
-        {products && products.length > 0 && products[0].name ? (
+        {products && products.length > 0 && products[0]?.name ? (
           <Grid item xs={6}>
             <Typography variant="body1">Product 1</Typography>
             <Typography variant="body2">{products[0].name}</Typography>
           </Grid>
         ) : null}
 
-        {products && products.length > 1 && products[1].name ? (
+        {products && products.length > 1 && products[1]?.name ? (
           <Grid item xs={6}>
             <Typography variant="body1">Product 2</Typography>
             <Typography variant="body2">{products[1].name}</Typography>
           </Grid>
         ) : null}
+      </Grid>
+      <Typography variant="h6">Codes:</Typography>
+      <Grid item xs="auto">
+         <Typography variant="body1">
+          {eCode ? `Ecode: ${eCode}` : (iCode ? `ICode: ${iCode}` : `CD-Code: ${cdCode}`)}
+         </Typography>
+         <Typography variant="body2">
+          {lCode && `LCode: ${lCode}`}
+         </Typography>
+         <Typography variant="body2">
+          {cptCode && `CPTCode: ${cptCode}`}
+         </Typography>
       </Grid>
 
       <FormControlLabel

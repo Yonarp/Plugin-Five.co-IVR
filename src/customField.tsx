@@ -236,8 +236,8 @@ const CustomField = (props: CustomFieldProps) => {
           {activeStep === 5 && <ICDCode setLCodeMain = {setLCode} setICodeMain = {setICode} setECodeMain = {setECode} setCDCodeMain = {setCDCode}/>}
           {activeStep === 6 && <CPTCode setCPTCodeMain = {setCPTCode}/>}
           {activeStep === 7 && (
-            <Summary products={products} practitioner={practitioner} />
-          )}
+            <Summary products={products} practitioner={practitioner} iCode = {iCode} lCode = {lCode} eCode={eCode} cdCode = {cdCode} cptCode={cptCode}/>
+          )} 
 
           {patientSelected === true ? (
             <Button
