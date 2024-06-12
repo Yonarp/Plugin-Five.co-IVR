@@ -25,7 +25,6 @@ import NewPatient from "./components/NewPatient";
 import PatientDetails from "./components/PatientDetails";
 
 FiveInitialize();
-
 const CustomField = (props: CustomFieldProps) => {
   // Initialize states
   const [activeStep, setActiveStep] = useState(0);
@@ -39,6 +38,17 @@ const CustomField = (props: CustomFieldProps) => {
   const [products, setProducts] = useState([]);
   //@ts-ignore
   const [practitioner, setPractitioner] = useState(null);
+  
+  //@ts-ignore
+  const [iCode, setICode] = useState(null)
+  //@ts-ignore
+  const [lCode, setLCode] = useState(null)
+  //@ts-ignore
+  const [eCode, setECode] = useState(null)
+  //@ts-ignore
+  const [cdCode, setCDCode] = useState(null)
+  //@ts-ignore
+  const [cptCode, setCPTCode] = useState(null)
   //@ts-ignore
   const [patient, setPatient] = useState(null);
   const [data, setData] = useState(null);
@@ -64,6 +74,7 @@ const CustomField = (props: CustomFieldProps) => {
   const account = {
     AccountKey: accountKey,
   };
+
 
   const totalSteps = 8;
   const existingPatient =
@@ -153,7 +164,7 @@ const CustomField = (props: CustomFieldProps) => {
     setPractitioner({data: practitionerData, index: index})
   }, [])
 
-
+  console.log("All Codes from MAIN --> ", lCode, iCode, eCode, cdCode)
 
   if (loading) {
     return (
@@ -222,8 +233,8 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
           {activeStep === 4 && <Products setProducts={setProducts} productsSaved = { products }/>}
-          {activeStep === 5 && <ICDCode />}
-          {activeStep === 6 && <CPTCode />}
+          {activeStep === 5 && <ICDCode setLCodeMain = {setLCode} setICodeMain = {setICode} setECodeMain = {setECode} setCDCodeMain = {setCDCode}/>}
+          {activeStep === 6 && <CPTCode setCPTCodeMain = {setCPTCode}/>}
           {activeStep === 7 && (
             <Summary products={products} practitioner={practitioner} />
           )}

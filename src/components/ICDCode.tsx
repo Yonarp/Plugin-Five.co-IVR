@@ -8,7 +8,7 @@ import {
 } from "../FivePluginApi";
 import LCode from "./LCode";
 
-const ICDCode = () => {
+const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
   const woundTypes = [
     { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
     { label: "Venous leg ulcer", value: "venous_leg_ulcer" },
@@ -360,7 +360,20 @@ const ICDCode = () => {
   const [cdCode, setCDCode] = useState("");
   const [iCode, setICode] = useState("");
 
+
+  const resetCodes = () => {
+    setLCode("")
+    setLCodeMain("")
+    setICode("")
+    setICodeMain("")
+    setCDCode("")
+    setCDCodeMain("")
+    setECode("")
+    setECodeMain("")
+  }
+
   const handleWoundType = (event) => {
+    resetCodes()
     setWoundType(event.target.value);
     setDiabetesType(""); // Reset diabetes type when wound type changes
     setECode(""); // Reset E code when wound type changes
@@ -395,17 +408,20 @@ const ICDCode = () => {
   const handleICode = (event) => {
     const selectedICode = event.target.value;
     setICode(selectedICode);
+    setICodeMain(selectedICode)
   };
 
   const handleECode = (event) => {
     const selectedECode = event.target.value;
     setECode(selectedECode);
+    setECodeMain(selectedECode)
   };
 
   
   const handleMohsCode = (event) => {
     const selectedLCode = event.target.value;
     setCDCode(selectedLCode);
+    setCDCodeMain(selectedLCode)
   };
 
   useEffect(() => {
@@ -566,6 +582,7 @@ const ICDCode = () => {
             setSeverity={setLSeverity}
             setLCode={setLCode}
             lCode={lCode}
+            setLCodeMain = {setLCodeMain}
           />
         </Box>
       )}
@@ -696,6 +713,7 @@ const ICDCode = () => {
             setSeverity={setLSeverity}
             setLCode={setLCode}
             lCode={lCode}
+            setLCodeMain = {setLCodeMain}
           />
         </Box>
       )}
@@ -763,6 +781,7 @@ const ICDCode = () => {
           setSeverity={setLSeverity}
           setLCode={setLCode}
           lCode={lCode}
+          setLCodeMain = {setLCodeMain}
         />
       )}
     </Container>

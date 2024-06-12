@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Box, FormControl, MenuItem, Select, Typography } from "@mui/material";
 
 
-const LCodeSelector = ({ location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode }) => {
+const LCodeSelector = ({ location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain }) => {
   const lCodeLocations = [
     { label: "Calf", value: "calf" },
     { label: "Ankle", value: "ankle" },
@@ -44,6 +44,13 @@ const lCodes = [
   "L97.821", // 18 (duplicate, if needed)
   "L97.822", // 19 (duplicate, if needed)
 ];
+
+
+const handleLcode  = (event) => {
+  const selectedLcode = event.target.value
+  setLCode(selectedLcode)
+  setLCodeMain(selectedLcode)
+}
 
 useEffect(() => {
   let lCode = "";
@@ -114,6 +121,7 @@ useEffect(() => {
     }
   }
   setLCode(lCode);
+  setLCodeMain(lCode)
 }, [location, side, severity]);
 
 
@@ -172,7 +180,7 @@ useEffect(() => {
       <Box>
         <Typography variant="subtitle1">L Code</Typography>
         <FormControl fullWidth variant="outlined">
-          <Select value={lCode} onChange ={ (e) => setLCode(e.target.value)}>
+          <Select value={lCode} onChange ={ handleLcode}>
             {lCodes.map(lcode => (
               <MenuItem key ={lcode} value={lcode}>
                 {lcode}
