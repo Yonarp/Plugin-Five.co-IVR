@@ -151,7 +151,6 @@ const CustomField = (props: CustomFieldProps) => {
 
   const handlePractitioner = useCallback((practitionerData, index) => {
     setPractitioner({data: practitionerData, index: index})
-    console.log("handle Practitionermem-->", practitioner)
   }, [])
 
 
@@ -200,7 +199,7 @@ const CustomField = (props: CustomFieldProps) => {
         <DialogTitle style={{ backgroundColor: "#225D7A", color: "white" }}>
           {"Insurance Verification Request"}
         </DialogTitle>
-        <DialogContent style={{maxWidth:"100vw"}}>
+        <DialogContent style={{maxWidth:"inherit"}}>
           {activeStep === 0 && (
             <NewPatient data={data} handlePatient={handlePatient} five={five} patient={patient} />
           )}
@@ -223,7 +222,7 @@ const CustomField = (props: CustomFieldProps) => {
               setPayorsMain={setPayors}
             />
           )}
-          {activeStep === 4 && <Products setProducts={setProducts} />}
+          {activeStep === 4 && <Products setProducts={setProducts} productsSaved = { products }/>}
           {activeStep === 5 && <ICDCode />}
           {activeStep === 6 && <CPTCode />}
           {activeStep === 7 && (

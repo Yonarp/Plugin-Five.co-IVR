@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -11,8 +11,8 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const Products = ({setProducts}) => {
-  const [selectedProducts, setSelectedProducts] = useState([
+const Products = ({setProducts, productsSaved}) => {
+  const [selectedProducts, setSelectedProducts] = useState(productsSaved ? productsSaved : [
     { name: "", qty: "" },
     { name: "", qty: "" },
   ]);
@@ -39,7 +39,16 @@ const Products = ({setProducts}) => {
   const handleRemoveProduct = (index) => {
     const newProducts = selectedProducts.filter((_, i) => i !== index);
     setSelectedProducts(newProducts);
+    setProducts(newProducts)
   };
+
+  useEffect(() => {
+    console.log("Use Effect From Products")
+    if(productsSaved.length > 0) {
+      setSelectedProducts(productsSaved)
+    }
+
+  }, [])
 
   return (
     <Container
