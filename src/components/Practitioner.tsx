@@ -1,5 +1,5 @@
 import { Container, ListItemButton } from "@mui/material";
-import React, { useEffect,memo } from "react";
+import React, { useEffect, memo } from "react";
 import {
   CircularProgress,
   List,
@@ -7,29 +7,25 @@ import {
   Typography,
 } from "../FivePluginApi";
 const Practitioner = ({ five, setPractitioner, practitioner }) => {
-  const [selectedIndex, setSelectedIndex] = React.useState([]);
-  const [practitioners, setPractitioners] = React.useState( practitioner ? practitioner : null);
+  const [selectedIndex, setSelectedIndex] = React.useState( practitioner ? practitioner : null);
+  const [practitioners, setPractitioners] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
-  console.log("Logging Five", five);
 
   const handleClick = (index, practitioner) => {
     setSelectedIndex(index);
-    setPractitioner(practitioner)
+    setPractitioner(practitioner, index);
   };
 
   useEffect(() => {
-
-    if(practitioner) {
-
-      setPractitioner(practitioner)
-      
+    if (practitioner) {
+      setSelectedIndex(practitioner.index)
     }
 
     if (practitioners === null) {
       setLoading(true);
       const fetchData = async () => {
-          five.executeFunction(
+        five.executeFunction(
           "getAccountPractitioners",
           null,
           null,
@@ -94,7 +90,10 @@ const Practitioner = ({ five, setPractitioner, practitioner }) => {
                   },
                 }}
               >
-                <ListItemText primary={practitioner.NameFull} secondary={practitioner.Email} />
+                <ListItemText
+                  primary={practitioner.NameFull}
+                  secondary={practitioner.Email}
+                />
               </ListItemButton>
             );
           })

@@ -35,7 +35,7 @@ const Summary = ({ products, practitioner }) => {
         InputProps={{
           readOnly: true,
         }}
-        value={practitioner ? practitioner.NameFull : ""}
+        value={practitioner ? practitioner.data.NameFull : ""}
         size="small"
       />
       <TextField

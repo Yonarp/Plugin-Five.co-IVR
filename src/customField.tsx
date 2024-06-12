@@ -38,7 +38,7 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const [products, setProducts] = useState([]);
   //@ts-ignore
-  const [practitioner, setPractitioner] = useState();
+  const [practitioner, setPractitioner] = useState(null);
   //@ts-ignore
   const [patient, setPatient] = useState(null);
   const [data, setData] = useState(null);
@@ -118,7 +118,7 @@ const CustomField = (props: CustomFieldProps) => {
     } //@ts-ignore
   }, [dialogOpen, existingPatient, activeStep]);
 
-  console.log("data", data);
+
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
     if (activeStep < totalSteps - 1) {
@@ -149,7 +149,12 @@ const CustomField = (props: CustomFieldProps) => {
     setPatient({ data: patientData, index: index });
   }, []);
 
-  console.log("loggin patient key", patient);
+  const handlePractitioner = useCallback((practitionerData, index) => {
+    setPractitioner({data: practitionerData, index: index})
+    console.log("handle Practitionermem-->", practitioner)
+  }, [])
+
+
 
   if (loading) {
     return (
@@ -209,7 +214,7 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
           {activeStep === 2 && (
-            <Practitioner five={five} setPractitioner={setPractitioner} practitioner={practitioner}/>
+            <Practitioner five={five} setPractitioner={handlePractitioner} practitioner={practitioner}/>
           )}
           {activeStep === 3 && (
             <Insurance

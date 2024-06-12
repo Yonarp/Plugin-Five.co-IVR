@@ -47,17 +47,17 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
       setLoading(true);
       const fetchData = async () => {
         if (
-          (patient?.__PAY1 === null &&
-            patient?.__PAY2 === null &&
-            patient?.__PAY3 === null) ||
+          (patient?.data.__PAY1 === null &&
+            patient?.data.__PAY2 === null &&
+            patient?.data.__PAY3 === null) ||
           patient === null
         ) {
           setLoading(false);
         } else {
           let payorArray = [];
-          if (patient.__PAY1 !== null) {
+          if (patient.data.__PAY1 !== null) {
             const payorObj = {
-              PayKey: patient.__PAY1,
+              PayKey: patient.data.__PAY1,
             };
             await five.executeFunction(
               "getPatientInsurance",
@@ -73,9 +73,9 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
               }
             );
           }
-          if (patient.__PAY2 !== null) {
+          if (patient.data.__PAY2 !== null) {
             const payorObj = {
-              PayKey: patient.__PAY2,
+              PayKey: patient.data.__PAY2,
             };
             await five.executeFunction(
               "getPatientInsurance",
@@ -91,9 +91,9 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
               }
             );
           }
-          if (patient.__PAY3 !== null) {
+          if (patient.data.__PAY3 !== null) {
             const payorObj = {
-              PayKey: patient.__PAY3,
+              PayKey: patient.data.__PAY3,
             };
             await five.executeFunction(
               "getPatientInsurance",
@@ -162,8 +162,8 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
                 }}
               >
                 <ListItemText
-                  primary={payor.CompanyName}
-                  secondary={payor.PayorID}
+                  primary={payor?.CompanyName}
+                  secondary={payor?.PayorID}
                 />
               </ListItem>
             ))
@@ -187,7 +187,7 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
           <Typography variant="subtitle1" gutterBottom>
             <strong> {getPayorLabel(index)}</strong>
           </Typography>
-          <Typography variant="body1">{payor.CompanyName}</Typography>
+          <Typography variant="body1">{payor?.CompanyName}</Typography>
         </div>
       ))}
     </Container>
