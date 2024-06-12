@@ -5,7 +5,6 @@ import {
   FormControl,
   MenuItem,
   Select,
-  TextField,
 } from "../FivePluginApi";
 import LCode from "./LCode";
 
@@ -206,55 +205,106 @@ const ICDCode = () => {
     { label: "Carcinoma in situ of penis", value: "carcinoma_in_situ_penis" },
   ];
 
+  const mohsCodes = [
+    "C00.0",
+    "C00.1",
+    "C00.2",
+    "C00.3",
+    "C00.4",
+    "C00.5",
+    "C00.6",
+    "C00.8",
+    "C00.9",
+    "C43.0",
+    "C43.1",
+    "C43.11",
+    "C43.12",
+    "C43.13",
+    "C43.14",
+    "C43.2",
+    "C43.21",
+    "D03.61",
+    "D03.62",
+    "D03.7",
+    "D04.0",
+    "D04.11",
+    "D04.12",
+    "D04.13",
+    "D04.14",
+    "D04.21",
+    "D04.22",
+    "D04.39",
+    "D04.4",
+    "D04.51",
+    "D04.52",
+    "D04.61",
+    "D04.62",
+    "D04.8",
+    "D07.4",
+  ];
+
   const mohsConditionsMapping = {
-    external_upper_lip: "C00.0",
-    external_lower_lip: "C00.1",
-    external_lip_unspecified: "C00.2",
-    upper_lip_inner: "C00.3",
-    lower_lip_inner: "C00.4",
-    lip_inner_unspecified: "C00.5",
-    commissure_lip_unspecified: "C00.6",
-    overlapping_lip: "C00.8",
-    lip_unspecified: "C00.9",
-    melanoma_lip: "C43.0",
-    melanoma_unspecified_eyelid: "C43.1",
-    melanoma_right_upper_eyelid: "C43.11",
-    melanoma_right_lower_eyelid: "C43.12",
-    melanoma_left_upper_eyelid: "C43.13",
-    melanoma_left_lower_eyelid: "C43.14",
-    melanoma_right_ear: "C43.2",
-    melanoma_left_ear: "C43.21",
-    melanoma_in_situ_right_lower_limb: "D03.61",
-    melanoma_in_situ_left_lower_limb: "D03.62",
-    melanoma_in_situ_other_sites: "D03.7",
-    carcinoma_in_situ_lip: "D04.0",
-    carcinoma_in_situ_right_upper_eyelid: "D04.11",
-    carcinoma_in_situ_right_lower_eyelid: "D04.12",
-    carcinoma_in_situ_left_upper_eyelid: "D04.13",
-    carcinoma_in_situ_left_lower_eyelid: "D04.14",
-    carcinoma_in_situ_right_ear: "D04.21",
-    carcinoma_in_situ_left_ear: "D04.22",
-    carcinoma_in_situ_other_face: "D04.39",
-    carcinoma_in_situ_scalp_neck: "D04.4",
-    carcinoma_in_situ_right_upper_limb: "D04.51",
-    carcinoma_in_situ_left_upper_limb: "D04.52",
-    carcinoma_in_situ_right_lower_limb: "D04.61",
-    carcinoma_in_situ_left_lower_limb: "D04.62",
-    carcinoma_in_situ_other_sites: "D04.8",
-    carcinoma_in_situ_penis: "D07.4",
+    external_upper_lip: mohsCodes[0],
+    external_lower_lip: mohsCodes[1],
+    external_lip_unspecified: mohsCodes[2],
+    upper_lip_inner: mohsCodes[3],
+    lower_lip_inner: mohsCodes[4],
+    lip_inner_unspecified: mohsCodes[5],
+    commissure_lip_unspecified: mohsCodes[6],
+    overlapping_lip: mohsCodes[7],
+    lip_unspecified: mohsCodes[8],
+    melanoma_lip: mohsCodes[9],
+    melanoma_unspecified_eyelid: mohsCodes[10],
+    melanoma_right_upper_eyelid: mohsCodes[11],
+    melanoma_right_lower_eyelid: mohsCodes[12],
+    melanoma_left_upper_eyelid: mohsCodes[13],
+    melanoma_left_lower_eyelid: mohsCodes[14],
+    melanoma_right_ear: mohsCodes[15],
+    melanoma_left_ear: mohsCodes[16],
+    melanoma_in_situ_right_lower_limb: mohsCodes[17],
+    melanoma_in_situ_left_lower_limb: mohsCodes[18],
+    melanoma_in_situ_other_sites: mohsCodes[19],
+    carcinoma_in_situ_lip: mohsCodes[20],
+    carcinoma_in_situ_right_upper_eyelid: mohsCodes[21],
+    carcinoma_in_situ_right_lower_eyelid: mohsCodes[22],
+    carcinoma_in_situ_left_upper_eyelid: mohsCodes[23],
+    carcinoma_in_situ_left_lower_eyelid: mohsCodes[24],
+    carcinoma_in_situ_right_ear: mohsCodes[25],
+    carcinoma_in_situ_left_ear: mohsCodes[26],
+    carcinoma_in_situ_other_face: mohsCodes[27],
+    carcinoma_in_situ_scalp_neck: mohsCodes[28],
+    carcinoma_in_situ_right_upper_limb: mohsCodes[29],
+    carcinoma_in_situ_left_upper_limb: mohsCodes[30],
+    carcinoma_in_situ_right_lower_limb: mohsCodes[31],
+    carcinoma_in_situ_left_lower_limb: mohsCodes[32],
+    carcinoma_in_situ_other_sites: mohsCodes[33],
+    carcinoma_in_situ_penis: mohsCodes[34]
   };
 
+  const eCodes = [
+    "E08.621",
+    "E08.622",
+    "E09.621",
+    "E09.622",
+    "E10.621",
+    "E10.622",
+    "E11.621",
+    "E11.622",
+    "E13.621",
+    "E13.622",
+  ];
+
   const eCodeMapping = {
-    underlying_foot_ulcer: "E08.621",
-    underlying_skin_ulcer: "E08.622",
-    drug_foot_ulcer: "E09.621",
-    drug_skin_ulcer: "E09.622",
-    type1_foot_ulcer: "E10.621",
-    type1_skin_ulcer: "E10.622",
-    type2_foot_ulcer: "E11.621",
-    type2_skin_ulcer: "E11.622",
-    other_foot_ulcer: "E13.621",
-    other_skin_ulcer: "E13.622",
+    underlying_foot_ulcer: eCodes[0],
+    underlying_skin_ulcer: eCodes[1],
+    drug_foot_ulcer: eCodes[2],
+    drug_skin_ulcer: eCodes[3],
+    type1_foot_ulcer: eCodes[4],
+    type1_skin_ulcer: eCodes[5],
+    type2_foot_ulcer: eCodes[6],
+    type2_skin_ulcer: eCodes[7],
+    other_foot_ulcer: eCodes[8],
+    other_skin_ulcer: eCodes[9],
   };
 
   const vluAdditional = [
@@ -275,6 +325,25 @@ const ICDCode = () => {
     { label: "Right", value: "right" },
     { label: "Left", value: "left" },
     { label: "Bilateral", value: "bilateral" },
+  ];
+
+  const iCodes = [
+    "I83.012", // 0
+    "I83.013", // 1
+    "I83.014", // 2
+    "I83.015", // 3
+    "I83.018", // 4
+    "I83.022", // 5
+    "I83.023", // 6
+    "I83.024", // 7
+    "I83.025", // 8
+    "I83.028", // 9
+    "I87.011", // 10
+    "I87.012", // 11
+    "I87.013", // 12
+    "I87.311", // 13
+    "I87.312", // 14
+    "I87.313", // 15
   ];
 
   const [woundType, setWoundType] = useState("");
@@ -323,6 +392,22 @@ const ICDCode = () => {
     setVluSide(selectedVLU);
   };
 
+  const handleICode = (event) => {
+    const selectedICode = event.target.value;
+    setICode(selectedICode);
+  };
+
+  const handleECode = (event) => {
+    const selectedECode = event.target.value;
+    setECode(selectedECode);
+  };
+
+  
+  const handleMohsCode = (event) => {
+    const selectedLCode = event.target.value;
+    setCDCode(selectedLCode);
+  };
+
   useEffect(() => {
     let code = "";
     if (vluCondition && vluLocation && vluSide) {
@@ -330,71 +415,71 @@ const ICDCode = () => {
         case vluCondition === "varicose_veins" &&
           vluLocation === "calf" &&
           vluSide === "right":
-          code = "I83.012";
+          code = iCodes[0];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "ankle" &&
           vluSide === "right":
-          code = "I83.013";
+          code = iCodes[1];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "heel_midfoot" &&
           vluSide === "right":
-          code = "I83.014";
+          code = iCodes[2];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_foot" &&
           vluSide === "right":
-          code = "I83.015";
+          code = iCodes[3];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_lower_leg" &&
           vluSide === "right":
-          code = "I83.018";
+          code = iCodes[4];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "calf" &&
           vluSide === "left":
-          code = "I83.022";
+          code = iCodes[5];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "ankle" &&
           vluSide === "left":
-          code = "I83.023";
+          code = iCodes[6];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "heel_midfoot" &&
           vluSide === "left":
-          code = "I83.024";
+          code = iCodes[7];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_foot" &&
           vluSide === "left":
-          code = "I83.025";
+          code = iCodes[8];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_lower_leg" &&
           vluSide === "left":
-          code = "I83.028";
+          code = iCodes[9];
           break;
         case vluCondition === "postthrombotic_syndrome" && vluSide === "right":
-          code = "I87.011";
+          code = iCodes[10];
           break;
         case vluCondition === "postthrombotic_syndrome" && vluSide === "left":
-          code = "I87.012";
+          code = iCodes[11];
           break;
         case vluCondition === "postthrombotic_syndrome" &&
           vluSide === "bilateral":
-          code = "I87.013";
+          code = iCodes[12];
           break;
         case vluCondition === "venous_hypertension" && vluSide === "right":
-          code = "I87.311";
+          code = iCodes[13];
           break;
         case vluCondition === "venous_hypertension" && vluSide === "left":
-          code = "I87.312";
+          code = iCodes[14];
           break;
         case vluCondition === "venous_hypertension" && vluSide === "bilateral":
-          code = "I87.313";
+          code = iCodes[15];
           break;
         default:
           code = "";
@@ -459,15 +544,19 @@ const ICDCode = () => {
               ))}
             </Select>
           </FormControl>
-          <TextField
+          <Select
             label="E Code"
             value={eCode}
-            InputProps={{
-              readOnly: true,
-            }}
             variant="outlined"
             fullWidth
-          />
+            onChange={handleECode}
+          >
+            {eCodes.map((eCode) => (
+              <MenuItem key={eCode} value={eCode}>
+                {eCode}
+              </MenuItem>
+            ))}
+          </Select>
           <LCode
             location={lLocation}
             setLocation={setLLocation}
@@ -496,7 +585,10 @@ const ICDCode = () => {
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="subtitle1" sx={{ marginRight: "10px", minWidth: "150px" }}>
+              <Typography
+                variant="subtitle1"
+                sx={{ marginRight: "10px", minWidth: "150px" }}
+              >
                 Select Condition:{" "}
               </Typography>
               <Select
@@ -524,7 +616,10 @@ const ICDCode = () => {
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="subtitle1" sx={{ marginRight: "10px", minWidth: "150px" }}>
+              <Typography
+                variant="subtitle1"
+                sx={{ marginRight: "10px", minWidth: "150px" }}
+              >
                 Select Location:{" "}
               </Typography>
               <Select
@@ -551,7 +646,10 @@ const ICDCode = () => {
                 width: "100%",
               }}
             >
-              <Typography variant="subtitle1" sx={{ marginRight: "10px", minWidth: "150px" }}>
+              <Typography
+                variant="subtitle1"
+                sx={{ marginRight: "10px", minWidth: "150px" }}
+              >
                 Select Side:{" "}
               </Typography>
               <Select
@@ -570,21 +668,24 @@ const ICDCode = () => {
                 ))}
               </Select>
             </Box>
-            {iCode && (
-              <Box>
-                <Typography variant="subtitle1">I Code</Typography>
-                <FormControl fullWidth variant="outlined">
-                  <TextField
-                    value={iCode}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </FormControl>
-              </Box>
-            )}
+
+            <Box>
+              <Typography variant="subtitle1">I Code</Typography>
+              <FormControl fullWidth variant="outlined">
+                <Select
+                  value={iCode}
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleICode}
+                >
+                  {iCodes.map((iCode) => (
+                    <MenuItem key={iCode} value={iCode}>
+                      {iCode}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
           </FormControl>
           <LCode
             location={lLocation}
@@ -632,17 +733,23 @@ const ICDCode = () => {
                 </MenuItem>
               ))}
             </Select>
-            <TextField
+            <Select
               label="C / D Code"
               value={cdCode}
-              InputProps={{
-                readOnly: true,
-              }}
               variant="outlined"
+              onChange={handleMohsCode}
               sx={{
                 width: "30%",
+                marginLeft: "5px",
               }}
-            />
+            >
+              {mohsCodes.map(mohs => (
+                <MenuItem key= {mohs} value ={mohs}>
+                  {mohs}
+                </MenuItem>
+              ))}
+
+            </Select>
           </Box>
         </FormControl>
       )}

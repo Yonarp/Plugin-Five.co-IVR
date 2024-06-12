@@ -16,12 +16,7 @@ const CPTCode = () => {
         { label: "Face, Scalp, Eyelids, Mouth, Neck, Ears, Orbits, Genitalia, Hands, Feet", value: 2 }
     ];
 
-/*     const woundTypes = [
-        { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
-        { label: "Venous leg ulcer", value: "venous_leg_ulcer" },
-        { label: "Pressure ulcer or chronic wound", value: "pressure_ulcer" },
-        { label: "Other...", value: "other" }
-    ]; */
+
 
     const [woundLocation, setWoundLocation] = useState("");
     const [woundSize, setWoundSize] = useState("");

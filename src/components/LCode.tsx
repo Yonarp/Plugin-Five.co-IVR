@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, FormControl, MenuItem, Select, Typography } from "@mui/material";
-import { TextField } from "../FivePluginApi";
+
 
 const LCodeSelector = ({ location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode }) => {
   const lCodeLocations = [
@@ -21,76 +21,101 @@ const LCodeSelector = ({ location, setLocation, side, setSide, severity, setSeve
     { label: "Fat Layer Exposed", value: "fat_layer_exposed" }
   ];
 
-  useEffect(() => {
-    let lCode = "";
-    if (location && side && severity) {
-      switch (true) {
-        case location === "ankle" && side === "right" && severity === "breakdown_skin":
-          lCode = "L97.311";
-          break;
-        case location === "ankle" && side === "right" && severity === "fat_layer_exposed":
-          lCode = "L97.312";
-          break;
-        case location === "ankle" && side === "left" && severity === "breakdown_skin":
-          lCode = "L97.321";
-          break;
-        case location === "ankle" && side === "left" && severity === "fat_layer_exposed":
-          lCode = "L97.322";
-          break;
-        case location === "heel_midfoot" && side === "right" && severity === "breakdown_skin":
-          lCode = "L97.411";
-          break;
-        case location === "heel_midfoot" && side === "right" && severity === "fat_layer_exposed":
-          lCode = "L97.412";
-          break;
-        case location === "heel_midfoot" && side === "left" && severity === "breakdown_skin":
-          lCode = "L97.421";
-          break;
-        case location === "heel_midfoot" && side === "left" && severity === "fat_layer_exposed":
-          lCode = "L97.422";
-          break;
-        case location === "other_foot" && side === "right" && severity === "breakdown_skin":
-          lCode = "L97.511";
-          break;
-        case location === "other_foot" && side === "right" && severity === "fat_layer_exposed":
-          lCode = "L97.512";
-          break;
-        case location === "other_foot" && side === "left" && severity === "breakdown_skin":
-          lCode = "L97.521";
-          break;
-        case location === "other_foot" && side === "left" && severity === "fat_layer_exposed":
-          lCode = "L97.522";
-          break;
-        case location === "other_lower_leg" && side === "right" && severity === "breakdown_skin":
-          lCode = "L97.811";
-          break;
-        case location === "other_lower_leg" && side === "right" && severity === "fat_layer_exposed":
-          lCode = "L97.812";
-          break;
-        case location === "other_lower_leg" && side === "left" && severity === "breakdown_skin":
-          lCode = "L97.821";
-          break;
-        case location === "other_lower_leg" && side === "left" && severity === "fat_layer_exposed":
-          lCode = "L97.822";
-          break;
-        case location === "calf" && side === "right" && severity === "breakdown_skin":
-          lCode = "L97.811";
-          break;
-        case location === "calf" && side === "right" && severity === "fat_layer_exposed":
-          lCode = "L97.812";
-          break;
-        case location === "calf" && side === "left" && severity === "breakdown_skin":
-          lCode = "L97.821";
-          break;
-        case location === "calf" && side === "left" && severity === "fat_layer_exposed":
-          lCode = "L97.822";
-          break;
-        default:
-          lCode = "";
-      }
+
+const lCodes = [
+  "L97.311", // 0
+  "L97.312", // 1
+  "L97.321", // 2
+  "L97.322", // 3
+  "L97.411", // 4
+  "L97.412", // 5
+  "L97.421", // 6
+  "L97.422", // 7
+  "L97.511", // 8
+  "L97.512", // 9
+  "L97.521", // 10
+  "L97.522", // 11
+  "L97.811", // 12
+  "L97.812", // 13
+  "L97.821", // 14
+  "L97.822", // 15
+  "L97.811", // 16 (duplicate, if needed)
+  "L97.812", // 17 (duplicate, if needed)
+  "L97.821", // 18 (duplicate, if needed)
+  "L97.822", // 19 (duplicate, if needed)
+];
+
+useEffect(() => {
+  let lCode = "";
+  if (location && side && severity) {
+    switch (true) {
+      case location === "ankle" && side === "right" && severity === "breakdown_skin":
+        lCode = lCodes[0];
+        break;
+      case location === "ankle" && side === "right" && severity === "fat_layer_exposed":
+        lCode = lCodes[1];
+        break;
+      case location === "ankle" && side === "left" && severity === "breakdown_skin":
+        lCode = lCodes[2];
+        break;
+      case location === "ankle" && side === "left" && severity === "fat_layer_exposed":
+        lCode = lCodes[3];
+        break;
+      case location === "heel_midfoot" && side === "right" && severity === "breakdown_skin":
+        lCode = lCodes[4];
+        break;
+      case location === "heel_midfoot" && side === "right" && severity === "fat_layer_exposed":
+        lCode = lCodes[5];
+        break;
+      case location === "heel_midfoot" && side === "left" && severity === "breakdown_skin":
+        lCode = lCodes[6];
+        break;
+      case location === "heel_midfoot" && side === "left" && severity === "fat_layer_exposed":
+        lCode = lCodes[7];
+        break;
+      case location === "other_foot" && side === "right" && severity === "breakdown_skin":
+        lCode = lCodes[8];
+        break;
+      case location === "other_foot" && side === "right" && severity === "fat_layer_exposed":
+        lCode = lCodes[9];
+        break;
+      case location === "other_foot" && side === "left" && severity === "breakdown_skin":
+        lCode = lCodes[10];
+        break;
+      case location === "other_foot" && side === "left" && severity === "fat_layer_exposed":
+        lCode = lCodes[11];
+        break;
+      case location === "other_lower_leg" && side === "right" && severity === "breakdown_skin":
+        lCode = lCodes[12];
+        break;
+      case location === "other_lower_leg" && side === "right" && severity === "fat_layer_exposed":
+        lCode = lCodes[13];
+        break;
+      case location === "other_lower_leg" && side === "left" && severity === "breakdown_skin":
+        lCode = lCodes[14];
+        break;
+      case location === "other_lower_leg" && side === "left" && severity === "fat_layer_exposed":
+        lCode = lCodes[15];
+        break;
+      case location === "calf" && side === "right" && severity === "breakdown_skin":
+        lCode = lCodes[16];
+        break;
+      case location === "calf" && side === "right" && severity === "fat_layer_exposed":
+        lCode = lCodes[17];
+        break;
+      case location === "calf" && side === "left" && severity === "breakdown_skin":
+        lCode = lCodes[18];
+        break;
+      case location === "calf" && side === "left" && severity === "fat_layer_exposed":
+        lCode = lCodes[19];
+        break;
+      default:
+        lCode = "";
     }
-    setLCode(lCode);
-  }, [location, side, severity]);
+  }
+  setLCode(lCode);
+}, [location, side, severity]);
+
 
   return (
     <Box>
@@ -147,7 +172,13 @@ const LCodeSelector = ({ location, setLocation, side, setSide, severity, setSeve
       <Box>
         <Typography variant="subtitle1">L Code</Typography>
         <FormControl fullWidth variant="outlined">
-          <TextField value={lCode}  />
+          <Select value={lCode} onChange ={ (e) => setLCode(e.target.value)}>
+            {lCodes.map(lcode => (
+              <MenuItem key ={lcode} value={lcode}>
+                {lcode}
+              </MenuItem>
+            ))}
+            </Select>
         </FormControl>
       </Box>
     </Box>

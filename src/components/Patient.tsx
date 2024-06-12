@@ -38,7 +38,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
   };
 
   return (
-    <Container style={{ maxWidth: "100vw" }}>
+    <Container style={{ maxWidth: "100%" }}>
       <Typography
         variant="h5"
         style={{ textAlign: "center", marginBottom: "20px" }}
@@ -76,7 +76,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
       </List>
       <Box
         style={{
-          width: "100vw",
+          width: "100%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

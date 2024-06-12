@@ -122,8 +122,7 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
       <Container
         style={{
           display: "flex",
-          width: "100vw",
-          height: "100vh",
+          width: '100%',
           justifyContent: "center",
           alignItems: "center",
         }}

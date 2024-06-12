@@ -192,14 +192,13 @@ const CustomField = (props: CustomFieldProps) => {
           style: {
             width: "90%",
             height: "90%", // Sets the dialog to 90% of the screen width
-            maxWidth: "100vw",
           },
         }}
       >
         <DialogTitle style={{ backgroundColor: "#225D7A", color: "white" }}>
           {"Insurance Verification Request"}
         </DialogTitle>
-        <DialogContent style={{maxWidth:"inherit"}}>
+        <DialogContent style={{maxWidth:"100%", overflowX: 'hidden'}}>
           {activeStep === 0 && (
             <NewPatient data={data} handlePatient={handlePatient} five={five} patient={patient} />
           )}
