@@ -1,5 +1,6 @@
 import { Button, Container, ListItemButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+//@ts-ignore
 import { Box, List, ListItemText } from "../FivePluginApi";
 //@ts-ignore
 const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
@@ -38,12 +39,13 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
   };
 
   return (
-    <Container style={{ maxWidth: "100%" }}>
+    <Container style={{ maxWidth: "100%", marginBottom: "10px" }}>
       <Typography
+        mt={6}
         variant="h5"
         style={{ textAlign: "center", marginBottom: "20px" }}
       >
-        Select the patient
+        Select a patient
       </Typography>
       <List>
         {patients.map((patient, index) => (
@@ -62,15 +64,25 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
               },
             }}
           >
-            <ListItemText
-              primary={patient.PatientNameFirst + " " + patient.PatientNameLast}
-              secondary={
-                "Gender: " +
-                patient.PatientGender +
-                " DOB: " +
-                patient.PatientBirthdate
-              }
-            />
+            <Box
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="body1" style={{width:'150px'}}>
+                {'Name: '}  <br/> {patient.PatientNameFirst + " " + patient.PatientNameLast}
+              </Typography>
+              <Typography variant="body1"  style={{width:'100px'}}>
+                {"Gender: " + patient.PatientGender}
+              </Typography>
+              <Typography variant="body1"  style={{width:'100px'}}>
+                {"DOB: " + patient.PatientBirthdate}
+              </Typography>
+            </Box>
           </ListItemButton>
         ))}
       </List>
@@ -81,7 +93,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          marginRight: '20px'
+          marginRight: "20px",
         }}
       >
         <Typography style={{ color: "black" }} mt={5}>

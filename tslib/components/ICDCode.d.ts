@@ -1,4 +1,4 @@
-declare const ICDCode: ({ setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain }: {
+declare const ICDCode: ({ setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain, }: {
     setICodeMain: any;
     setLCodeMain: any;
     setECodeMain: any;

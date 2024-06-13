@@ -97,9 +97,10 @@ const CPTCode = ({setCPTCodeMain}) => {
               value={woundLocation}
               onChange={handleWoundLocationChange}
               displayEmpty
+
             >
               <MenuItem value="" disabled>
-                <em>---</em>
+                <em>Select</em>
               </MenuItem>
               {woundLocations.map((location) => (
                 <MenuItem key={location.value} value={location.value}>
@@ -124,20 +125,29 @@ const CPTCode = ({setCPTCodeMain}) => {
             value={woundSize}
             onChange={handleWoundSizeChange}
           />
+          
+            <Typography variant="subtitle1" ml={3}>
+              CPT Code: {" "}
+            </Typography>
           <Select
             label="CPT Code"
             type="text"
             variant="outlined"
             sx={{ width: "48%" }}
             value={cptCode}
+            displayEmpty
             onChange={handleCPTCode}
           >
+               <MenuItem value="" disabled>
+                <em>Select</em>
+              </MenuItem>
             {cptCodes.map(code => (
                 <MenuItem key={code} value={code}>
                     {code}
                 </MenuItem>
             ))}
           </Select>
+
         </Box>
 
       </Box>

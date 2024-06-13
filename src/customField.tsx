@@ -75,7 +75,6 @@ const CustomField = (props: CustomFieldProps) => {
     AccountKey: accountKey,
   };
 
-
   const totalSteps = 8;
   const existingPatient =
   //@ts-ignore
@@ -84,7 +83,7 @@ const CustomField = (props: CustomFieldProps) => {
 
     }
   //@ts-ignore
-  console.log(five.internal);
+
   // Revised useEffect
   useEffect(() => {
     //@ts-ignore
@@ -164,7 +163,7 @@ const CustomField = (props: CustomFieldProps) => {
     setPractitioner({data: practitionerData, index: index})
   }, [])
 
-  console.log("All Codes from MAIN --> ", lCode, iCode, eCode, cdCode)
+
 
   if (loading) {
     return (
@@ -236,7 +235,7 @@ const CustomField = (props: CustomFieldProps) => {
           {activeStep === 5 && <ICDCode setLCodeMain = {setLCode} setICodeMain = {setICode} setECodeMain = {setECode} setCDCodeMain = {setCDCode}/>}
           {activeStep === 6 && <CPTCode setCPTCodeMain = {setCPTCode}/>}
           {activeStep === 7 && (
-            <Summary products={products} practitioner={practitioner} iCode = {iCode} lCode = {lCode} eCode={eCode} cdCode = {cdCode} cptCode={cptCode}/>
+            <Summary patient={patient} products={products} practitioner={practitioner} iCode = {iCode} lCode = {lCode} eCode={eCode} cdCode = {cdCode} cptCode={cptCode} five={five} handleDialogClose = {handleDialogClose}/>
           )} 
 
           {patientSelected === true ? (

@@ -180,7 +180,10 @@ useEffect(() => {
       <Box>
         <Typography variant="subtitle1">L Code</Typography>
         <FormControl fullWidth variant="outlined">
-          <Select value={lCode} onChange ={ handleLcode}>
+          <Select value={lCode} onChange ={ handleLcode} displayEmpty>
+          <MenuItem value="" disabled>
+                <em>Select</em>
+              </MenuItem>
             {lCodes.map(lcode => (
               <MenuItem key ={lcode} value={lcode}>
                 {lcode}

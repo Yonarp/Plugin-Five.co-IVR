@@ -1,14 +1,14 @@
-import { Container, Typography } from "@mui/material";
+import { Container, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  FormControl,
-  MenuItem,
-  Select,
-} from "../FivePluginApi";
+import { Box, FormControl, MenuItem, Select } from "../FivePluginApi";
 import LCode from "./LCode";
 
-const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
+const ICDCode = ({
+  setICodeMain,
+  setLCodeMain,
+  setECodeMain,
+  setCDCodeMain,
+}) => {
   const woundTypes = [
     { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
     { label: "Venous leg ulcer", value: "venous_leg_ulcer" },
@@ -278,7 +278,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
     carcinoma_in_situ_right_lower_limb: mohsCodes[31],
     carcinoma_in_situ_left_lower_limb: mohsCodes[32],
     carcinoma_in_situ_other_sites: mohsCodes[33],
-    carcinoma_in_situ_penis: mohsCodes[34]
+    carcinoma_in_situ_penis: mohsCodes[34],
   };
 
   const eCodes = [
@@ -360,20 +360,19 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
   const [cdCode, setCDCode] = useState("");
   const [iCode, setICode] = useState("");
 
-
   const resetCodes = () => {
-    setLCode("")
-    setLCodeMain("")
-    setICode("")
-    setICodeMain("")
-    setCDCode("")
-    setCDCodeMain("")
-    setECode("")
-    setECodeMain("")
-  }
+    setLCode("");
+    setLCodeMain("");
+    setICode("");
+    setICodeMain("");
+    setCDCode("");
+    setCDCodeMain("");
+    setECode("");
+    setECodeMain("");
+  };
 
   const handleWoundType = (event) => {
-    resetCodes()
+    resetCodes();
     setWoundType(event.target.value);
     setDiabetesType(""); // Reset diabetes type when wound type changes
     setECode(""); // Reset E code when wound type changes
@@ -408,20 +407,19 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
   const handleICode = (event) => {
     const selectedICode = event.target.value;
     setICode(selectedICode);
-    setICodeMain(selectedICode)
+    setICodeMain(selectedICode);
   };
 
   const handleECode = (event) => {
     const selectedECode = event.target.value;
     setECode(selectedECode);
-    setECodeMain(selectedECode)
+    setECodeMain(selectedECode);
   };
 
-  
   const handleMohsCode = (event) => {
     const selectedLCode = event.target.value;
     setCDCode(selectedLCode);
-    setCDCodeMain(selectedLCode)
+    setCDCodeMain(selectedLCode);
   };
 
   useEffect(() => {
@@ -519,7 +517,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
           width: "100%",
         }}
       >
-        <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
+        <Typography variant="subtitle1" sx={{ marginRight: "10px" ,marginBottom: "20px", }}>
           Wound Type:{" "}
         </Typography>
         <FormControl
@@ -528,7 +526,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
         >
           <Select value={woundType} displayEmpty onChange={handleWoundType}>
             <MenuItem value="" disabled>
-              <em>---</em>
+              <em>Select</em>
             </MenuItem>
             {woundTypes.map((location) => (
               <MenuItem key={location.value} value={location.value}>
@@ -545,13 +543,27 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
             variant="outlined"
             sx={{ marginBottom: "20px" }}
           >
+          <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: 'center',
+                width: "100%",
+                marginBottom: "10px",
+              }}
+            >
+            <Typography variant="subtitle1" mr={2}>
+              Type:{"  "}
+            </Typography>
             <Select
               value={diabetesType}
               displayEmpty
               onChange={handleDiabetesType}
+              sx={{ flex: 1 }}
             >
               <MenuItem value="" disabled>
-                <em>---</em>
+                <em>Select</em>
               </MenuItem>
               {diabetesTypes.map((location) => (
                 <MenuItem key={location.value} value={location.value}>
@@ -559,20 +571,33 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 </MenuItem>
               ))}
             </Select>
+            </Box>
           </FormControl>
-          <Select
-            label="E Code"
-            value={eCode}
-            variant="outlined"
+          <FormControl
             fullWidth
-            onChange={handleECode}
+            variant="outlined"
+            sx={{ marginBottom: "5px" }}
           >
-            {eCodes.map((eCode) => (
-              <MenuItem key={eCode} value={eCode}>
-                {eCode}
+            <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
+              E code:{" "}
+            </Typography>
+            <Select
+              label="E Code"
+              value={eCode}
+              variant="outlined"
+              onChange={handleECode}
+              displayEmpty
+            >
+               <MenuItem value="" disabled>
+                <em>Select</em>
               </MenuItem>
-            ))}
-          </Select>
+              {eCodes.map((eCode) => (
+                <MenuItem key={eCode} value={eCode}>
+                  {eCode}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <LCode
             location={lLocation}
             setLocation={setLLocation}
@@ -582,7 +607,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
             setSeverity={setLSeverity}
             setLCode={setLCode}
             lCode={lCode}
-            setLCodeMain = {setLCodeMain}
+            setLCodeMain={setLCodeMain}
           />
         </Box>
       )}
@@ -598,6 +623,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
+                alignItems: 'center',
                 width: "100%",
                 marginBottom: "10px",
               }}
@@ -606,7 +632,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 variant="subtitle1"
                 sx={{ marginRight: "10px", minWidth: "150px" }}
               >
-                Select Condition:{" "}
+                Condition:{" "}
               </Typography>
               <Select
                 value={vluCondition}
@@ -615,8 +641,8 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 sx={{ flex: 1 }}
               >
                 <MenuItem value="" disabled>
-                  <em>---</em>
-                </MenuItem>
+                <em>Select</em>
+              </MenuItem>
                 {vluAdditional.map((location) => (
                   <MenuItem key={location.value} value={location.value}>
                     {location.label}
@@ -629,6 +655,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
+                alignItems: 'center',
                 width: "100%",
                 marginBottom: "10px",
               }}
@@ -637,7 +664,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 variant="subtitle1"
                 sx={{ marginRight: "10px", minWidth: "150px" }}
               >
-                Select Location:{" "}
+                Location:{" "}
               </Typography>
               <Select
                 value={vluLocation}
@@ -645,9 +672,9 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 onChange={handleVluLocation}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" disabled>
-                  <em>---</em>
-                </MenuItem>
+              <MenuItem value="" disabled>
+                <em>Select</em>
+              </MenuItem>
                 {vluPart1.map((location) => (
                   <MenuItem key={location.value} value={location.value}>
                     {location.label}
@@ -660,6 +687,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
+                alignItems: 'center',
                 width: "100%",
               }}
             >
@@ -667,17 +695,18 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                 variant="subtitle1"
                 sx={{ marginRight: "10px", minWidth: "150px" }}
               >
-                Select Side:{" "}
+                Side:{" "}
               </Typography>
               <Select
                 value={vluSide}
                 displayEmpty
                 onChange={handleVluSide}
                 sx={{ flex: 1 }}
+                
               >
-                <MenuItem value="" disabled>
-                  <em>---</em>
-                </MenuItem>
+                 <MenuItem value="" disabled>
+                <em>Select</em>
+              </MenuItem>
                 {vluPart2.map((location) => (
                   <MenuItem key={location.value} value={location.value}>
                     {location.label}
@@ -693,8 +722,13 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
                   value={iCode}
                   variant="outlined"
                   fullWidth
+                  displayEmpty
                   onChange={handleICode}
+                  placeholder="Select"
                 >
+                   <MenuItem value="" disabled>
+                <em>Select</em>
+              </MenuItem>
                   {iCodes.map((iCode) => (
                     <MenuItem key={iCode} value={iCode}>
                       {iCode}
@@ -713,7 +747,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
             setSeverity={setLSeverity}
             setLCode={setLCode}
             lCode={lCode}
-            setLCodeMain = {setLCodeMain}
+            setLCodeMain={setLCodeMain}
           />
         </Box>
       )}
@@ -743,7 +777,7 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
               sx={{ width: "50%" }}
             >
               <MenuItem value="" disabled>
-                <em>---</em>
+                <em>Select</em>
               </MenuItem>
               {mohsConditions.map((location) => (
                 <MenuItem key={location.value} value={location.value}>
@@ -756,17 +790,20 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
               value={cdCode}
               variant="outlined"
               onChange={handleMohsCode}
+              displayEmpty
               sx={{
                 width: "30%",
                 marginLeft: "5px",
               }}
             >
-              {mohsCodes.map(mohs => (
-                <MenuItem key= {mohs} value ={mohs}>
+                 <MenuItem value="" disabled>
+                <em>Select</em>
+              </MenuItem>
+              {mohsCodes.map((mohs) => (
+                <MenuItem key={mohs} value={mohs}>
                   {mohs}
                 </MenuItem>
               ))}
-
             </Select>
           </Box>
         </FormControl>
@@ -781,8 +818,35 @@ const ICDCode = ({setICodeMain, setLCodeMain, setECodeMain, setCDCodeMain}) => {
           setSeverity={setLSeverity}
           setLCode={setLCode}
           lCode={lCode}
-          setLCodeMain = {setLCodeMain}
+          setLCodeMain={setLCodeMain}
         />
+      )}
+      {woundType === "other" && (
+        <Box
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6">Comments:</Typography>
+          <TextField
+            sx={{
+              width: "60%",
+              "& .MuiInputBase-root": {
+                height: "300px",
+              },
+              "& .MuiOutlinedInput-input": {
+                height: "300px",
+              },
+            }}
+            style={{
+              width: "60%",
+              padding: "10px 10px",
+            }}
+          />
+        </Box>
       )}
     </Container>
   );
