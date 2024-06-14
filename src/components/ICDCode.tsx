@@ -8,6 +8,11 @@ const ICDCode = ({
   setLCodeMain,
   setECodeMain,
   setCDCodeMain,
+  setVLU,
+  setPressureUlcer,
+  setMohsMain, 
+  setCPTWound,
+  setDiabeticFU
 }) => {
   const woundTypes = [
     { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
@@ -374,6 +379,7 @@ const ICDCode = ({
   const handleWoundType = (event) => {
     resetCodes();
     setWoundType(event.target.value);
+    setCPTWound(event.target.value)
     setDiabetesType(""); // Reset diabetes type when wound type changes
     setECode(""); // Reset E code when wound type changes
   };
@@ -381,27 +387,41 @@ const ICDCode = ({
   const handleDiabetesType = (event) => {
     const selectedDiabetesType = event.target.value;
     setDiabetesType(selectedDiabetesType);
+    setDiabeticFU(selectedDiabetesType)
     setECode(eCodeMapping[selectedDiabetesType] || "");
   };
 
   const handleMohsType = (event) => {
     const selectedMohsType = event.target.value;
     setMohs(selectedMohsType);
+    setMohsMain(selectedMohsType)
     setCDCode(mohsConditionsMapping[selectedMohsType] || "");
   };
   const handleVluCondition = (event) => {
     const selectedVLU = event.target.value;
     setVluCondition(selectedVLU);
+    setVLU(prevState => ({
+      ...prevState,
+      condition: selectedVLU
+    }))
   };
 
   const handleVluLocation = (event) => {
     const selectedVLU = event.target.value;
     setVluLocation(selectedVLU);
+    setVLU(prevState => ({
+      ...prevState,
+      location: selectedVLU
+    }))
   };
 
   const handleVluSide = (event) => {
     const selectedVLU = event.target.value;
     setVluSide(selectedVLU);
+    setVLU(prevState => ({
+      ...prevState,
+      side: selectedVLU
+    }))
   };
 
   const handleICode = (event) => {
@@ -430,67 +450,82 @@ const ICDCode = ({
           vluLocation === "calf" &&
           vluSide === "right":
           code = iCodes[0];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "ankle" &&
           vluSide === "right":
           code = iCodes[1];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "heel_midfoot" &&
           vluSide === "right":
           code = iCodes[2];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_foot" &&
           vluSide === "right":
           code = iCodes[3];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_lower_leg" &&
           vluSide === "right":
           code = iCodes[4];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "calf" &&
           vluSide === "left":
           code = iCodes[5];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "ankle" &&
           vluSide === "left":
           code = iCodes[6];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "heel_midfoot" &&
           vluSide === "left":
           code = iCodes[7];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_foot" &&
           vluSide === "left":
           code = iCodes[8];
+          
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_lower_leg" &&
           vluSide === "left":
           code = iCodes[9];
+          
           break;
         case vluCondition === "postthrombotic_syndrome" && vluSide === "right":
           code = iCodes[10];
+          
           break;
         case vluCondition === "postthrombotic_syndrome" && vluSide === "left":
           code = iCodes[11];
+          
           break;
         case vluCondition === "postthrombotic_syndrome" &&
           vluSide === "bilateral":
           code = iCodes[12];
+          
           break;
         case vluCondition === "venous_hypertension" && vluSide === "right":
           code = iCodes[13];
+          
           break;
         case vluCondition === "venous_hypertension" && vluSide === "left":
           code = iCodes[14];
+          
           break;
         case vluCondition === "venous_hypertension" && vluSide === "bilateral":
           code = iCodes[15];
@@ -500,6 +535,7 @@ const ICDCode = ({
       }
     }
     setICode(code);
+    setICodeMain(code);
   }, [vluCondition, vluLocation, vluSide]);
 
   return (
@@ -608,6 +644,7 @@ const ICDCode = ({
             setLCode={setLCode}
             lCode={lCode}
             setLCodeMain={setLCodeMain}
+            setPressureUlcer = {setPressureUlcer}
           />
         </Box>
       )}
@@ -748,6 +785,7 @@ const ICDCode = ({
             setLCode={setLCode}
             lCode={lCode}
             setLCodeMain={setLCodeMain}
+            setPressureUlcer= {setPressureUlcer}
           />
         </Box>
       )}
@@ -819,6 +857,7 @@ const ICDCode = ({
           setLCode={setLCode}
           lCode={lCode}
           setLCodeMain={setLCodeMain}
+          setPressureUlcer={setPressureUlcer}
         />
       )}
       {woundType === "other" && (

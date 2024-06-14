@@ -1,4 +1,4 @@
-declare const LCodeSelector: ({ location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain }: {
+declare const LCodeSelector: ({ location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain, setPressureUlcer }: {
     location: any;
     setLocation: any;
     side: any;
@@ -8,5 +8,6 @@ declare const LCodeSelector: ({ location, setLocation, side, setSide, severity, 
     setLCode: any;
     lCode: any;
     setLCodeMain: any;
+    setPressureUlcer: any;
 }) => JSX.Element;
 export default LCodeSelector;

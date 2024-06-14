@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 //@ts-ignore
-const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, five, handleDialogClose }) => {
+const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, five, handleDialogClose, vlu, mohs,diabeticFU, cptWound, pressureUlcer }) => {
 
 
   function getFormattedDate() {
@@ -31,8 +31,14 @@ const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode,
       lCode,
       cdCode,
       cptCode,
-      Date: getFormattedDate()
+      Date: getFormattedDate(), 
+      vlu,
+      mohs,
+      diabeticFU,
+      cptWound,
+      pressureUlcer
     }
+
 
     await five.executeFunction(
       "pushToIVR",
@@ -48,7 +54,7 @@ const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode,
     );
 
     console.log(IVR)
-
+    console.log("Summary --> Added handleDialogClose")
     handleDialogClose()
   }
 

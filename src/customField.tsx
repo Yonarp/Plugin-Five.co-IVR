@@ -49,6 +49,12 @@ const CustomField = (props: CustomFieldProps) => {
   const [cdCode, setCDCode] = useState(null)
   //@ts-ignore
   const [cptCode, setCPTCode] = useState(null)
+  const [vlu, setVLU] = useState({ condition:"", location: "", type:""})
+  const [mohs, setMohs] = useState("")
+  const [cptWound, setCPTWound] = useState({})
+  const [diabeticFU, setDiabeticFU] = useState()
+  //@ts-ignore
+  const [pressureUlcer, setPressureUlcer] = useState({location:"", side:"", severity:""})
   //@ts-ignore
   const [patient, setPatient] = useState(null);
   const [data, setData] = useState(null);
@@ -232,10 +238,11 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
           {activeStep === 4 && <Products setProducts={setProducts} productsSaved = { products }/>}
-          {activeStep === 5 && <ICDCode setLCodeMain = {setLCode} setICodeMain = {setICode} setECodeMain = {setECode} setCDCodeMain = {setCDCode}/>}
+          {activeStep === 5 && <ICDCode setLCodeMain = {setLCode} setICodeMain = {setICode} setECodeMain = {setECode} setCDCodeMain = {setCDCode} setVLU = {setVLU} setPressureUlcer = {setPressureUlcer} setMohsMain= {setMohs} setCPTWound={setCPTWound} setDiabeticFU={setDiabeticFU} />}
+
           {activeStep === 6 && <CPTCode setCPTCodeMain = {setCPTCode}/>}
           {activeStep === 7 && (
-            <Summary patient={patient} products={products} practitioner={practitioner} iCode = {iCode} lCode = {lCode} eCode={eCode} cdCode = {cdCode} cptCode={cptCode} five={five} handleDialogClose = {handleDialogClose}/>
+            <Summary patient={patient} products={products} practitioner={practitioner} iCode = {iCode} lCode = {lCode} eCode={eCode} cdCode = {cdCode} cptCode={cptCode} five={five} handleDialogClose = {handleDialogClose} vlu={vlu} mohs={mohs} diabeticFU = {diabeticFU} cptWound= {cptWound} pressureUlcer= {pressureUlcer}/>
           )} 
 
           {patientSelected === true ? (
