@@ -542,9 +542,9 @@ const ICDCode = ({
         default:
           code = "";
       }
+      setICode(code);
+      setICodeMain(code);
     }
-    setICode(code);
-    setICodeMain(code);
     console.log(codes);
 
     if (woundType === "" && codes?.cptWound !== null) {

@@ -121,9 +121,10 @@ useEffect(() => {
       default:
         lCode = "";
     }
+    setLCode(lCode);
+    setLCodeMain(lCode)
   }
-  setLCode(lCode);
-  setLCodeMain(lCode)
+
 
   if(lCode === "" && lCodeServer) {
     setLCode(lCodeServer)
