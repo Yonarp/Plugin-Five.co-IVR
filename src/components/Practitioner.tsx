@@ -73,7 +73,9 @@ const Practitioner = ({ five, setPractitioner, practitioner }) => {
       <List>
         {practitioners ? (
           practitioners.map((practitioner, index) => {
-            return (
+            console.log("Logging",practitioner.Title)
+            return  practitioner.Title !== 'Admin' ? 
+             (
               <ListItemButton
                 key={index}
                 //@ts-ignore
@@ -95,7 +97,7 @@ const Practitioner = ({ five, setPractitioner, practitioner }) => {
                   secondary={practitioner.Email}
                 />
               </ListItemButton>
-            );
+            ) : null;
           })
         ) : (
           <CircularProgress />
