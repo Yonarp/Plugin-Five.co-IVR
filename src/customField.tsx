@@ -49,11 +49,11 @@ const CustomField = (props: CustomFieldProps) => {
   const [eCode, setECode] = useState(null);
   //@ts-ignore
   const [cdCode, setCDCode] = useState(null);
-  //@ts-ignore
   const [cptCode, setCPTCode] = useState(null);
   const [vlu, setVLU] = useState({ condition: "", location: "", type: "" });
   const [mohs, setMohs] = useState("");
-  const [cptWound, setCPTWound] = useState({});
+  //@ts-ignore
+  const [cptWound, setCPTWound] = useState(null);
   const [diabeticFU, setDiabeticFU] = useState();
   //@ts-ignore
   const [pressureUlcer, setPressureUlcer] = useState({
@@ -149,13 +149,14 @@ const CustomField = (props: CustomFieldProps) => {
               console.log(data);
               /* setData(JSON.parse(result.serverResponse.results)); */
               setIVR(data);
-              handlePatient(data.patient);
-              setLCode(ivr.ICD10_L)
-              setICode(ivr.ICD10_I)
-              setCPTCode(ivr.CPTCODE)
-              setECode(ivr.ICD10_E)
-              setCDCode(ivr.ICD10_CD)
-              handlePractitioner(data.practitioner)
+              handlePatient(data?.patient);
+              setLCode(ivr?.ICD10_L)
+              setICode(ivr?.ICD10_I)
+              setCPTCode(ivr?.CPTCODE)
+              setECode(ivr?.ICD10_E)
+              setCDCode(ivr?.ICD10_CD)
+              handlePractitioner(data?.practitioner)
+              setCPTWound(ivr?.WoundType)
               setLoading(false);
             }
           );
@@ -291,6 +292,18 @@ const CustomField = (props: CustomFieldProps) => {
               setMohsMain={setMohs}
               setCPTWound={setCPTWound}
               setDiabeticFU={setDiabeticFU}
+              codes={{
+                lCode,
+                iCode,
+                cptCode,
+                cdCode,
+                eCode,
+                vlu,
+                mohs,
+                diabeticFU,
+                pressureUlcer,
+                cptWound
+              }}
             />
           )}
 

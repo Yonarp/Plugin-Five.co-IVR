@@ -10,16 +10,17 @@ const ICDCode = ({
   setCDCodeMain,
   setVLU,
   setPressureUlcer,
-  setMohsMain, 
+  setMohsMain,
   setCPTWound,
-  setDiabeticFU
+  setDiabeticFU,
+  codes,
 }) => {
   const woundTypes = [
-    { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
-    { label: "Venous leg ulcer", value: "venous_leg_ulcer" },
-    { label: "Pressure ulcer", value: "pressure_ulcer" },
-    { label: "Mohs", value: "mohs" },
-    { label: "Other...", value: "other" },
+    { label: "Diabetic foot ulcer", value: "Diabetic foot ulcer" },
+    { label: "Venous leg ulcer", value: "Venous leg ulcer" },
+    { label: "Pressure ulcer", value: "Pressure ulcer" },
+    { label: "Mohs", value: "Mohs" },
+    { label: "Other", value: "other" },
   ];
 
   const diabetesTypes = [
@@ -350,7 +351,8 @@ const ICDCode = ({
     "I87.312", // 14
     "I87.313", // 15
   ];
-
+  //@ts-ignore
+  const [loading, setLoading] = useState(false);
   const [woundType, setWoundType] = useState("");
   const [diabetesType, setDiabetesType] = useState("");
   const [eCode, setECode] = useState("");
@@ -379,7 +381,7 @@ const ICDCode = ({
   const handleWoundType = (event) => {
     resetCodes();
     setWoundType(event.target.value);
-    setCPTWound(event.target.value)
+    setCPTWound(event.target.value);
     setDiabetesType(""); // Reset diabetes type when wound type changes
     setECode(""); // Reset E code when wound type changes
   };
@@ -387,41 +389,41 @@ const ICDCode = ({
   const handleDiabetesType = (event) => {
     const selectedDiabetesType = event.target.value;
     setDiabetesType(selectedDiabetesType);
-    setDiabeticFU(selectedDiabetesType)
+    setDiabeticFU(selectedDiabetesType);
     setECode(eCodeMapping[selectedDiabetesType] || "");
   };
 
   const handleMohsType = (event) => {
     const selectedMohsType = event.target.value;
     setMohs(selectedMohsType);
-    setMohsMain(selectedMohsType)
+    setMohsMain(selectedMohsType);
     setCDCode(mohsConditionsMapping[selectedMohsType] || "");
   };
   const handleVluCondition = (event) => {
     const selectedVLU = event.target.value;
     setVluCondition(selectedVLU);
-    setVLU(prevState => ({
+    setVLU((prevState) => ({
       ...prevState,
-      condition: selectedVLU
-    }))
+      condition: selectedVLU,
+    }));
   };
 
   const handleVluLocation = (event) => {
     const selectedVLU = event.target.value;
     setVluLocation(selectedVLU);
-    setVLU(prevState => ({
+    setVLU((prevState) => ({
       ...prevState,
-      location: selectedVLU
-    }))
+      location: selectedVLU,
+    }));
   };
 
   const handleVluSide = (event) => {
     const selectedVLU = event.target.value;
     setVluSide(selectedVLU);
-    setVLU(prevState => ({
+    setVLU((prevState) => ({
       ...prevState,
-      side: selectedVLU
-    }))
+      side: selectedVLU,
+    }));
   };
 
   const handleICode = (event) => {
@@ -442,7 +444,14 @@ const ICDCode = ({
     setCDCodeMain(selectedLCode);
   };
 
+  /*   { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
+    { label: "Venous leg ulcer", value: "venous_leg_ulcer" },
+    { label: "Pressure ulcer", value: "pressure_ulcer" },
+    { label: "Mohs", value: "mohs" },
+    { label: "Other...", value: "other" }, */
+
   useEffect(() => {
+  
     let code = "";
     if (vluCondition && vluLocation && vluSide) {
       switch (true) {
@@ -450,82 +459,82 @@ const ICDCode = ({
           vluLocation === "calf" &&
           vluSide === "right":
           code = iCodes[0];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "ankle" &&
           vluSide === "right":
           code = iCodes[1];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "heel_midfoot" &&
           vluSide === "right":
           code = iCodes[2];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_foot" &&
           vluSide === "right":
           code = iCodes[3];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_lower_leg" &&
           vluSide === "right":
           code = iCodes[4];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "calf" &&
           vluSide === "left":
           code = iCodes[5];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "ankle" &&
           vluSide === "left":
           code = iCodes[6];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "heel_midfoot" &&
           vluSide === "left":
           code = iCodes[7];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_foot" &&
           vluSide === "left":
           code = iCodes[8];
-          
+
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_lower_leg" &&
           vluSide === "left":
           code = iCodes[9];
-          
+
           break;
         case vluCondition === "postthrombotic_syndrome" && vluSide === "right":
           code = iCodes[10];
-          
+
           break;
         case vluCondition === "postthrombotic_syndrome" && vluSide === "left":
           code = iCodes[11];
-          
+
           break;
         case vluCondition === "postthrombotic_syndrome" &&
           vluSide === "bilateral":
           code = iCodes[12];
-          
+
           break;
         case vluCondition === "venous_hypertension" && vluSide === "right":
           code = iCodes[13];
-          
+
           break;
         case vluCondition === "venous_hypertension" && vluSide === "left":
           code = iCodes[14];
-          
+
           break;
         case vluCondition === "venous_hypertension" && vluSide === "bilateral":
           code = iCodes[15];
@@ -536,6 +545,29 @@ const ICDCode = ({
     }
     setICode(code);
     setICodeMain(code);
+    console.log(codes);
+
+    if (woundType === "" && codes?.cptWound !== null) {
+      console.log(codes)
+      const wound = codes?.cptWound;
+      setWoundType(wound);
+
+      switch (wound) {
+        case 'Diabetic foot ulcer': setECode(codes?.eCode) 
+        setLCode(codes?.lCode)
+        break; 
+        case 'Venous leg ulcer': setICode(codes?.iCode)
+        setLCode(codes?.lCode)
+        break;
+        case 'Pressure ulcer': setLCode(codes?.lCode)
+        break 
+        case 'Mohs': setCDCode(codes.cdCode)
+      }
+    }
+
+
+
+
   }, [vluCondition, vluLocation, vluSide]);
 
   return (
@@ -553,7 +585,10 @@ const ICDCode = ({
           width: "100%",
         }}
       >
-        <Typography variant="subtitle1" sx={{ marginRight: "10px" ,marginBottom: "20px", }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ marginRight: "10px", marginBottom: "20px" }}
+        >
           Wound Type:{" "}
         </Typography>
         <FormControl
@@ -572,41 +607,41 @@ const ICDCode = ({
           </Select>
         </FormControl>
       </Box>
-      {woundType === "diabetic_foot_ulcer" && (
+      {woundType === "Diabetic foot ulcer" && (
         <Box>
           <FormControl
             fullWidth
             variant="outlined"
             sx={{ marginBottom: "20px" }}
           >
-          <Box
+            <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
-                alignItems: 'center',
+                alignItems: "center",
                 width: "100%",
                 marginBottom: "10px",
               }}
             >
-            <Typography variant="subtitle1" mr={2}>
-              Type:{"  "}
-            </Typography>
-            <Select
-              value={diabetesType}
-              displayEmpty
-              onChange={handleDiabetesType}
-              sx={{ flex: 1 }}
-            >
-              <MenuItem value="" disabled>
-                <em>Select</em>
-              </MenuItem>
-              {diabetesTypes.map((location) => (
-                <MenuItem key={location.value} value={location.value}>
-                  {location.label}
+              <Typography variant="subtitle1" mr={2}>
+                Type:{"  "}
+              </Typography>
+              <Select
+                value={diabetesType}
+                displayEmpty
+                onChange={handleDiabetesType}
+                sx={{ flex: 1 }}
+              >
+                <MenuItem value="" disabled>
+                  <em>Select</em>
                 </MenuItem>
-              ))}
-            </Select>
+                {diabetesTypes.map((location) => (
+                  <MenuItem key={location.value} value={location.value}>
+                    {location.label}
+                  </MenuItem>
+                ))}
+              </Select>
             </Box>
           </FormControl>
           <FormControl
@@ -624,7 +659,7 @@ const ICDCode = ({
               onChange={handleECode}
               displayEmpty
             >
-               <MenuItem value="" disabled>
+              <MenuItem value="" disabled>
                 <em>Select</em>
               </MenuItem>
               {eCodes.map((eCode) => (
@@ -634,6 +669,7 @@ const ICDCode = ({
               ))}
             </Select>
           </FormControl>
+          {/* //@ts-ignore */}
           <LCode
             location={lLocation}
             setLocation={setLLocation}
@@ -642,13 +678,15 @@ const ICDCode = ({
             severity={lSeverity}
             setSeverity={setLSeverity}
             setLCode={setLCode}
+            lCodeServer={codes?.lCode}
             lCode={lCode}
             setLCodeMain={setLCodeMain}
-            setPressureUlcer = {setPressureUlcer}
+            setPressureUlcer={setPressureUlcer}
           />
         </Box>
       )}
-      {woundType === "venous_leg_ulcer" && (
+
+      {woundType === "Venous leg ulcer" && (
         <Box>
           <FormControl
             fullWidth
@@ -660,7 +698,7 @@ const ICDCode = ({
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
-                alignItems: 'center',
+                alignItems: "center",
                 width: "100%",
                 marginBottom: "10px",
               }}
@@ -678,8 +716,8 @@ const ICDCode = ({
                 sx={{ flex: 1 }}
               >
                 <MenuItem value="" disabled>
-                <em>Select</em>
-              </MenuItem>
+                  <em>Select</em>
+                </MenuItem>
                 {vluAdditional.map((location) => (
                   <MenuItem key={location.value} value={location.value}>
                     {location.label}
@@ -692,7 +730,7 @@ const ICDCode = ({
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
-                alignItems: 'center',
+                alignItems: "center",
                 width: "100%",
                 marginBottom: "10px",
               }}
@@ -709,9 +747,9 @@ const ICDCode = ({
                 onChange={handleVluLocation}
                 sx={{ flex: 1 }}
               >
-              <MenuItem value="" disabled>
-                <em>Select</em>
-              </MenuItem>
+                <MenuItem value="" disabled>
+                  <em>Select</em>
+                </MenuItem>
                 {vluPart1.map((location) => (
                   <MenuItem key={location.value} value={location.value}>
                     {location.label}
@@ -724,7 +762,7 @@ const ICDCode = ({
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "center",
-                alignItems: 'center',
+                alignItems: "center",
                 width: "100%",
               }}
             >
@@ -739,11 +777,10 @@ const ICDCode = ({
                 displayEmpty
                 onChange={handleVluSide}
                 sx={{ flex: 1 }}
-                
               >
-                 <MenuItem value="" disabled>
-                <em>Select</em>
-              </MenuItem>
+                <MenuItem value="" disabled>
+                  <em>Select</em>
+                </MenuItem>
                 {vluPart2.map((location) => (
                   <MenuItem key={location.value} value={location.value}>
                     {location.label}
@@ -763,9 +800,9 @@ const ICDCode = ({
                   onChange={handleICode}
                   placeholder="Select"
                 >
-                   <MenuItem value="" disabled>
-                <em>Select</em>
-              </MenuItem>
+                  <MenuItem value="" disabled>
+                    <em>Select</em>
+                  </MenuItem>
                   {iCodes.map((iCode) => (
                     <MenuItem key={iCode} value={iCode}>
                       {iCode}
@@ -781,15 +818,16 @@ const ICDCode = ({
             side={lSide}
             setSide={setLSide}
             severity={lSeverity}
+            lCodeServer={codes?.lCode}
             setSeverity={setLSeverity}
             setLCode={setLCode}
             lCode={lCode}
             setLCodeMain={setLCodeMain}
-            setPressureUlcer= {setPressureUlcer}
+            setPressureUlcer={setPressureUlcer}
           />
         </Box>
       )}
-      {woundType === "mohs" && (
+      {woundType === "Mohs" && (
         <FormControl
           fullWidth
           variant="outlined"
@@ -834,7 +872,7 @@ const ICDCode = ({
                 marginLeft: "5px",
               }}
             >
-                 <MenuItem value="" disabled>
+              <MenuItem value="" disabled>
                 <em>Select</em>
               </MenuItem>
               {mohsCodes.map((mohs) => (
@@ -846,11 +884,12 @@ const ICDCode = ({
           </Box>
         </FormControl>
       )}
-      {woundType === "pressure_ulcer" && (
+      {woundType === "Pressure ulcer" && (
         <LCode
           location={lLocation}
           setLocation={setLLocation}
           side={lSide}
+          lCodeServer={codes?.lCode}
           setSide={setLSide}
           severity={lSeverity}
           setSeverity={setLSeverity}
@@ -860,7 +899,7 @@ const ICDCode = ({
           setPressureUlcer={setPressureUlcer}
         />
       )}
-      {woundType === "other" && (
+      {woundType === "Other" && (
         <Box
           style={{
             width: "100%",

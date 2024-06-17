@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Box, FormControl, MenuItem, Select, Typography } from "@mui/material";
 
 //@ts-ignore
-const LCodeSelector = ({ location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain, setPressureUlcer }) => {
+const LCodeSelector = ({ location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain, setPressureUlcer,lCodeServer }) => {
   const lCodeLocations = [
     { label: "Calf", value: "calf" },
     { label: "Ankle", value: "ankle" },
@@ -53,6 +53,7 @@ const handleLcode  = (event) => {
 }
 
 useEffect(() => {
+
   let lCode = "";
   if (location && side && severity) {
     setPressureUlcer(prevState => ({...prevState, location, side, severity}))
@@ -123,6 +124,11 @@ useEffect(() => {
   }
   setLCode(lCode);
   setLCodeMain(lCode)
+
+  if(lCode === "" && lCodeServer) {
+    setLCode(lCodeServer)
+  }
+
 }, [location, side, severity]);
 
 

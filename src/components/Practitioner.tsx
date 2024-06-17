@@ -40,11 +40,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient }) 
             setPractitioners(JSON.parse(result.serverResponse.results));
             if(existingPatient){
               data.map((item,index) => {
-                console.log("Logging Practitioner and Practitioner Item")
-                console.log(item, practitioner)
-                console.log(item.___USR, practitioner.data.___USR)
-                if(item.___USR === practitioner.data.___USR){
-                  console.log("Found a match!")
+                if(item?.___USR === practitioner?.data.___USR){
                   setSelectedIndex(index)
                }
               })
