@@ -6,7 +6,7 @@ import {
   ListItemText,
   Typography,
 } from "../FivePluginApi";
-const Practitioner = ({ five, setPractitioner, practitioner }) => {
+const Practitioner = ({ five, setPractitioner, practitioner, existingPatient }) => {
   const [selectedIndex, setSelectedIndex] = React.useState( practitioner ? practitioner : null);
   const [practitioners, setPractitioners] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -18,8 +18,10 @@ const Practitioner = ({ five, setPractitioner, practitioner }) => {
   };
 
   useEffect(() => {
+
+
     if (practitioner) {
-      setSelectedIndex(practitioner.index)
+      setSelectedIndex(practitioner?.index)
     }
 
     if (practitioners === null) {
@@ -34,8 +36,19 @@ const Practitioner = ({ five, setPractitioner, practitioner }) => {
           (result) => {
             console.log("Loggin From Practitioners");
             console.log(result.serverResponse.results);
-            console.log(JSON.parse(result.serverResponse.results));
+            const data = JSON.parse(result.serverResponse.results)
             setPractitioners(JSON.parse(result.serverResponse.results));
+            if(existingPatient){
+              data.map((item,index) => {
+                console.log("Logging Practitioner and Practitioner Item")
+                console.log(item, practitioner)
+                console.log(item.___USR, practitioner.data.___USR)
+                if(item.___USR === practitioner.data.___USR){
+                  console.log("Found a match!")
+                  setSelectedIndex(index)
+               }
+              })
+            }
             setLoading(false);
           }
         );
@@ -72,15 +85,16 @@ const Practitioner = ({ five, setPractitioner, practitioner }) => {
       </Typography>
       <List>
         {practitioners ? (
-          practitioners.map((practitioner, index) => {
-            console.log("Logging",practitioner.Title)
-            return  practitioner.Title !== 'Admin' ? 
+          practitioners.map((practitionerItem, index) => {
+            
+      
+            return  practitionerItem.Title !== 'Admin' ? 
              (
               <ListItemButton
                 key={index}
                 //@ts-ignore
                 selected={selectedIndex === index}
-                onClick={() => handleClick(index, practitioner)}
+                onClick={() => handleClick(index, practitionerItem)}
                 sx={{
                   borderBottom: "1px solid #00000033",
                   "&.Mui-selected": {
@@ -93,8 +107,8 @@ const Practitioner = ({ five, setPractitioner, practitioner }) => {
                 }}
               >
                 <ListItemText
-                  primary={practitioner.NameFull}
-                  secondary={practitioner.Email}
+                  primary={practitionerItem.NameFull}
+                  secondary={practitionerItem.Email}
                 />
               </ListItemButton>
             ) : null;

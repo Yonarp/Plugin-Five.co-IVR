@@ -31,6 +31,8 @@ const CustomField = (props: CustomFieldProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
+  //@ts-ignore
+  const [ivr, setIVR] = useState({});
   // const [existingPatient, setExistingPatient] = useState(false)
   //@ts-ignore
   const [payors, setPayors] = useState([]);
@@ -38,23 +40,27 @@ const CustomField = (props: CustomFieldProps) => {
   const [products, setProducts] = useState([]);
   //@ts-ignore
   const [practitioner, setPractitioner] = useState(null);
-  
+
   //@ts-ignore
-  const [iCode, setICode] = useState(null)
+  const [iCode, setICode] = useState(null);
   //@ts-ignore
-  const [lCode, setLCode] = useState(null)
+  const [lCode, setLCode] = useState(null);
   //@ts-ignore
-  const [eCode, setECode] = useState(null)
+  const [eCode, setECode] = useState(null);
   //@ts-ignore
-  const [cdCode, setCDCode] = useState(null)
+  const [cdCode, setCDCode] = useState(null);
   //@ts-ignore
-  const [cptCode, setCPTCode] = useState(null)
-  const [vlu, setVLU] = useState({ condition:"", location: "", type:""})
-  const [mohs, setMohs] = useState("")
-  const [cptWound, setCPTWound] = useState({})
-  const [diabeticFU, setDiabeticFU] = useState()
+  const [cptCode, setCPTCode] = useState(null);
+  const [vlu, setVLU] = useState({ condition: "", location: "", type: "" });
+  const [mohs, setMohs] = useState("");
+  const [cptWound, setCPTWound] = useState({});
+  const [diabeticFU, setDiabeticFU] = useState();
   //@ts-ignore
-  const [pressureUlcer, setPressureUlcer] = useState({location:"", side:"", severity:""})
+  const [pressureUlcer, setPressureUlcer] = useState({
+    location: "",
+    side: "",
+    severity: "",
+  });
   //@ts-ignore
   const [patient, setPatient] = useState(null);
   const [data, setData] = useState(null);
@@ -63,9 +69,11 @@ const CustomField = (props: CustomFieldProps) => {
   const [loading, setLoading] = useState(false);
 
   //@ts-ignore
-  const { theme, value, variant, five } = props;
+  const { theme, value, variant, five, formField, selectedRecord } = props;
 
-  const handleDialogOpen = () => setDialogOpen(true);
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
@@ -83,11 +91,24 @@ const CustomField = (props: CustomFieldProps) => {
 
   const totalSteps = 8;
   const existingPatient =
-  //@ts-ignore
+    //@ts-ignore
     five.internal.actionID !== "IVR" && five.internal.actionID !== "Accounts";
-    if(existingPatient) {
 
-    }
+  const handleRadioChange = useCallback((value) => {
+    setAdmitted(value === "Yes");
+  }, []);
+  //@ts-ignore
+  const handlePatientSelected = useCallback(() => {
+    setPatientSelected(true);
+  }, []);
+
+  const handlePatient = useCallback((patientData, index = null) => {
+    setPatient({ data: patientData, index: index });
+  }, []);
+
+  const handlePractitioner = useCallback((practitionerData, index = null) => {
+    setPractitioner({ data: practitionerData, index: index });
+  }, []);
   //@ts-ignore
 
   // Revised useEffect
@@ -113,6 +134,32 @@ const CustomField = (props: CustomFieldProps) => {
       }
 
       const fetchData = async () => {
+        if (existingPatient) {
+          await five.executeFunction(
+            "getIVRDetails",
+            //@ts-ignore
+            selectedRecord.data,
+            null,
+            null,
+            null,
+            (result) => {
+              console.log("Loggin IVR");
+              const data = JSON.parse(result.serverResponse.results);
+              const ivr = data.ivr
+              console.log(data);
+              /* setData(JSON.parse(result.serverResponse.results)); */
+              setIVR(data);
+              handlePatient(data.patient);
+              setLCode(ivr.ICD10_L)
+              setICode(ivr.ICD10_I)
+              setCPTCode(ivr.CPTCODE)
+              setECode(ivr.ICD10_E)
+              setCDCode(ivr.ICD10_CD)
+              handlePractitioner(data.practitioner)
+              setLoading(false);
+            }
+          );
+        }
         await five.executeFunction(
           "getAccountPatients",
           //@ts-ignore
@@ -131,9 +178,9 @@ const CustomField = (props: CustomFieldProps) => {
         console.log("useEffect completed");
       };
       fetchData();
+      console.log("Logging IVR to see", ivr);
     } //@ts-ignore
-  }, [dialogOpen, existingPatient, activeStep]);
-
+  }, [dialogOpen, existingPatient, activeStep, ivr]);
 
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
@@ -153,23 +200,6 @@ const CustomField = (props: CustomFieldProps) => {
   }, []);
 
   // Event handlers
-  const handleRadioChange = useCallback((value) => {
-    setAdmitted(value === "Yes");
-  }, []);
-  //@ts-ignore
-  const handlePatientSelected = useCallback(() => {
-    setPatientSelected(true);
-  }, []);
-
-  const handlePatient = useCallback((patientData, index) => {
-    setPatient({ data: patientData, index: index });
-  }, []);
-
-  const handlePractitioner = useCallback((practitionerData, index) => {
-    setPractitioner({data: practitionerData, index: index})
-  }, [])
-
-
 
   if (loading) {
     return (
@@ -214,21 +244,31 @@ const CustomField = (props: CustomFieldProps) => {
         <DialogTitle style={{ backgroundColor: "#225D7A", color: "white" }}>
           {"Insurance Verification Request"}
         </DialogTitle>
-        <DialogContent style={{maxWidth:"100%", overflowX: 'hidden'}}>
+        <DialogContent style={{ maxWidth: "100%", overflowX: "hidden" }}>
           {activeStep === 0 && (
-            <NewPatient data={data} handlePatient={handlePatient} five={five} patient={patient} />
+            <NewPatient
+              data={data}
+              handlePatient={handlePatient}
+              five={five}
+              patient={patient}
+            />
           )}
 
           {activeStep === 1 && (
             <PatientDetails
-              patient= {patient}
+              patient={patient}
               admitted={admitted}
               handleRadioChange={handleRadioChange}
               officeName={officeName}
             />
           )}
           {activeStep === 2 && (
-            <Practitioner five={five} setPractitioner={handlePractitioner} practitioner={practitioner}/>
+            <Practitioner
+              five={five}
+              setPractitioner={handlePractitioner}
+              practitioner={practitioner}
+              existingPatient={existingPatient}
+            />
           )}
           {activeStep === 3 && (
             <Insurance
@@ -237,13 +277,43 @@ const CustomField = (props: CustomFieldProps) => {
               setPayorsMain={setPayors}
             />
           )}
-          {activeStep === 4 && <Products setProducts={setProducts} productsSaved = { products }/>}
-          {activeStep === 5 && <ICDCode setLCodeMain = {setLCode} setICodeMain = {setICode} setECodeMain = {setECode} setCDCodeMain = {setCDCode} setVLU = {setVLU} setPressureUlcer = {setPressureUlcer} setMohsMain= {setMohs} setCPTWound={setCPTWound} setDiabeticFU={setDiabeticFU} />}
+          {activeStep === 4 && (
+            <Products setProducts={setProducts} productsSaved={products} />
+          )}
+          {activeStep === 5 && (
+            <ICDCode
+              setLCodeMain={setLCode}
+              setICodeMain={setICode}
+              setECodeMain={setECode}
+              setCDCodeMain={setCDCode}
+              setVLU={setVLU}
+              setPressureUlcer={setPressureUlcer}
+              setMohsMain={setMohs}
+              setCPTWound={setCPTWound}
+              setDiabeticFU={setDiabeticFU}
+            />
+          )}
 
-          {activeStep === 6 && <CPTCode setCPTCodeMain = {setCPTCode}/>}
+          {activeStep === 6 && <CPTCode setCPTCodeMain={setCPTCode} />}
           {activeStep === 7 && (
-            <Summary patient={patient} products={products} practitioner={practitioner} iCode = {iCode} lCode = {lCode} eCode={eCode} cdCode = {cdCode} cptCode={cptCode} five={five} handleDialogClose = {handleDialogClose} vlu={vlu} mohs={mohs} diabeticFU = {diabeticFU} cptWound= {cptWound} pressureUlcer= {pressureUlcer}/>
-          )} 
+            <Summary
+              patient={patient}
+              products={products}
+              practitioner={practitioner}
+              iCode={iCode}
+              lCode={lCode}
+              eCode={eCode}
+              cdCode={cdCode}
+              cptCode={cptCode}
+              five={five}
+              handleDialogClose={handleDialogClose}
+              vlu={vlu}
+              mohs={mohs}
+              diabeticFU={diabeticFU}
+              cptWound={cptWound}
+              pressureUlcer={pressureUlcer}
+            />
+          )}
 
           {patientSelected === true ? (
             <Button
@@ -275,7 +345,7 @@ const CustomField = (props: CustomFieldProps) => {
                 alignItems: "center",
                 backgroundColor: "white",
                 padding: 5,
-                zIndex: 99
+                zIndex: 99,
               }}
             >
               {activeStep === 0 ? (
@@ -301,7 +371,7 @@ const CustomField = (props: CustomFieldProps) => {
                     borderRadius: "0px",
                     background: "#285C79",
                     color: "white",
-                    marginRight: "20px"
+                    marginRight: "20px",
                   }}
                 >
                   Previous
@@ -316,7 +386,7 @@ const CustomField = (props: CustomFieldProps) => {
                   borderRadius: "0px",
                   background: "#285C79",
                   color: "white",
-                  margin: "20px"
+                  margin: "20px",
                 }}
               >
                 Next

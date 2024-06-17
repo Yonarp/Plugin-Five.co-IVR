@@ -22,7 +22,7 @@ const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode,
   }  
 
   const handleSubmit = async () => {
-    
+
     const IVR = {
       patient: patient.data.___PAT,
       products,
@@ -123,7 +123,7 @@ const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode,
         ) : null}
       </Grid>
       <Typography variant="h6" mt={3}>Codes:</Typography>
-      <Grid container spacing={2} marginTop={1} xs="auto">uu
+      <Grid container spacing={2} marginTop={1} xs="auto">
       <Grid item xs={3}>
          <Typography variant="body1">
           {eCode ? `Ecode: ${eCode}` : (iCode ? `ICode: ${iCode}` : `CD-Code: ${cdCode}`)}
