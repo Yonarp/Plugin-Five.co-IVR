@@ -295,7 +295,6 @@ const CustomField = (props: CustomFieldProps) => {
               codes={{
                 lCode,
                 iCode,
-                cptCode,
                 cdCode,
                 eCode,
                 vlu,
@@ -307,7 +306,7 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
 
-          {activeStep === 6 && <CPTCode setCPTCodeMain={setCPTCode} />}
+          {activeStep === 6 && <CPTCode setCPTCodeMain={setCPTCode}  cptCodeMain={cptCode}/>}
           {activeStep === 7 && (
             <Summary
               patient={patient}

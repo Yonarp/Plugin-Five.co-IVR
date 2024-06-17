@@ -9,7 +9,7 @@ import {
 } from "../FivePluginApi";
 import Container from "@mui/material/Container";
 //@ts-ignore
-const CPTCode = ({setCPTCodeMain}) => {
+const CPTCode = ({setCPTCodeMain, cptCodeMain}) => {
   const woundLocations = [
     { label: "Trunk, Arm, Leg", value: 1 },
     {
@@ -34,6 +34,17 @@ const CPTCode = ({setCPTCodeMain}) => {
 
   useEffect(() => {
     calculateCPTCode();
+
+    console.log("CPT Code Use Effect")
+    console.log(cptCodeMain)
+    if(cptCodeMain){
+      
+      console.log("Reached Condition")
+      if(!cptCodes.includes(cptCodeMain)) {
+        cptCodes.push(cptCodeMain)
+      }
+      setCptCode(cptCodeMain)
+    }
   }, [woundLocation, woundSize]);
 
   const handleWoundLocationChange = (event) => {
@@ -60,7 +71,6 @@ const CPTCode = ({setCPTCodeMain}) => {
 
     if (!area || isNaN(size)) {
       setCptCode("");
-      setCPTCodeMain("")
       return;
     }
 
