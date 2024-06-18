@@ -107,7 +107,6 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain}) => {
               value={woundLocation}
               onChange={handleWoundLocationChange}
               displayEmpty
-
             >
               <MenuItem value="" disabled>
                 <em>Select</em>
@@ -157,9 +156,7 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain}) => {
                 </MenuItem>
             ))}
           </Select>
-
         </Box>
-
       </Box>
     </Container>
   );

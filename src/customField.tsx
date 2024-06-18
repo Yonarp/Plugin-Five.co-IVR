@@ -31,31 +31,22 @@ const CustomField = (props: CustomFieldProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
-  //@ts-ignore
   const [ivr, setIVR] = useState({});
   // const [existingPatient, setExistingPatient] = useState(false)
   //@ts-ignore
   const [payors, setPayors] = useState([]);
-  //@ts-ignore
   const [products, setProducts] = useState([]);
-  //@ts-ignore
   const [practitioner, setPractitioner] = useState(null);
 
-  //@ts-ignore
   const [iCode, setICode] = useState(null);
-  //@ts-ignore
   const [lCode, setLCode] = useState(null);
-  //@ts-ignore
   const [eCode, setECode] = useState(null);
-  //@ts-ignore
   const [cdCode, setCDCode] = useState(null);
   const [cptCode, setCPTCode] = useState(null);
   const [vlu, setVLU] = useState({ condition: "", location: "", type: "" });
   const [mohs, setMohs] = useState("");
-  //@ts-ignore
   const [cptWound, setCPTWound] = useState(null);
   const [diabeticFU, setDiabeticFU] = useState();
-  //@ts-ignore
   const [pressureUlcer, setPressureUlcer] = useState({
     location: "",
     side: "",
@@ -71,17 +62,10 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const { theme, value, variant, five, formField, selectedRecord } = props;
 
-  const handleDialogOpen = () => {
-    setDialogOpen(true);
-  };
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
   //@ts-ignore
   const form = five.form.Patients;
   //@ts-ignore
   const officeName = five.stack.OfficeName;
-  //@ts-ignore
   //const accountKey = five.stack.Account.AccountKey;
   const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66";
 
@@ -93,6 +77,75 @@ const CustomField = (props: CustomFieldProps) => {
   const existingPatient =
     //@ts-ignore
     five.internal.actionID !== "IVR" && five.internal.actionID !== "Accounts";
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+    const fetchData = async () => {
+      if (existingPatient) {
+        await five.executeFunction(
+          "getIVRDetails",
+          //@ts-ignore
+          selectedRecord.data,
+          null,
+          null,
+          null,
+          (result) => {
+            console.log("Loggin IVR");
+            const data = JSON.parse(result.serverResponse.results);
+            const ivr = data.ivr;
+            console.log(data);
+            /* setData(JSON.parse(result.serverResponse.results)); */
+            setIVR(data);
+            handlePatient(data?.patient);
+            setLCode(ivr?.ICD10_L);
+            setICode(ivr?.ICD10_I);
+            setCPTCode(ivr?.CPTCODE);
+            setECode(ivr?.ICD10_E);
+            setCDCode(ivr?.ICD10_CD);
+            handlePractitioner(data?.practitioner);
+            setCPTWound(ivr?.WoundType);
+            setLoading(false);
+          }
+        );
+      }
+      await five.executeFunction(
+        "getAccountPatients",
+        //@ts-ignore
+        account,
+        null,
+        null,
+        null,
+        (result) => {
+          console.log("Loggin to member results");
+          console.log(result.serverResponse.results);
+          console.log(JSON.parse(result.serverResponse.results));
+          setData(JSON.parse(result.serverResponse.results));
+          setLoading(false);
+        }
+      );
+      console.log("useEffect completed");
+    };
+
+    if (data === null) {
+      setLoading(true);
+      console.log("useEffect triggered");
+      // Check patient selection status
+      //@ts-ignore
+      if (five.stack.Patient === undefined) {
+        setPatientSelected(false);
+      }
+
+      console.log("Logging IVR to see", ivr);
+    }
+
+    fetchData();
+
+    //@ts-ignore
+  };
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+  //@ts-ignore
 
   const handleRadioChange = useCallback((value) => {
     setAdmitted(value === "Yes");
@@ -109,7 +162,6 @@ const CustomField = (props: CustomFieldProps) => {
   const handlePractitioner = useCallback((practitionerData, index = null) => {
     setPractitioner({ data: practitionerData, index: index });
   }, []);
-  //@ts-ignore
 
   // Revised useEffect
   useEffect(() => {
@@ -120,67 +172,6 @@ const CustomField = (props: CustomFieldProps) => {
     if (existingPatient && activeStep === 0) {
       setActiveStep(1);
     }
-    if (data === null) {
-      //@ts-ignore
-      /*  if(five.internal.actionID === 'PatientsView') {
-        setExistingPatient(true)
-      } */
-      setLoading(true);
-      console.log("useEffect triggered");
-      // Check patient selection status
-      //@ts-ignore
-      if (five.stack.Patient === undefined) {
-        setPatientSelected(false);
-      }
-
-      const fetchData = async () => {
-        if (existingPatient) {
-          await five.executeFunction(
-            "getIVRDetails",
-            //@ts-ignore
-            selectedRecord.data,
-            null,
-            null,
-            null,
-            (result) => {
-              console.log("Loggin IVR");
-              const data = JSON.parse(result.serverResponse.results);
-              const ivr = data.ivr
-              console.log(data);
-              /* setData(JSON.parse(result.serverResponse.results)); */
-              setIVR(data);
-              handlePatient(data?.patient);
-              setLCode(ivr?.ICD10_L)
-              setICode(ivr?.ICD10_I)
-              setCPTCode(ivr?.CPTCODE)
-              setECode(ivr?.ICD10_E)
-              setCDCode(ivr?.ICD10_CD)
-              handlePractitioner(data?.practitioner)
-              setCPTWound(ivr?.WoundType)
-              setLoading(false);
-            }
-          );
-        }
-        await five.executeFunction(
-          "getAccountPatients",
-          //@ts-ignore
-          account,
-          null,
-          null,
-          null,
-          (result) => {
-            console.log("Loggin to member results");
-            console.log(result.serverResponse.results);
-            console.log(JSON.parse(result.serverResponse.results));
-            setData(JSON.parse(result.serverResponse.results));
-            setLoading(false);
-          }
-        );
-        console.log("useEffect completed");
-      };
-      fetchData();
-      console.log("Logging IVR to see", ivr);
-    } //@ts-ignore
   }, [dialogOpen, existingPatient, activeStep, ivr]);
 
   // Define handleNext and handleBack using useCallback to ensure stability
@@ -301,12 +292,14 @@ const CustomField = (props: CustomFieldProps) => {
                 mohs,
                 diabeticFU,
                 pressureUlcer,
-                cptWound
+                cptWound,
               }}
             />
           )}
 
-          {activeStep === 6 && <CPTCode setCPTCodeMain={setCPTCode}  cptCodeMain={cptCode}/>}
+          {activeStep === 6 && (
+            <CPTCode setCPTCodeMain={setCPTCode} cptCodeMain={cptCode} />
+          )}
           {activeStep === 7 && (
             <Summary
               patient={patient}
@@ -360,7 +353,7 @@ const CustomField = (props: CustomFieldProps) => {
                 zIndex: 99,
               }}
             >
-              {activeStep === 0 ? (
+              {(activeStep === 0 || (existingPatient && activeStep === 1)) ? (
                 <Button
                   onClick={handleDialogClose}
                   style={{
