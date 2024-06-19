@@ -10,6 +10,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
   );
 
   useEffect(() => {
+    console.log(patientSaved)
     if (patientSaved) {
       console.log(
         "Setting selectedIndex from patientSaved:",

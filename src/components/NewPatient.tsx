@@ -1,67 +1,30 @@
-import {
-  Container,
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Grid,
-  IconButton,
-} from "../FivePluginApi";
-import Patient from "./Patient";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
+import React, { useState } from 'react';
+import { Container, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid } from '@mui/material';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import Patient from './Patient'; // Ensure this import points to your Patient component
 
-const NewPatient = ({ data, handlePatient, five, patient }) => {
+const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext, setNewPatient }) => {
   const [page, setPage] = useState(0);
-  const [gender, setGender] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [street, setStreet] = useState("");
-  const [apt, setApt] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zip, setZip] = useState("");
+  const [formState, setFormState] = useState({
+    NameFirst: '',
+    NameLast: '',
+    Gender: '',
+    Birthdate: '',
+    AddressStreet: '',
+    AddressStreet2: '',
+    AddressCity: '',
+    AddressState: '',
+    AddressZip: '',
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
-  };
-
-  const handleBirthdateChange = (event) => {
-    setBirthdate(event.target.value);
-    
-  };
-  const handleStreetChange = (event) => {
-    setStreet(event.target.value);
-    
-  };
-  const handleAptChange = (event) => {
-    setApt(event.target.value);
-    
-  };
-  
-  
-
-  const handleCityChange = (event) => {
-    setCity(event.target.value);
-  };
-
-  const handleStateChange = (event) => {
-    setState(event.target.value);
-  };
-
-  const handleZipChange = (event) => {
-    setZip(event.target.value);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleDialogOpen = () => {
@@ -77,41 +40,50 @@ const NewPatient = ({ data, handlePatient, five, patient }) => {
     handleDialogClose();
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setPatient({ data: formState });
+    setNewPatient(true)
+    handleNext()
+  };
+
   return (
     <>
       {page === 0 && (
         <Container
           style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            marginTop: "10px",
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            marginTop: '10px',
+            marginBottom: '100px'
           }}
         >
           <Box
             style={{
-              maxWidth: "800px",
-              display: "flex",
-              flexDirection: "column",
-              border: "2px solid grey",
+              maxWidth: '800px',
+              display: 'flex',
+              flexDirection: 'column',
+              border: '2px solid grey',
               padding: 20,
-              borderRadius: "10px",
-              boxShadow: "5px 5px 5px rgba(0,0,0,0.1)",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: ".5rem",
-              marginLeft: "40px",
-              position: "relative",
+              borderRadius: '10px',
+              boxShadow: '5px 5px 5px rgba(0,0,0,0.1)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '.5rem',
+              marginLeft: '40px',
+              position: 'relative',
             }}
             component="form"
+            onSubmit={handleSubmit}
           >
             <IconButton
               style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
               }}
               onClick={handleDialogOpen}
             >
@@ -126,64 +98,46 @@ const NewPatient = ({ data, handlePatient, five, patient }) => {
             <Box
               mb={2}
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                First Name:{" "}
+                First Name:{' '}
               </Typography>
-              <TextField
-                label="First Name"
-                margin="normal"
-                sx={{ minWidth: 170 }}
-              />
+              <TextField label="First Name" margin="normal" sx={{ minWidth: 170 }} name="NameFirst" onChange={handleInputChange} />
             </Box>
             <Box
               mb={2}
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                Last Name:{" "}
+                Last Name:{' '}
               </Typography>
-              <TextField
-                label="Last Name"
-                margin="normal"
-                variant="outlined"
-                sx={{ minWidth: 170 }}
-              />
+              <TextField label="Last Name" margin="normal" variant="outlined" sx={{ minWidth: 170 }} name="NameLast" onChange={handleInputChange} />
             </Box>
             <Box
               mb={2}
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120, maxWidth: 120 }}>
-                Gender:{" "}
+                Gender:{' '}
               </Typography>
-              <FormControl
-                margin="normal"
-                variant="outlined"
-                sx={{ minWidth: 200 }}
-              >
+              <FormControl margin="normal" variant="outlined" sx={{ minWidth: 200 }}>
                 <InputLabel id="gender-select-label">Gender</InputLabel>
-                <Select
-                  labelId="gender-select-label"
-                  value={gender}
-                  onChange={handleGenderChange}
-                  label="Gender"
-                >
+                <Select labelId="gender-select-label" value={formState.Gender} onChange={handleInputChange} label="Gender" name="Gender">
                   <MenuItem value="M">M</MenuItem>
                   <MenuItem value="F">F</MenuItem>
                 </Select>
@@ -192,14 +146,14 @@ const NewPatient = ({ data, handlePatient, five, patient }) => {
             <Box
               mb={2}
               style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                Birthdate:{" "}
+                Birthdate:{' '}
               </Typography>
               <TextField
                 label="Birthdate"
@@ -210,9 +164,10 @@ const NewPatient = ({ data, handlePatient, five, patient }) => {
                   shrink: true,
                 }}
                 size="small"
-                value={birthdate}
-                onChange={handleBirthdateChange}
+                value={formState.Birthdate}
+                onChange={handleInputChange}
                 sx={{ minWidth: 200 }}
+                name="Birthdate"
               />
             </Box>
             <Grid container spacing={2} mb={2}>
@@ -221,71 +176,73 @@ const NewPatient = ({ data, handlePatient, five, patient }) => {
               </Grid>
               <Box
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
                 }}
               >
                 <TextField
                   label="Street"
                   margin="normal"
                   variant="outlined"
-                  value={street}
-                  onChange={handleStreetChange}
-                  sx={{ flex: 3, marginRight: "8px" }} // Street 1 takes most space
+                  value={formState.AddressStreet}
+                  onChange={handleInputChange}
+                  sx={{ flex: 3, marginRight: '8px' }}
+                  name="AddressStreet"
                 />
                 <TextField
                   label="Apt"
                   margin="normal"
                   variant="outlined"
-                  value={apt}
-                  onChange={handleAptChange}
-                  sx={{ flex: 1 }} // Street 2 takes less space
+                  value={formState.AddressStreet2}
+                  onChange={handleInputChange}
+                  sx={{ flex: 1 }}
+                  name="AddressStreet2"
                 />
               </Box>
               <Box
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "100%",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
                 }}
               >
                 <TextField
                   label="City"
                   margin="normal"
                   variant="outlined"
-                  value={city}
-                  onChange={handleCityChange}
-                  sx={{ flex: 2, marginRight: "8px" }} // City takes most space
+                  value={formState.AddressCity}
+                  onChange={handleInputChange}
+                  sx={{ flex: 2, marginRight: '8px' }}
+                  name="AddressCity"
                 />
                 <TextField
                   label="State"
                   margin="normal"
                   variant="outlined"
-                  value={state}
-                  onChange={handleStateChange}
-                  sx={{ flex: 1, maxWidth: "80px", marginRight: "8px" }} // State takes less space
+                  value={formState.AddressState}
+                  onChange={handleInputChange}
+                  sx={{ flex: 1, maxWidth: '80px', marginRight: '8px' }}
+                  name="AddressState"
                 />
                 <TextField
                   label="Zip Code"
                   margin="normal"
                   variant="outlined"
-                  value={zip}
-                  onChange={handleZipChange}
-                  sx={{ flex: 1, maxWidth: "120px" }} // Zip Code takes intermediate space
+                  value={formState.AddressZip}
+                  onChange={handleInputChange}
+                  sx={{ flex: 1, maxWidth: '120px' }}
+                  name="AddressZip"
                 />
               </Box>
             </Grid>
 
-            {selectedFile && (
-              <Typography mt={2}>Uploaded file: {selectedFile.name}</Typography>
-            )}
+            {selectedFile && <Typography mt={2}>Uploaded file: {selectedFile.name}</Typography>}
 
-            <Typography mt={5}>IVR for an existing patient?</Typography>
-            <Button  onClick={() => setPage(1)}>
-              Select an existing patient
+            <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
+              Submit
             </Button>
           </Box>
 
@@ -300,19 +257,17 @@ const NewPatient = ({ data, handlePatient, five, patient }) => {
               </Button>
             </DialogActions>
           </Dialog>
-          <Typography style={{color: 'white'}} mt={5}>IVR for an existing patient?</Typography>
-          <Button style={{color: 'white'}} onClick={() => setPage(1)}>Select an existing patient</Button>
+          <Typography style={{ color: 'black' }} mt={5}>
+            IVR for an existing patient?
+          </Typography>
+          <Button style={{ color: 'black' }} onClick={() => setPage(1)}>
+            Select an existing patient
+          </Button>
         </Container>
       )}
       {page === 1 && (
-        <div className="container" style={{ width: "100%" }}>
-          <Patient
-            patients={data.response.value}
-            handlePatient={handlePatient}
-            five={five}
-            patientSaved = {patient}
-            setPage={setPage}
-          />
+        <div className="container" style={{ width: '100%' }}>
+          <Patient patients={data.response.value} handlePatient={handlePatient} five={five} patientSaved={patient} setPage={setPage} />
         </div>
       )}
     </>

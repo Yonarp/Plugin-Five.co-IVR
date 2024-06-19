@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 //import { ThemeProvider } from "@mui/system";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -37,7 +39,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [payors, setPayors] = useState([]);
   const [products, setProducts] = useState([]);
   const [practitioner, setPractitioner] = useState(null);
-
+  const [newPatient, setNewPatient] = useState(false)
   const [iCode, setICode] = useState(null);
   const [lCode, setLCode] = useState(null);
   const [eCode, setECode] = useState(null);
@@ -70,7 +72,7 @@ const CustomField = (props: CustomFieldProps) => {
   //const accountKey = five.stack.Account.AccountKey;
   
   //@ts-ignore
-  const accountKey = five.stack.Account.AccountKey
+  const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66"
 
   const account = {
     AccountKey: accountKey,
@@ -173,7 +175,7 @@ const CustomField = (props: CustomFieldProps) => {
 
   const handleSubmit = async () => {
     const IVR = {
-      patient: patient.data.___PAT,
+      patient: patient?.data?.___PAT,
       products,
       practitioner,
       eCode,
@@ -189,20 +191,39 @@ const CustomField = (props: CustomFieldProps) => {
       pressureUlcer,
     };
 
-    await five.executeFunction(
-      "pushToIVR",
-      //@ts-ignore
-      IVR,
-      null,
-      null,
-      null,
-      (result) => {
-        console.log(result);
-        setSubmissionSuccess(true);
-      }
-    );
+    if(newPatient){
+      console.log("Executing new patient ---Should have patient below");
+      console.log(patient)
+      await five.executeFunction(
+        "createNewPatientAndPushToIVR",
+        patient,
+        null,
+        null,
+        null,
+        (result) => {
+          console.log(result);
+          setSubmissionSuccess(true);
+        }
+      );
+  
+    } else {
+      await five.executeFunction(
+        "pushToIVR",
+        //@ts-ignore
+        IVR,
+        null,
+        null,
+        null,
+        (result) => {
+          console.log(result);
+          setSubmissionSuccess(true);
+        }
+      );
 
-    console.log(IVR);
+    }
+
+
+    /* console.log(IVR);
     handleDialogClose();
     await five.executeFunction(
       "submissionSuccessful",
@@ -215,7 +236,7 @@ const CustomField = (props: CustomFieldProps) => {
       (result) => {
         console.log("Loggin submissionSuccessful")
       }
-    );
+    ); */
 
   };
 
@@ -303,6 +324,9 @@ const CustomField = (props: CustomFieldProps) => {
               handlePatient={handlePatient}
               five={five}
               patient={patient}
+              setPatient={setPatient}
+              handleNext={handleNext}
+              setNewPatient={setNewPatient}
             />
           )}
 
