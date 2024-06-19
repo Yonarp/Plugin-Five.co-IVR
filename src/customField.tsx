@@ -39,7 +39,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [payors, setPayors] = useState([]);
   const [products, setProducts] = useState([]);
   const [practitioner, setPractitioner] = useState(null);
-  const [newPatient, setNewPatient] = useState(false)
+  const [newPatient, setNewPatient] = useState(false);
   const [iCode, setICode] = useState(null);
   const [lCode, setLCode] = useState(null);
   const [eCode, setECode] = useState(null);
@@ -70,9 +70,9 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const officeName = five.stack.OfficeName;
   //const accountKey = five.stack.Account.AccountKey;
-  
+
   //@ts-ignore
-  const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66"
+  const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66";
 
   const account = {
     AccountKey: accountKey,
@@ -121,12 +121,10 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         null,
         (result) => {
-     
           setData(JSON.parse(result.serverResponse.results));
           setLoading(false);
         }
       );
-  
     };
 
     if (data === null) {
@@ -174,29 +172,26 @@ const CustomField = (props: CustomFieldProps) => {
   }
 
   const handleSubmit = async () => {
-    const IVR = {
-      patient: patient?.data?.___PAT,
-      products,
-      practitioner,
-      eCode,
-      iCode,
-      lCode,
-      cdCode,
-      cptCode,
-      Date: getFormattedDate(),
-      vlu,
-      mohs,
-      diabeticFU,
-      cptWound,
-      pressureUlcer,
-    };
-
-    if(newPatient){
-      console.log("Executing new patient ---Should have patient below");
-      console.log(patient)
+    if (newPatient) {
+      const IVR = {
+        patient: patient,
+        products,
+        practitioner,
+        eCode,
+        iCode,
+        lCode,
+        cdCode,
+        cptCode,
+        Date: getFormattedDate(),
+        vlu,
+        mohs,
+        diabeticFU,
+        cptWound,
+        pressureUlcer,
+      }
       await five.executeFunction(
         "createNewPatientAndPushToIVR",
-        patient,
+        IVR,
         null,
         null,
         null,
@@ -205,8 +200,23 @@ const CustomField = (props: CustomFieldProps) => {
           setSubmissionSuccess(true);
         }
       );
-  
     } else {
+      const IVR = {
+        patient: patient?.data?.___PAT,
+        products,
+        practitioner,
+        eCode,
+        iCode,
+        lCode,
+        cdCode,
+        cptCode,
+        Date: getFormattedDate(),
+        vlu,
+        mohs,
+        diabeticFU,
+        cptWound,
+        pressureUlcer,
+      };
       await five.executeFunction(
         "pushToIVR",
         //@ts-ignore
@@ -219,11 +229,10 @@ const CustomField = (props: CustomFieldProps) => {
           setSubmissionSuccess(true);
         }
       );
-
     }
 
-
-    /* console.log(IVR);
+    console.log(IVR);
+    
     handleDialogClose();
     await five.executeFunction(
       "submissionSuccessful",
@@ -236,8 +245,7 @@ const CustomField = (props: CustomFieldProps) => {
       (result) => {
         console.log("Loggin submissionSuccessful")
       }
-    ); */
-
+    );
   };
 
   const handleCloseSnackbar = () => {
