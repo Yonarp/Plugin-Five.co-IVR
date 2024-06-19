@@ -116,6 +116,9 @@ const NewPatient = ({ data, handlePatient, five, patient }) => {
               onClick={handleDialogOpen}
             >
               <UploadFileIcon />
+              <Typography variant="body1" mt={1}>
+                Add Document
+              </Typography>
             </IconButton>
             <Typography variant="h5" mb={5}>
               Enter patient details

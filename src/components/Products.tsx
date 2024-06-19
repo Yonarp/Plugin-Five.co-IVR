@@ -60,7 +60,7 @@ const Products = ({setProducts, productsSaved}) => {
         flexDirection: "column",
       }}
     >
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" style={{ textAlign: "center", marginBottom: "20px" }}  mt={6}>
         Select the product needed for this request.
       </Typography>
       {selectedProducts.map((product, index) => (

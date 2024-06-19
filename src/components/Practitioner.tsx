@@ -6,7 +6,7 @@ import {
   ListItemText,
   Typography,
 } from "../FivePluginApi";
-const Practitioner = ({ five, setPractitioner, practitioner, existingPatient }) => {
+const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,account }) => {
   const [selectedIndex, setSelectedIndex] = React.useState( practitioner ? practitioner : null);
   const [practitioners, setPractitioners] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -29,7 +29,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient }) 
       const fetchData = async () => {
         five.executeFunction(
           "getAccountPractitioners",
-          null,
+          account,
           null,
           null,
           null,
@@ -74,6 +74,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient }) 
   return (
     <Container>
       <Typography
+        mt={6}
         variant="h5"
         style={{ textAlign: "center", marginBottom: "20px" }}
       >

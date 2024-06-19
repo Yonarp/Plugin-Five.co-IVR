@@ -569,10 +569,10 @@ const ICDCode = ({
 
 
   }, [vluCondition, vluLocation, vluSide]);
-
+  /* TODO: Makes Labels consistent with  */
   return (
     <Container>
-      <Typography variant="h5" sx={{ margin: "10px , 0", textAlign: "center" }}>
+      <Typography variant="h5" sx={{ margin: "10px , 0", textAlign: "center" }}  mt={6}>
         Determine ICD-10 Codes
       </Typography>
       <Box
@@ -624,7 +624,7 @@ const ICDCode = ({
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="subtitle1" mr={2}>
+              <Typography variant="subtitle1" mr={2} sx={{minWidth: 40}}>
                 Type:{"  "}
               </Typography>
               <Select
@@ -649,15 +649,25 @@ const ICDCode = ({
             variant="outlined"
             sx={{ marginBottom: "5px" }}
           >
-            <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
-              E code:{" "}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                marginBottom: "10px",
+              }}
+            >
+            <Typography variant="subtitle1"sx={{minWidth: 40}} mr={2}>
+              E Code:{" "}
             </Typography>
             <Select
-              label="E Code"
               value={eCode}
               variant="outlined"
               onChange={handleECode}
               displayEmpty
+              sx={{ flex: 1 }}
             >
               <MenuItem value="" disabled>
                 <em>Select</em>
@@ -668,6 +678,7 @@ const ICDCode = ({
                 </MenuItem>
               ))}
             </Select>
+            </Box>
           </FormControl>
           {/* //@ts-ignore */}
           <LCode

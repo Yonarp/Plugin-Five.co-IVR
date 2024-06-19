@@ -88,12 +88,15 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain}) => {
         width: "100%",
         height: "100%",
         display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
+        alignItems: 'center',
+        flexDirection: 'column'
       }}
     >
-      <Box>
-        <Typography variant="h6" gutterBottom>
+      <Box  style={{
+        width: "100%",
+        height: "100%",
+      }}>
+        <Typography variant="h5" mt={6} style={{ textAlign: "center", marginBottom: "20px" }}>
           Determine the CPT and ICD 10 Codes
         </Typography>
         <Box sx={{ marginBottom: "20px" }}>

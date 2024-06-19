@@ -47,6 +47,23 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
       >
         Select a patient
       </Typography>
+      <Box style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+              }}>
+      <Typography variant="body1" style={{width:'150px'}}>
+        Name
+      </Typography>
+      <Typography variant="body1" style={{width:'150px'}}>
+        Gender
+      </Typography>
+      <Typography variant="body1" style={{width:'150px'}}>
+        DOB
+      </Typography>
+      </Box>
       <List>
         {patients.map((patient, index) => (
           <ListItemButton
@@ -74,13 +91,13 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
               }}
             >
               <Typography variant="body1" style={{width:'150px'}}>
-                {'Name: '}  <br/> {patient.PatientNameFirst + " " + patient.PatientNameLast}
+                  <br/> {patient.PatientNameFirst + " " + patient.PatientNameLast}
               </Typography>
               <Typography variant="body1"  style={{width:'100px'}}>
-                {"Gender: " + patient.PatientGender}
+                {patient.PatientGender}
               </Typography>
               <Typography variant="body1"  style={{width:'100px'}}>
-                {"DOB: " + patient.PatientBirthdate}
+                {patient.PatientBirthdate}
               </Typography>
             </Box>
           </ListItemButton>

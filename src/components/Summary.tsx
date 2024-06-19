@@ -6,59 +6,10 @@ import {
   Grid,
   Checkbox,
   FormControlLabel,
-  Button,
 } from "@mui/material";
 
 //@ts-ignore
-const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, five, handleDialogClose, vlu, mohs,diabeticFU, cptWound, pressureUlcer }) => {
-
-
-  function getFormattedDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }  
-
-  const handleSubmit = async () => {
-
-    const IVR = {
-      patient: patient.data.___PAT,
-      products,
-      practitioner,
-      eCode,
-      iCode,
-      lCode,
-      cdCode,
-      cptCode,
-      Date: getFormattedDate(), 
-      vlu,
-      mohs,
-      diabeticFU,
-      cptWound,
-      pressureUlcer
-    }
-
-
-    await five.executeFunction(
-      "pushToIVR",
-      //@ts-ignore
-      IVR,
-      null,
-      null,
-      null,
-      (result) => {
-        console.log(result);
-
-      }
-    );
-
-    console.log(IVR)
-    handleDialogClose()
-  }
-
-
+const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, handleSubmit }) => {
 
   return (
     <Box
@@ -126,17 +77,17 @@ const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode,
       <Grid container spacing={2} marginTop={1} xs="auto">
       <Grid item xs={3}>
          <Typography variant="body1">
-          {eCode ? `Ecode: ${eCode}` : (iCode ? `ICode: ${iCode}` : `CD-Code: ${cdCode}`)}
+          {eCode ? `E Code: ${eCode}` : (iCode ? `I Code: ${iCode}` : `CD Code: ${cdCode}`)}
          </Typography>
          </Grid>
          <Grid item xs={3}>
          <Typography variant="body1">
-          {lCode && `LCode: ${lCode}`}
+          {lCode && `L Code: ${lCode}`}
          </Typography>
          </Grid>
          <Grid item xs={3}>
          <Typography variant="body1">
-          {cptCode && `CPTCode: ${cptCode}`}
+          {cptCode && `CPT Code: ${cptCode}`}
          </Typography>
          </Grid>
       </Grid>
@@ -150,11 +101,6 @@ const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode,
         }
         sx={{ mt: 2 }}
       />
-      <Box display="flex" justifyContent="space-between" mt={2}>
-        <Button variant="contained" color="primary" size="small" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </Box>
     </Box>
   );
 };

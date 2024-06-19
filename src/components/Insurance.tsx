@@ -134,7 +134,7 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
 
   return (
 <Container style={{ width: "100%", height: "100%" }}>
-  <Typography variant="h6" gutterBottom>
+  <Typography variant="h5"   mt={6}  style={{ textAlign: "center", marginBottom: "20px" }}>
     Select the insurance payors in the order they should be billed.
   </Typography>
   <List>

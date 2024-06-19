@@ -13,7 +13,7 @@ import {
 } from "./FivePluginApi";
 
 import { CustomFieldProps } from "../../../common";
-import { Container } from "@mui/material";
+import { Alert, Container, Snackbar } from "@mui/material";
 import Insurance from "./components/Insurance";
 import Products from "./components/Products";
 import CPTCode from "./components/CPTCode";
@@ -58,6 +58,7 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const [members, setMembers] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
   //@ts-ignore
   const { theme, value, variant, five, formField, selectedRecord } = props;
@@ -67,7 +68,9 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const officeName = five.stack.OfficeName;
   //const accountKey = five.stack.Account.AccountKey;
-  const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66";
+  
+  //@ts-ignore
+  const accountKey = five.stack.Account.AccountKey
 
   const account = {
     AccountKey: accountKey,
@@ -76,7 +79,7 @@ const CustomField = (props: CustomFieldProps) => {
   const totalSteps = 8;
   const existingPatient =
     //@ts-ignore
-    five.internal.actionID !== "IVR" && five.internal.actionID !== "Accounts";
+    five.actionID() !== "IVR" && five.actionID() !== "Accounts";
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -116,19 +119,16 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         null,
         (result) => {
-          console.log("Loggin to member results");
-          console.log(result.serverResponse.results);
-          console.log(JSON.parse(result.serverResponse.results));
+     
           setData(JSON.parse(result.serverResponse.results));
           setLoading(false);
         }
       );
-      console.log("useEffect completed");
+  
     };
 
     if (data === null) {
       setLoading(true);
-      console.log("useEffect triggered");
       // Check patient selection status
       //@ts-ignore
       if (five.stack.Patient === undefined) {
@@ -162,6 +162,66 @@ const CustomField = (props: CustomFieldProps) => {
   const handlePractitioner = useCallback((practitionerData, index = null) => {
     setPractitioner({ data: practitionerData, index: index });
   }, []);
+
+  function getFormattedDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  const handleSubmit = async () => {
+    const IVR = {
+      patient: patient.data.___PAT,
+      products,
+      practitioner,
+      eCode,
+      iCode,
+      lCode,
+      cdCode,
+      cptCode,
+      Date: getFormattedDate(),
+      vlu,
+      mohs,
+      diabeticFU,
+      cptWound,
+      pressureUlcer,
+    };
+
+    await five.executeFunction(
+      "pushToIVR",
+      //@ts-ignore
+      IVR,
+      null,
+      null,
+      null,
+      (result) => {
+        console.log(result);
+        setSubmissionSuccess(true);
+      }
+    );
+
+    console.log(IVR);
+    handleDialogClose();
+    await five.executeFunction(
+      "submissionSuccessful",
+      //@ts-ignore
+      IVR,
+      null,
+      null,
+      null,
+      //@ts-ignore
+      (result) => {
+        console.log("Loggin submissionSuccessful")
+      }
+    );
+
+  };
+
+  const handleCloseSnackbar = () => {
+    setSubmissionSuccess(false);
+  };
 
   // Revised useEffect
   useEffect(() => {
@@ -260,6 +320,7 @@ const CustomField = (props: CustomFieldProps) => {
               setPractitioner={handlePractitioner}
               practitioner={practitioner}
               existingPatient={existingPatient}
+              account={account}
             />
           )}
           {activeStep === 3 && (
@@ -310,13 +371,7 @@ const CustomField = (props: CustomFieldProps) => {
               eCode={eCode}
               cdCode={cdCode}
               cptCode={cptCode}
-              five={five}
-              handleDialogClose={handleDialogClose}
-              vlu={vlu}
-              mohs={mohs}
-              diabeticFU={diabeticFU}
-              cptWound={cptWound}
-              pressureUlcer={pressureUlcer}
+              handleSubmit={handleSubmit}
             />
           )}
 
@@ -353,7 +408,7 @@ const CustomField = (props: CustomFieldProps) => {
                 zIndex: 99,
               }}
             >
-              {(activeStep === 0 || (existingPatient && activeStep === 1)) ? (
+              {activeStep === 0 || (existingPatient && activeStep === 1) ? (
                 <Button
                   onClick={handleDialogClose}
                   style={{
@@ -383,19 +438,35 @@ const CustomField = (props: CustomFieldProps) => {
                 </Button>
               )}
 
-              <Button
-                onClick={handleNext}
-                style={{
-                  width: "100px",
-                  height: "50px",
-                  borderRadius: "0px",
-                  background: "#285C79",
-                  color: "white",
-                  margin: "20px",
-                }}
-              >
-                Next
-              </Button>
+              {activeStep === 7 ? (
+                <Button
+                  onClick={handleSubmit}
+                  style={{
+                    width: "100px",
+                    height: "50px",
+                    borderRadius: "0px",
+                    background: "#285C79",
+                    color: "white",
+                    margin: "20px",
+                  }}
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleNext}
+                  style={{
+                    width: "100px",
+                    height: "50px",
+                    borderRadius: "0px",
+                    background: "#285C79",
+                    color: "white",
+                    margin: "20px",
+                  }}
+                >
+                  Next
+                </Button>
+              )}
             </Box>
           )}
         </DialogContent>
@@ -413,6 +484,16 @@ const CustomField = (props: CustomFieldProps) => {
           }
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={submissionSuccess}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success">
+          Submission Successful!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
