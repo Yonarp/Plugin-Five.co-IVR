@@ -10,7 +10,8 @@ import {
 
 //@ts-ignore
 const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, handleSubmit }) => {
-
+  console.log('Patient from Summary')
+  console.log(patient)
   return (
     <Box
       sx={{ p: 2, maxWidth: 600, mx: "auto", boxShadow: 3, borderRadius: 2 }}

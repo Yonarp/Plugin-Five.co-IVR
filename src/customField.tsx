@@ -173,6 +173,7 @@ const CustomField = (props: CustomFieldProps) => {
 
   const handleSubmit = async () => {
     if (newPatient) {
+      
       const IVR = {
         patient: patient,
         products,

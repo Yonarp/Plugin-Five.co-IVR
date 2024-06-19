@@ -18,6 +18,7 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
   });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFileBase64, setSelectedFileBase64] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,13 +37,25 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
   };
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    setSelectedFile(file);
     handleDialogClose();
+
+    // Convert the file to a base64 string
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      //@ts-ignore
+      setSelectedFileBase64(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
+
+  console.log("Trying to log the document")
+  console.log(selectedFileBase64)
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setPatient({ data: formState });
+    setPatient({ data: formState, document: selectedFileBase64});
     setNewPatient(true)
     handleNext()
   };
