@@ -800,9 +800,18 @@ const ICDCode = ({
               </Select>
             </Box>
 
-            <Box>
-              <Typography variant="subtitle1">I Code</Typography>
-              <FormControl fullWidth variant="outlined">
+            <FormControl fullWidth variant="outlined">
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                marginTop: "10px",
+              }}
+            >
+              <Typography variant="subtitle1" sx={{minWidth: 50}} mr={2}>I Code</Typography>
                 <Select
                   value={iCode}
                   variant="outlined"
@@ -820,8 +829,8 @@ const ICDCode = ({
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
             </Box>
+              </FormControl>
           </FormControl>
           <LCode
             location={lLocation}

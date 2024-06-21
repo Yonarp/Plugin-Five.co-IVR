@@ -9,7 +9,7 @@ import {
 } from "../FivePluginApi";
 
 //@ts-ignore
-const Insurance = ({ patient, five, setPayorsMain }) => {
+const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
   console.log("From Insurance", patient);
   const [selectedPayors, setSelectedPayors] = useState([]);
   const [payors, setPayors] = useState(null);
@@ -140,7 +140,20 @@ const Insurance = ({ patient, five, setPayorsMain }) => {
   <List>
     {
       //@ts-ignore
-      payors ? (
+      newPatient ? (<Container
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",  // Ensure centering both horizontally and vertically
+        }}
+      >
+        <Typography variant="body1">
+          No Insurance found for this Patient
+        </Typography>
+      </Container>) : payors ? (
         payors.map((payor, index) => (
           <ListItem
             key={index}

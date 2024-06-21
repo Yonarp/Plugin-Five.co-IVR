@@ -54,15 +54,17 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
                 flexDirection: "row",
                 justifyContent: "space-evenly",
                 alignItems: "center",
+                marginLeft:'30px',
+               
               }}>
       <Typography variant="body1" style={{width:'150px'}}>
-        Name
+        <strong>Name</strong>
       </Typography>
       <Typography variant="body1" style={{width:'150px'}}>
-        Gender
+      <strong>Gender</strong>
       </Typography>
       <Typography variant="body1" style={{width:'150px'}}>
-        DOB
+      <strong> DOB</strong>
       </Typography>
       </Box>
       <List>
@@ -92,7 +94,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
               }}
             >
               <Typography variant="body1" style={{width:'150px'}}>
-                  <br/> {patient.PatientNameFirst + " " + patient.PatientNameLast}
+                {patient.PatientNameFirst + " " + patient.PatientNameLast}
               </Typography>
               <Typography variant="body1"  style={{width:'100px'}}>
                 {patient.PatientGender}

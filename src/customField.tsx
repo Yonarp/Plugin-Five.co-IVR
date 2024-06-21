@@ -84,6 +84,7 @@ const CustomField = (props: CustomFieldProps) => {
     five.actionID() !== "IVR" && five.actionID() !== "Accounts";
 
   const handleDialogOpen = () => {
+    console.log("Selected Records", selectedRecord.data.editLink)
     setDialogOpen(true);
     const fetchData = async () => {
       if (existingPatient) {
@@ -201,7 +202,7 @@ const CustomField = (props: CustomFieldProps) => {
           setSubmissionSuccess(true);
         }
       );
-    } else {
+    } else if(!existingPatient){
       const IVR = {
         patient: patient?.data?.___PAT,
         products,
@@ -220,6 +221,36 @@ const CustomField = (props: CustomFieldProps) => {
       };
       await five.executeFunction(
         "pushToIVR",
+        //@ts-ignore
+        IVR,
+        null,
+        null,
+        null,
+        (result) => {
+          console.log(result);
+          setSubmissionSuccess(true);
+        }
+      );
+    } else {
+      console.log("This should execute on Update")
+      const IVR = {
+        link: selectedRecord.data.editLink,
+        products,
+        practitioner,
+        eCode,
+        iCode,
+        lCode,
+        cdCode,
+        cptCode,
+        Date: getFormattedDate(),
+        vlu,
+        mohs,
+        diabeticFU,
+        cptWound,
+        pressureUlcer,
+      };
+      await five.executeFunction(
+        "updateIVR",
         //@ts-ignore
         IVR,
         null,
@@ -361,6 +392,7 @@ const CustomField = (props: CustomFieldProps) => {
               patient={patient}
               five={five}
               setPayorsMain={setPayors}
+              newPatient={newPatient}
             />
           )}
           {activeStep === 4 && (

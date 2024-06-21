@@ -43,12 +43,16 @@ const Products = ({setProducts, productsSaved}) => {
   };
 
   useEffect(() => {
-    console.log("Use Effect From Products")
-    if(productsSaved.length > 0) {
-      setSelectedProducts(productsSaved)
+    console.log("Use Effect From Products");
+    if (productsSaved.length === 0) {
+      setSelectedProducts([
+        { name: products[0]?.Description || "", qty: "" },
+        { name: "", qty: "" },
+      ]);
+    } else {
+      setSelectedProducts(productsSaved);
     }
-
-  }, [])
+  }, [productsSaved]);
 
   return (
     <Container
