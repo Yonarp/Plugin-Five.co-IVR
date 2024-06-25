@@ -73,6 +73,7 @@ const CustomField = (props: CustomFieldProps) => {
 
   //@ts-ignore
   const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66";
+  
 
   const account = {
     AccountKey: accountKey,
@@ -171,6 +172,8 @@ const CustomField = (props: CustomFieldProps) => {
     const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
+
+
 
   const handleSubmit = async () => {
     if (newPatient) {
@@ -440,25 +443,7 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
 
-          {patientSelected === true ? (
-            <Button
-              onClick={handleDialogClose}
-              style={{
-                width: "100px",
-                height: "50px",
-                borderRadius: "0px",
-                background: "#285C79",
-                position: "absolute",
-
-                bottom: "5%",
-                left: "50%",
-                transform: "translate(-50%,-50%)",
-                color: "white",
-              }}
-            >
-              Close
-            </Button>
-          ) : (
+         
             <Box
               style={{
                 position: "absolute",
@@ -475,7 +460,7 @@ const CustomField = (props: CustomFieldProps) => {
             >
               {activeStep === 0 || (existingPatient && activeStep === 1) ? (
                 <Button
-                  onClick={handleDialogClose}
+                  onClick={()=> { five.internal.actionID === "IVR" ? five.previousAction(true, 1) : handleDialogClose()}}
                   style={{
                     width: "100px",
                     height: "50px",
@@ -503,7 +488,7 @@ const CustomField = (props: CustomFieldProps) => {
                 </Button>
               )}
 
-              {activeStep === 7 ? (
+              {(activeStep === 7 )? (
                 <Button
                   onClick={handleSubmit}
                   style={{
@@ -533,7 +518,7 @@ const CustomField = (props: CustomFieldProps) => {
                 </Button>
               )}
             </Box>
-          )}
+        
         </DialogContent>
         <DialogActions>
           {

@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { useState } from 'react';
 import { Container, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -19,6 +21,8 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFileBase64, setSelectedFileBase64] = useState('');
+  const [documentType, setDocumentType] = useState('');
+  const [otherDocumentType, setOtherDocumentType] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,20 +48,24 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
     // Convert the file to a base64 string
     const reader = new FileReader();
     reader.onloadend = () => {
-      //@ts-ignore
       setSelectedFileBase64(reader.result);
     };
     reader.readAsDataURL(file);
   };
 
-  console.log("Trying to log the document")
-  console.log(selectedFileBase64)
+  const handleDocumentTypeChange = (event) => {
+    setDocumentType(event.target.value);
+    if (event.target.value !== 'other') {
+      setOtherDocumentType('');
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setPatient({ data: formState, document: selectedFileBase64});
-    setNewPatient(true)
-    handleNext()
+    const documentDetails = documentType === 'other' ? otherDocumentType : documentType;
+    setPatient({ data: formState, document: selectedFileBase64, documentType: documentDetails });
+    setNewPatient(true);
+    handleNext();
   };
 
   return (
@@ -260,8 +268,31 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
           </Box>
 
           <Dialog open={dialogOpen} onClose={handleDialogClose}>
-            <DialogTitle>Upload Facesheet</DialogTitle>
-            <DialogContent>
+            <DialogTitle>Upload Document</DialogTitle>
+            <DialogContent style={{ width: '400px' }}> {/* Fixed width for dialog content */}
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="document-type-label">Document Type</InputLabel>
+                <Select
+                  labelId="document-type-label"
+                  value={documentType}
+                  onChange={handleDocumentTypeChange}
+                  label="Document Type"
+                >
+                  <MenuItem value="factsheet">Factsheet</MenuItem>
+                  <MenuItem value="wound notes">Wound Notes</MenuItem>
+                  <MenuItem value="identification">Identification</MenuItem>
+                  <MenuItem value="other">Other</MenuItem>
+                </Select>
+              </FormControl>
+              {documentType === 'other' && (
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  label="Specify Document Type"
+                  value={otherDocumentType}
+                  onChange={(e) => setOtherDocumentType(e.target.value)}
+                />
+              )}
               <input type="file" onChange={handleFileChange} />
             </DialogContent>
             <DialogActions>
