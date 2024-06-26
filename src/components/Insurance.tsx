@@ -1,19 +1,35 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
+  Button,
   CircularProgress,
   List,
   ListItem,
   ListItemText,
   /* MenuItem ,*/ /* Select, */ Typography,
 } from "../FivePluginApi";
+import InsuranceDetail from "./InsuranceDetail";
 
 //@ts-ignore
 const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
   console.log("From Insurance", patient);
   const [selectedPayors, setSelectedPayors] = useState([]);
+  //@ts-ignore
+  const [selectedPayor, setSelectedPayor] = useState(null)
   const [payors, setPayors] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+
+  const handleDialogOpen = (payor) => {
+    setSelectedPayor(payor)
+    setDialogOpen(true)
+  }
+
+  const handleDialogClose  = () => {
+    setDialogOpen(false)
+  }
+
 
   const handlePayorClick = (payor) => {
     const isSelected = selectedPayors.some((p) => p.PayorID === payor.PayorID);
@@ -110,6 +126,7 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
             );
           }
           setPayors(payorArray);
+          console.log('Loggin Payor Array From insurance',payorArray)
           setLoading(false);
         }
       };
@@ -155,6 +172,10 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
         </Typography>
       </Container>) : payors ? (
         payors.map((payor, index) => (
+          <Box style={{
+            display:'flex',
+            flexDirection: "row",
+          }}>
           <ListItem
             key={index}
             button
@@ -171,13 +192,23 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
                   backgroundColor: "lightblue",
                 },
               },
+              flex: 1,
             }}
           >
             <ListItemText
               primary={payor?.CompanyName}
               secondary={payor?.PayorID}
             />
-          </ListItem>
+           
+          </ListItem >
+          <Button variant="outlined" onClick={(e) => {
+            e.stopPropagation();
+            handleDialogOpen(payor);
+          }}>
+              Edit
+            </Button>
+            <InsuranceDetail dialogOpenExternal={dialogOpen} onClose ={handleDialogClose} payor={selectedPayor}/>
+          </Box>
         ))
       ) : (
         <Container

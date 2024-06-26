@@ -20,7 +20,7 @@ const ICDCode = ({
     { label: "Venous leg ulcer", value: "Venous leg ulcer" },
     { label: "Pressure ulcer", value: "Pressure ulcer" },
     { label: "Mohs", value: "Mohs" },
-    { label: "Other", value: "other" },
+    { label: "Other", value: "Other" },
   ];
 
   const diabetesTypes = [
@@ -926,8 +926,10 @@ const ICDCode = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: 'column'
           }}
         >
+          <TextField  placeholder="Input ICD-10 Code" sx={{width: "60%"}}/>
           <Typography variant="h6">Comments:</Typography>
           <TextField
             sx={{

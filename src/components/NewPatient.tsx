@@ -278,7 +278,7 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
                   onChange={handleDocumentTypeChange}
                   label="Document Type"
                 >
-                  <MenuItem value="factsheet">Factsheet</MenuItem>
+                  <MenuItem value="factsheet">Facesheet</MenuItem>
                   <MenuItem value="wound notes">Wound Notes</MenuItem>
                   <MenuItem value="identification">Identification</MenuItem>
                   <MenuItem value="other">Other</MenuItem>

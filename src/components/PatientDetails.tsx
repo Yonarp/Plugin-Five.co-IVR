@@ -39,7 +39,7 @@ const PatientDetails = ({ admitted, officeName, handleRadioChange, patient}) => 
           }}
         >
           <p>
-            Has this patient been admited to a Skilled Nursing Facility
+            Has this patient been admitted to a Skilled Nursing Facility
             within the past 100 day.
           </p>
           <FormControl component="fieldset">

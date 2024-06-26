@@ -46,7 +46,6 @@ const Products = ({setProducts, productsSaved}) => {
     console.log("Use Effect From Products");
     if (productsSaved.length === 0) {
       setSelectedProducts([
-        { name: products[0]?.Description || "", qty: "" },
         { name: "", qty: "" },
       ]);
     } else {
