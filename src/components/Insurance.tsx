@@ -12,17 +12,19 @@ import InsuranceDetail from "./InsuranceDetail";
 
 //@ts-ignore
 const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
-  console.log("From Insurance", patient);
   const [selectedPayors, setSelectedPayors] = useState([]);
   //@ts-ignore
   const [selectedPayor, setSelectedPayor] = useState(null)
   const [payors, setPayors] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false)
+  console.log("From Insurance", payors);
 
 
-  const handleDialogOpen = (payor) => {
+  const handleDialogOpen = (payor = null, isEdit) => {
     setSelectedPayor(payor)
+    setIsEdit(isEdit)
     setDialogOpen(true)
   }
 
@@ -57,6 +59,24 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
         return null;
     }
   };
+
+  const handlePayor = (payor) => {
+    setPayors((prevPayor) => [...prevPayor, payor])
+    five.executeFunction(
+      "getPatientInsurance",
+      payor,
+      null,
+      null,
+      null,
+      (result) => {
+
+            
+   
+      }
+    );
+
+  }
+
 
   useEffect(() => {
     if (payors === null) {
@@ -203,11 +223,11 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
           </ListItem >
           <Button variant="outlined" onClick={(e) => {
             e.stopPropagation();
-            handleDialogOpen(payor);
+            handleDialogOpen(payor, true);
           }}>
               Edit
             </Button>
-            <InsuranceDetail dialogOpenExternal={dialogOpen} onClose ={handleDialogClose} payor={selectedPayor}/>
+            <InsuranceDetail dialogOpenExternal={dialogOpen} onClose ={handleDialogClose} payor={selectedPayor} handlePayor={handlePayor} isEdit={isEdit}/>
           </Box>
         ))
       ) : (
@@ -228,6 +248,17 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
       )
     }
   </List>
+
+  {//@ts-ignore
+  (payors?.length <= 1 || payors === null) ? (
+    <Button variant="outlined" onClick={(e) => {
+      e.stopPropagation();
+      handleDialogOpen(null,false);
+      
+    }}>
+        Add
+      </Button>
+  ): null }
 
   {selectedPayors.map((payor, index) => (
     <div key={index}>

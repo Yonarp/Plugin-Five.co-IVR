@@ -15,12 +15,12 @@ import {
   import UploadFileIcon from "@mui/icons-material/UploadFile";
   
   //@ts-ignore
-  const InsuranceDetail = ({ dialogOpenExternal,onClose,payor  }) => {
+  const InsuranceDetail = ({ dialogOpenExternal,onClose,payor, handlePayor, isEdit  }) => {
     console.log("Payor Details from Insurance Detail", payor)
     const [formState, setFormState] = useState({
-      memberNumber: "",
+      PayorID: "",
       groupNumber: "",
-      companyName: "",
+      CompanyName: "",
       frontImage: null,
       backImage: null,
       frontImagePreview: "",
@@ -49,7 +49,14 @@ import {
     const handleDialogCloseExternal = () => {
         closeDialog()
     }
-  
+
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+        handlePayor(formState)
+        setDialogOpen(false);
+    }
+
     const handleFileChange = (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -72,15 +79,10 @@ import {
       reader.readAsDataURL(file);
     };
   
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log(formState);
-    };
-  
+
  
     return (
         <Dialog open={dialogOpenExternal} onClose={onClose }>
-        <DialogTitle>Insurance Details</DialogTitle>
         <DialogContent>
           <Container
             style={{
@@ -116,7 +118,7 @@ import {
                   label="Member Number"
                   margin="normal"
                   sx={{ minWidth: 170 }}
-                  name="memberNumber"
+                  name="PayorID"
                   value={ payor ? payor.PayorID : formState.memberNumber}
                   onChange={handleInputChange}
                 />
@@ -158,7 +160,7 @@ import {
                   label="Company Name"
                   margin="normal"
                   sx={{ minWidth: 170 }}
-                  name="companyName"
+                  name="CompanyName"
                   value={payor ? payor?.CompanyName : formState.companyName}
                   onChange={handleInputChange}
                 />
@@ -208,16 +210,23 @@ import {
                 variant="contained"
                 color="primary"
                 style={{ marginTop: '20px' }}
+                onClick={handleSubmit}
               >
                 Submit
               </Button>
           </Container>
         </DialogContent>
+        <Dialog open={dialogOpen} onClose={handleDialogClose}>
+        <DialogTitle>Upload Image</DialogTitle>
+        <DialogContent>
+          <input type="file" onChange={handleFileChange} />
+        </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="primary">
+          <Button onClick={handleDialogClose} color="primary">
             Cancel
           </Button>
         </DialogActions>
+      </Dialog>       
       </Dialog>
     );
   };
