@@ -1,4 +1,4 @@
-declare const Summary: ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, handleSubmit }: {
+declare const Summary: ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, handleSubmit, payors }: {
     products: any;
     patient: any;
     practitioner: any;
@@ -8,5 +8,6 @@ declare const Summary: ({ products, patient, practitioner, eCode, iCode, lCode, 
     cdCode: any;
     cptCode: any;
     handleSubmit: any;
+    payors: any;
 }) => JSX.Element;
 export default Summary;

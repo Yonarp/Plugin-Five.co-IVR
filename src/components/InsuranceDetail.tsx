@@ -16,8 +16,8 @@ import {
   
   //@ts-ignore
   const InsuranceDetail = ({ dialogOpenExternal,onClose,payor, handlePayor, isEdit  }) => {
-    console.log("Payor Details from Insurance Detail", payor)
     const [formState, setFormState] = useState({
+      ___PAY: "",
       PayorID: "",
       groupNumber: "",
       CompanyName: "",
@@ -47,14 +47,14 @@ import {
     };
 
     const handleDialogCloseExternal = () => {
-        closeDialog()
+      onClose()
     }
 
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
+    const handleSubmit = () => {
+        console.log("Handle Submit")
+        handleDialogCloseExternal()
         handlePayor(formState)
-        setDialogOpen(false);
     }
 
     const handleFileChange = (event) => {
@@ -78,7 +78,22 @@ import {
       };
       reader.readAsDataURL(file);
     };
-  
+    
+
+    useEffect(() => {
+      if (payor) {
+        setFormState({
+          ___PAY: payor.___PAY,
+          PayorID: payor.PayorID || "",
+          groupNumber: payor.groupNumber || "",
+          CompanyName: payor.CompanyName || "",
+          frontImage: null,
+          backImage: null,
+          frontImagePreview: "",
+          backImagePreview: "",
+        });
+      }
+    }, [payor]);
 
  
     return (
@@ -119,7 +134,7 @@ import {
                   margin="normal"
                   sx={{ minWidth: 170 }}
                   name="PayorID"
-                  value={ payor ? payor.PayorID : formState.memberNumber}
+                  value={ formState.PayorID}
                   onChange={handleInputChange}
                 />
               </Box>
@@ -161,7 +176,7 @@ import {
                   margin="normal"
                   sx={{ minWidth: 170 }}
                   name="CompanyName"
-                  value={payor ? payor?.CompanyName : formState.companyName}
+                  value={formState.CompanyName}
                   onChange={handleInputChange}
                 />
               </Box>

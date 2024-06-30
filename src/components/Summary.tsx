@@ -9,9 +9,8 @@ import {
 } from "@mui/material";
 
 //@ts-ignore
-const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, handleSubmit }) => {
-  console.log('Patient from Summary')
-  console.log(patient)
+const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode, cptCode, handleSubmit,payors }) => {
+
   return (
     <Box
       sx={{ p: 2, maxWidth: 600, mx: "auto", boxShadow: 3, borderRadius: 2 }}
@@ -44,6 +43,7 @@ const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode,
       <TextField
         label="Primary Payor"
         fullWidth
+        value={payors[0]?.CompanyName}
         margin="dense"
         InputProps={{
           readOnly: true,
@@ -53,6 +53,7 @@ const Summary = ({ products, patient, practitioner, eCode, iCode, lCode, cdCode,
       <TextField
         label="Secondary Payor"
         fullWidth
+        value={payors[1]?.CompanyName}
         margin="dense"
         InputProps={{
           readOnly: true,

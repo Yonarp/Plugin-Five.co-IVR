@@ -339,7 +339,7 @@ const CustomField = (props: CustomFieldProps) => {
         value={value}
         onClick={handleDialogOpen}
         style={{
-          background: "#1d343d",
+          background: "#266787",
           color: "white",
         }} // Open the dialog on button click
       >
@@ -433,6 +433,7 @@ const CustomField = (props: CustomFieldProps) => {
             <Summary
               patient={patient}
               products={products}
+              payors={payors}
               practitioner={practitioner}
               iCode={iCode}
               lCode={lCode}

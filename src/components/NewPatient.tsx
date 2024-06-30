@@ -60,11 +60,28 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const documentDetails = documentType === 'other' ? otherDocumentType : documentType;
-    setPatient({ data: formState, document: selectedFileBase64, documentType: documentDetails });
+    
     setNewPatient(true);
+    await five.executeFunction(
+      "pushPatient",
+      //@ts-ignore
+      formState,
+      null,
+      null,
+      null,
+      //@ts-ignore
+      (result) => {
+        const payorData = JSON.parse(result.serverResponse.results);
+        const patientData = payorData.response
+        console.log("Logging from push to patients",payorData)
+        setPatient({ data: patientData, document: selectedFileBase64, documentType: documentDetails });
+      }
+    );
+
+
     handleNext();
   };
 
