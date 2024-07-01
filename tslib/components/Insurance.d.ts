@@ -1,7 +1,3 @@
-declare const Insurance: ({ patient, five, setPayorsMain, newPatient }: {
-    patient: any;
-    five: any;
-    setPayorsMain: any;
-    newPatient: any;
-}) => JSX.Element;
+import React from "react";
+declare const Insurance: React.NamedExoticComponent<object>;
 export default Insurance;

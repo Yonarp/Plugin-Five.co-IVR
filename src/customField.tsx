@@ -390,7 +390,7 @@ const CustomField = (props: CustomFieldProps) => {
               account={account}
             />
           )}
-          {activeStep === 3 && (
+          {activeStep === 3 && patient &&(
             <Insurance
               patient={patient}
               five={five}

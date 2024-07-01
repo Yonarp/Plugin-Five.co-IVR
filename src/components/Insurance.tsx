@@ -1,17 +1,16 @@
-import { Box, Container } from "@mui/material";
+//@ts-nocheck
+
 import React, { useEffect, useState } from "react";
 import {
-  Button,
+  Container,
+  Typography,
   CircularProgress,
-  List,
-  ListItem,
   ListItemText,
-  /* MenuItem ,*/ /* Select, */ Typography,
-} from "../FivePluginApi";
+} from "@mui/material";
+import { Box, Button, List, ListItem } from "../FivePluginApi";
 import InsuranceDetail from "./InsuranceDetail";
 
-//@ts-ignore
-const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
+const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
   const [selectedPayors, setSelectedPayors] = useState([]);
   //@ts-ignore
   const [selectedPayor, setSelectedPayor] = useState(null);
@@ -19,9 +18,6 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-
-  console.log("Logginf from Insurance", payors);
-  console.log("Logginf from Insurance Patients", patient);
 
   const handleDialogOpen = (payor = null, isEdit) => {
     setSelectedPayor(payor);
@@ -62,27 +58,26 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
     }
   };
 
-  const handlePayor = async (payor) => {
+  const handlePayor = async (payorData) => {
     if (isEdit) {
-      console.log("Reached here", payor);
+      console.log("Reached here", payorData);
       setPayors((prevPayors) =>
-        prevPayors.map((p) => (p.PayorID === payor.PayorID ? payor : p))
+        prevPayors.map((p) => (p.PayorID === payorData.PayorID ? payorData : p))
       );
 
       await five.executeFunction(
         "updatePayer",
-        payor,
+        payorData,
         null,
         null,
         null,
         //@ts-ignore
         (result) => {
-          setPayors(null);
         }
       );
       setSelectedPayors([]);
     } else {
-      setPayors((prevPayor) => [...prevPayor, payor]);
+      setPayors((prevPayor) => [...prevPayor, payorData]);
       /*    setLoading(true);
       const payorData = {
         payor: payor,
@@ -104,98 +99,43 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
   };
 
   useEffect(() => {
-    console.log("Fetching from Insurance");
-
-    if (payors === null) {
+    const fetchData = async () => {
+    
       setLoading(true);
-      const fetchData = async () => {
-        if (patient?.data.__PAY1 === null || patient === null) {
-          setLoading(false);
-        } else {
-          let payorArray = [];
-          if (newPatient) {
-            const payorObj = {
-              PayKey: patient?.data?.__PAY1,
-            };
-            await five.executeFunction(
-              "getPatientInsurance",
-              payorObj,
-              null,
-              null,
-              null,
-              (result) => {
-                const payorData = JSON.parse(result.serverResponse.results);
-                //setPayors(payorData.response.value);
-                payorArray.push(payorData.response.value[0]);
-                if (payorData) {
-                  setPayors(payorArray);
-                }
-                if (patient?.data.__PAY2 === null) {
-                  setLoading(false);
-                }
-              }
-            );
-          } else {
-            if (
-              patient.data.__PAY1 !== null ||
-              patient.data.__PAY1 !== undefined
-            ) {
-              console.log("Patient Key", patient.data.__PAY1);
-              const payorObj = {
-                PayKey: patient?.data?.__PAY1,
-              };
-              await five.executeFunction(
-                "getPatientInsurance",
-                payorObj,
-                null,
-                null,
-                null,
-                (result) => {
-                  const payorData = JSON.parse(result.serverResponse.results);
-                  //setPayors(payorData.response.value);
-                  payorArray.push(payorData.response.value[0]);
-                  if (payorData) {
-                    setPayors(payorArray);
-                  }
-                  if (patient?.data.__PAY2 === null) {
-                    setLoading(false);
-                  }
-                }
-              );
+      const payorKeys = [patient?.data?.__PAY1, patient?.data?.__PAY2].filter(
+        Boolean
+      );
+      const payorPromises = payorKeys.map((payorKey) => {
+        const payorObject = { PayKey: payorKey };
+        return new Promise((resolve) => {
+          five.executeFunction(
+            "getPatientInsurance",
+            payorObject,
+            null,
+            null,
+            null,
+            (result) => {
+              const payorData = JSON.parse(result.serverResponse.results);
+              resolve(payorData.response.value[0]);
             }
-            if (
-              patient.data.__PAY2 !== null ||
-              patient.data.__PAY1 !== undefined
-            ) {
-              const payorObj = {
-                PayKey: patient?.data?.__PAY2,
-              };
-              await five.executeFunction(
-                "getPatientInsurance",
-                payorObj,
-                null,
-                null,
-                null,
-                (result) => {
-                  const payorData = JSON.parse(result.serverResponse.results);
-                  //setPayors(payorData.response.value);
-                  payorArray.push(payorData.response.value[0]);
-                  if (payorData) {
-                    setPayors(payorArray);
-                  }
-                  setLoading(false);
-                }
-              );
-            }
-          }
+          );
+        });
+      });
 
-          console.log("Loggin Payor Array From insurance", payorArray);
-        }
-      };
-      fetchData();
-    }
+      const payorArray = await Promise.all(payorPromises);
+      setPayors(payorArray);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [patient]);
+
+
+  useEffect(() => {
+    // Perform any additional actions or trigger a re-render when payors state changes
   }, [payors]);
 
+  console.log("Payors", payors);
   if (loading) {
     return (
       <Container
@@ -212,108 +152,94 @@ const Insurance = ({ patient, five, setPayorsMain, newPatient }) => {
   }
 
   return (
-    <Container style={{ width: "100%", height: "100%" }}>
-      <Typography
-        variant="h5"
-        mt={6}
-        style={{ textAlign: "center", marginBottom: "20px" }}
+    <Container style={{ height: "100%", width: "100%", color: "black" }}>
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
       >
-        Select the insurance payors in the order they should be billed.
-      </Typography>
-      <List>
-        {payors ? (
-          payors.map((payor, index) => (
-            <Box
-              key={payor?.PayorID || index}
-              style={{
-                display: "flex",
-                flexDirection: "row",
+        <Typography>Select An Insurance</Typography>
+        <List>
+          {payors
+            ? payors.map((payor, index) => (
+                <Box
+                  key={payor?.PayorID || index}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <ListItem
+                    button
+                    onClick={() => handlePayorClick(payor)}
+                    selected={selectedPayors.some(
+                      (p) => p.PayorID === payor.PayorID
+                    )}
+                    sx={{
+                      borderBottom: "1px solid #00000033",
+                      "&.Mui-selected": {
+                        backgroundColor: "#F4F8D0",
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "lightblue",
+                        },
+                      },
+                      flex: 1,
+                    }}
+                  >
+                    <ListItemText
+                      primary={payor?.CompanyName}
+                      secondary={payor?.PayorID}
+                    />
+                  </ListItem>
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDialogOpen(payor, true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <InsuranceDetail
+                    dialogOpenExternal={dialogOpen}
+                    onClose={handleDialogClose}
+                    payor={selectedPayor}
+                    handlePayor={handlePayor}
+                    isEdit={isEdit}
+                  />
+                </Box>
+              ))
+            : null}
+        </List>
+        {
+          //@ts-ignore
+          payors === null || payors?.length <= 1 ? (
+            <Button
+              variant="outlined"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDialogOpen(null, false);
               }}
             >
-              <ListItem
-                button
-                onClick={() => handlePayorClick(payor)}
-                selected={selectedPayors.some(
-                  (p) => p.PayorID === payor.PayorID
-                )}
-                sx={{
-                  borderBottom: "1px solid #00000033",
-                  "&.Mui-selected": {
-                    backgroundColor: "#F4F8D0",
-                    color: "black",
-                    "&:hover": {
-                      backgroundColor: "lightblue",
-                    },
-                  },
-                  flex: 1,
-                }}
-              >
-                <ListItemText
-                  primary={payor?.CompanyName}
-                  secondary={payor?.PayorID}
-                />
-              </ListItem>
-              <Button
-                variant="outlined"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDialogOpen(payor, true);
-                }}
-              >
-                Edit
-              </Button>
-              <InsuranceDetail
-                dialogOpenExternal={dialogOpen}
-                onClose={handleDialogClose}
-                payor={selectedPayor}
-                handlePayor={handlePayor}
-                isEdit={isEdit}
-              />
-            </Box>
-          ))
-        ) : (
-          <Container
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column", // Ensure centering both horizontally and vertically
-            }}
-          >
-            <Typography variant="body1">
-              No Insurance found for this Patient
+              Add
+            </Button>
+          ) : null
+        }
+
+        {selectedPayors.map((payor, index) => (
+          <div key={index}>
+            <Typography variant="subtitle1" gutterBottom>
+              <strong>{getPayorLabel(index)}</strong>
             </Typography>
-          </Container>
-        )}
-      </List>
-
-      {
-        //@ts-ignore
-        payors === null || payors?.length <= 1 ? (
-          <Button
-            variant="outlined"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDialogOpen(null, false);
-            }}
-          >
-            Add
-          </Button>
-        ) : null
-      }
-
-      {selectedPayors.map((payor, index) => (
-        <div key={index}>
-          <Typography variant="subtitle1" gutterBottom>
-            <strong>{getPayorLabel(index)}</strong>
-          </Typography>
-          <Typography variant="body1">{payor?.CompanyName}</Typography>
-        </div>
-      ))}
+            <Typography variant="body1">{payor?.CompanyName}</Typography>
+          </div>
+        ))}
+      </Box>
     </Container>
   );
-};
+});
 
 export default Insurance;
