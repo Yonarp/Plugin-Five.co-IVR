@@ -62,7 +62,7 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
     if (isEdit) {
       console.log("Reached here", payorData);
       setPayors((prevPayors) =>
-        prevPayors.map((p) => (p.PayorID === payorData.PayorID ? payorData : p))
+        prevPayors.map((p) => (p.___PAY === payorData.___PAY ? payorData : p))
       );
 
       await five.executeFunction(
@@ -75,17 +75,15 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
         (result) => {
         }
       );
-      setSelectedPayors([]);
     } else {
       setPayors((prevPayor) => [...prevPayor, payorData]);
-      /*    setLoading(true);
-      const payorData = {
-        payor: payor,
+      const payorObj = {
+        payor: payorData,
         patient: patient?.data?.___PAT,
       };
       await five.executeFunction(
         "pushPayer",
-        payorData,
+        payorObj,
         null,
         null,
         null,
@@ -93,9 +91,9 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
         (result) => {
          
         }
-      ); */
-      setSelectedPayors([]);
+      );
     }
+    setSelectedPayors([]);
   };
 
   useEffect(() => {
