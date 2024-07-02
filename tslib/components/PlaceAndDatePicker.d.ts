@@ -1,2 +1,5 @@
-declare const PlaceAndDatePicker: () => JSX.Element;
+declare const PlaceAndDatePicker: ({ placeOfServiceExternal, setPlaceOfServiceExternal }: {
+    placeOfServiceExternal: any;
+    setPlaceOfServiceExternal: any;
+}) => JSX.Element;
 export default PlaceAndDatePicker;

@@ -1,93 +1,82 @@
-import React from 'react'
-import { Box, FormControl, FormControlLabel } from '../FivePluginApi'
-import MedicareForm from './MedicareForm'
-import PlaceAndDatePicker from './PlaceAndDatePicker'
-import { Radio, RadioGroup } from '@mui/material'
+import React from 'react';
+import { Box, FormControl, FormControlLabel } from '../FivePluginApi';
+import MedicareForm from './MedicareForm';
+import PlaceAndDatePicker from './PlaceAndDatePicker';
+import { Radio, RadioGroup } from '@mui/material';
 
 //@ts-ignore
-const PatientDetails = ({ admitted, officeName, handleRadioChange, patient}) => {
-  console.log( "Comes from patiend Detail",patient)
-    return(
-        <Box>
-        <div
-          className="patient-details"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-            margin: "20px 0", // Adjust as needed
-          }}
-        >
-          {patient ? ( 
-            <p>
-            <strong>{patient?.data.NameFirst + " " + patient?.data.NameLast} </strong> 
-            <br /> 
-            <br /> {patient?.data.AddressStreet + " " +  (patient.data.AddressStreet2 ? patient?.data.AddressStreet2 : "") } <br></br>{ patient?.data.AddressCity +  " " + patient?.data.AddressState + " "  + patient?.data.AddressZip}
-          </p>
-          ): <></>}
-          
-          <p>Sunnyside</p>
-        </div>
-        {/* TODO: Look into Text jumping when selecting form */}
-        <div
-          className="IVR-page-1"
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center", // Adjust as needed
-          }}
-        >
+const PatientDetails = ({ admitted, officeName, handleRadioChange, patient, placeOfService, setPlaceOfService }) => {
+  console.log("Comes from patient Detail", placeOfService);
+
+  return (
+    <Box>
+      <div
+        className="patient-details"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%',
+          margin: '20px 0',
+        }}
+      >
+        {patient ? (
           <p>
-            Has this patient been admitted to a Skilled Nursing Facility
-            within the past 100 day.
+            <strong>{patient?.data.NameFirst + ' ' + patient?.data.NameLast}</strong>
+            <br />
+            <br />
+            {patient?.data.AddressStreet + ' ' + (patient.data.AddressStreet2 ? patient?.data.AddressStreet2 : '')}
+            <br />
+            {patient?.data.AddressCity + ' ' + patient?.data.AddressState + ' ' + patient?.data.AddressZip}
           </p>
-          <FormControl component="fieldset">
-            <RadioGroup
-              name="exclusive-options"
-              style={{
-                width: "auto",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-around",
-                marginLeft: "10px",
-              }}
-              onChange={(event) =>
-                handleRadioChange(event.target.value)
-              }
-            >
-              <FormControlLabel
-                value="Yes"
-                control={<Radio />}
-                label="Yes"
-              />
-              <FormControlLabel
-                value="No"
-                control={<Radio />}
-                label="No"
-                defaultChecked
-              />
-            </RadioGroup>
-          </FormControl>
-        </div>
-        <div
-          className="medicare-form"
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center", // Adjust as needed
-          }}
-        >
-          {admitted === null ? null : admitted ? (
-            <MedicareForm />
-          ) : (
-            <PlaceAndDatePicker />
-          )}
-        </div>
-      </Box>
-    )
-}
+        ) : (
+          <></>
+        )}
 
+        <p>Sunnyside</p>
+      </div>
 
-export default PatientDetails
+      <div
+        className="IVR-page-1"
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <p>Has this patient been admitted to a Skilled Nursing Facility within the past 100 day.</p>
+        <FormControl component="fieldset">
+          <RadioGroup
+            name="exclusive-options"
+            style={{
+              width: 'auto',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginLeft: '10px',
+            }}
+            onChange={(event) => handleRadioChange(event.target.value)}
+            value={admitted === null ? '' : admitted ? 'Yes' : 'No'}
+          >
+            <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+            <FormControlLabel value="No" control={<Radio />} label="No" />
+          </RadioGroup>
+        </FormControl>
+      </div>
+
+      <div
+        className="medicare-form"
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {admitted === null ? null : admitted ? <MedicareForm  placeOfServiceExternal ={placeOfService} setPlaceOfServiceExternal={setPlaceOfService}/> : <PlaceAndDatePicker placeOfServiceExternal={placeOfService}  setPlaceOfServiceExternal={setPlaceOfService}/>}
+      </div>
+    </Box>
+  );
+};
+
+export default PatientDetails;

@@ -32,6 +32,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [activeStep, setActiveStep] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
+  const [placeOfService, setPlaceOfService] = useState(null);
   const [patientSelected, setPatientSelected] = useState(true);
   const [ivr, setIVR] = useState({});
   // const [existingPatient, setExistingPatient] = useState(false)
@@ -48,6 +49,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [vlu, setVLU] = useState({ condition: "", location: "", type: "" });
   const [mohs, setMohs] = useState("");
   const [cptWound, setCPTWound] = useState(null);
+  const [snf, setSNF] = useState()
   const [diabeticFU, setDiabeticFU] = useState();
   const [pressureUlcer, setPressureUlcer] = useState({
     location: "",
@@ -112,6 +114,8 @@ const CustomField = (props: CustomFieldProps) => {
             handlePractitioner(data?.practitioner);
             setCPTWound(ivr?.WoundType);
             setLoading(false);
+            setAdmitted(() => ivr?.SNFAttendance ? ivr?.SNFAttendance : false)
+            setPlaceOfService(ivr?.PlaceofService)
           }
         );
       }
@@ -137,7 +141,6 @@ const CustomField = (props: CustomFieldProps) => {
         setPatientSelected(false);
       }
 
-      console.log("Logging IVR to see", ivr);
     }
 
     fetchData();
@@ -184,6 +187,8 @@ const CustomField = (props: CustomFieldProps) => {
         practitioner,
         eCode,
         iCode,
+        admitted,
+        placeOfService,
         lCode,
         cdCode,
         cptCode,
@@ -209,6 +214,8 @@ const CustomField = (props: CustomFieldProps) => {
       const IVR = {
         patient: patient?.data?.___PAT,
         products,
+        admitted,
+        placeOfService,
         practitioner,
         eCode,
         iCode,
@@ -241,6 +248,8 @@ const CustomField = (props: CustomFieldProps) => {
         products,
         practitioner,
         eCode,
+        admitted,
+        placeOfService,
         iCode,
         lCode,
         cdCode,
@@ -317,6 +326,7 @@ const CustomField = (props: CustomFieldProps) => {
 
   // Event handlers
 
+
   if (loading) {
     return (
       <Container
@@ -373,12 +383,14 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
 
-          {activeStep === 1 && (
+          {activeStep === 1 && patient &&(
             <PatientDetails
               patient={patient}
               admitted={admitted}
               handleRadioChange={handleRadioChange}
               officeName={officeName}
+              placeOfService= {placeOfService}
+              setPlaceOfService= {setPlaceOfService}
             />
           )}
           {activeStep === 2 && (

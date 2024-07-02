@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '../FivePluginApi'
 
 
-const PlaceAndDatePicker = () => {
+const PlaceAndDatePicker = ({placeOfServiceExternal , setPlaceOfServiceExternal}) => {
 
     const [placeOfService, setPlaceOfService] = React.useState('')
    /*  const [dateOfService, setDateOfService] = React.useState(''); */
 
     const placesOfService = [
-        { code: 11, label: 'Office Visit' },
+        { code: 11, label: 'Office' },
         { code: 12, label: 'Home' },
         { code: 13, label: 'Assisted Living Facility' },
         { code: 31, label: 'Skilled Nursing Facility' },
@@ -17,11 +17,18 @@ const PlaceAndDatePicker = () => {
 
     const handlePlaceChange = (value) => {
             setPlaceOfService(value);
+            setPlaceOfServiceExternal(value)
     }
 
 /*     const handleDateChange = (value) => {
         setDateOfService(value)
     } */
+
+    useEffect(() => {
+        if(placeOfServiceExternal){
+            setPlaceOfService(placeOfServiceExternal)
+        }
+    },[])
 
     return (
         <div style={{display: 'flex', width: '40vw', flexDirection: 'column', margin: '10px 0px' }}>

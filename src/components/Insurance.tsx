@@ -158,7 +158,7 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
           flexDirection: "column",
         }}
       >
-        <Typography>Select An Insurance</Typography>
+        <Typography variant="h5" mt={5}  style={{ textAlign: "center", marginBottom: "20px" }}>Select An Insurance</Typography>
         <List>
           {payors
             ? payors.map((payor, index) => (

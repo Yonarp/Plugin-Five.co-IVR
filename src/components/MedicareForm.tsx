@@ -3,7 +3,7 @@ import { FormControl, FormControlLabel } from "../FivePluginApi";
 import { Radio, RadioGroup } from "@mui/material";
 import PlaceAndDatePicker from "./PlaceAndDatePicker";
 
-const MedicareForm = () => {
+const MedicareForm = ({placeOfServiceExternal, setPlaceOfServiceExternal}) => {
   const [medicare, setMedicare] = React.useState(null);
 
   const handleChange = (value) => {
@@ -32,7 +32,7 @@ const MedicareForm = () => {
         </RadioGroup>
       </FormControl>
       {medicare === null ? null : medicare ? (
-        <PlaceAndDatePicker/>
+        <PlaceAndDatePicker placeOfServiceExternal={placeOfServiceExternal} setPlaceOfServiceExternal={setPlaceOfServiceExternal}/>
       ) : (
         <p style = {{color: 'red'}}>
 
