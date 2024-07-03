@@ -1,4 +1,4 @@
-declare const NewPatient: ({ data, handlePatient, five, patient, setPatient, handleNext, setNewPatient }: {
+declare const NewPatient: ({ data, handlePatient, five, patient, setPatient, handleNext, setNewPatient, }: {
     data: any;
     handlePatient: any;
     five: any;

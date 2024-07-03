@@ -1,11 +1,35 @@
 //@ts-nocheck
 
 import React, { useState } from 'react';
-import { Container, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid } from '@mui/material';
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Grid,
+} from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Patient from './Patient'; // Ensure this import points to your Patient component
 
-const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext, setNewPatient }) => {
+const NewPatient = ({
+  data,
+  handlePatient,
+  five,
+  patient,
+  setPatient,
+  handleNext,
+  setNewPatient,
+}) => {
   const [page, setPage] = useState(0);
   const [formState, setFormState] = useState({
     NameFirst: '',
@@ -19,8 +43,9 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
     AddressZip: '',
   });
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedFileBase64, setSelectedFileBase64] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFilesBase64, setSelectedFilesBase64] = useState([]);
+  const [documentTypes, setDocumentTypes] = useState([]);
   const [documentType, setDocumentType] = useState('');
   const [otherDocumentType, setOtherDocumentType] = useState('');
 
@@ -41,16 +66,24 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    handleDialogClose();
+    const files = Array.from(event.target.files);
 
-    // Convert the file to a base64 string
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSelectedFileBase64(reader.result);
-    };
-    reader.readAsDataURL(file);
+    // Convert files to base64 strings
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedFilesBase64((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    setSelectedFiles((prev) => [...prev, ...files]);
+    setDocumentTypes((prev) => [
+      ...prev,
+      documentType === 'other' ? otherDocumentType : documentType,
+    ]);
+
+    handleDialogClose();
   };
 
   const handleDocumentTypeChange = (event) => {
@@ -62,11 +95,9 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const documentDetails = documentType === 'other' ? otherDocumentType : documentType;
-    
     setNewPatient(true);
     await five.executeFunction(
-      "pushPatient",
+      'pushPatient',
       //@ts-ignore
       formState,
       null,
@@ -75,12 +106,17 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
       //@ts-ignore
       (result) => {
         const payorData = JSON.parse(result.serverResponse.results);
-        const patientData = payorData.response
-        console.log("Logging from push to patients",payorData)
-        setPatient({ data: patientData, document: selectedFileBase64, documentType: documentDetails });
+        const patientData = payorData.response;
+        console.log('Logging from push to patients', payorData);
+        setPatient({
+          data: patientData,
+          documents: selectedFilesBase64.map((base64, index) => ({
+            base64,
+            type: documentTypes[index],
+          })),
+        });
       }
     );
-
 
     handleNext();
   };
@@ -96,7 +132,7 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
             alignItems: 'center',
             flexDirection: 'column',
             marginTop: '10px',
-            marginBottom: '100px'
+            marginBottom: '100px',
           }}
         >
           <Box
@@ -145,7 +181,13 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
               <Typography mr={3} sx={{ minWidth: 120 }}>
                 First Name:{' '}
               </Typography>
-              <TextField label="First Name" margin="normal" sx={{ minWidth: 170 }} name="NameFirst" onChange={handleInputChange} />
+              <TextField
+                label="First Name"
+                margin="normal"
+                sx={{ minWidth: 170 }}
+                name="NameFirst"
+                onChange={handleInputChange}
+              />
             </Box>
             <Box
               mb={2}
@@ -159,7 +201,14 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
               <Typography mr={3} sx={{ minWidth: 120 }}>
                 Last Name:{' '}
               </Typography>
-              <TextField label="Last Name" margin="normal" variant="outlined" sx={{ minWidth: 170 }} name="NameLast" onChange={handleInputChange} />
+              <TextField
+                label="Last Name"
+                margin="normal"
+                variant="outlined"
+                sx={{ minWidth: 170 }}
+                name="NameLast"
+                onChange={handleInputChange}
+              />
             </Box>
             <Box
               mb={2}
@@ -175,7 +224,13 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
               </Typography>
               <FormControl margin="normal" variant="outlined" sx={{ minWidth: 200 }}>
                 <InputLabel id="gender-select-label">Gender</InputLabel>
-                <Select labelId="gender-select-label" value={formState.Gender} onChange={handleInputChange} label="Gender" name="Gender">
+                <Select
+                  labelId="gender-select-label"
+                  value={formState.Gender}
+                  onChange={handleInputChange}
+                  label="Gender"
+                  name="Gender"
+                >
                   <MenuItem value="M">M</MenuItem>
                   <MenuItem value="F">F</MenuItem>
                 </Select>
@@ -277,7 +332,14 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
               </Box>
             </Grid>
 
-            {selectedFile && <Typography mt={2}>Uploaded file: {selectedFile.name}</Typography>}
+            {selectedFiles.length > 0 && (
+              <Box mt={2}>
+                <Typography>Uploaded files:</Typography>
+                {selectedFiles.map((file, index) => (
+                  <Typography key={index}>{file.name} - {documentTypes[index]}</Typography>
+                ))}
+              </Box>
+            )}
 
             <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
               Submit
@@ -286,7 +348,8 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
 
           <Dialog open={dialogOpen} onClose={handleDialogClose}>
             <DialogTitle>Upload Document</DialogTitle>
-            <DialogContent style={{ width: '400px' }}> {/* Fixed width for dialog content */}
+            <DialogContent style={{ width: '400px' }}>
+              {/* Fixed width for dialog content */}
               <FormControl fullWidth margin="normal">
                 <InputLabel id="document-type-label">Document Type</InputLabel>
                 <Select
@@ -311,7 +374,7 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
                   onChange={(e) => setOtherDocumentType(e.target.value)}
                 />
               )}
-              <input type="file" onChange={handleFileChange} />
+              <input type="file" multiple accept="image/jpeg,image/png,application/pdf" onChange={handleFileChange} />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleDialogClose} color="primary">
@@ -329,7 +392,13 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
       )}
       {page === 1 && (
         <div className="container" style={{ width: '100%' }}>
-          <Patient patients={data.response.value} handlePatient={handlePatient} five={five} patientSaved={patient} setPage={setPage} />
+          <Patient
+            patients={data.response.value}
+            handlePatient={handlePatient}
+            five={five}
+            patientSaved={patient}
+            setPage={setPage}
+          />
         </div>
       )}
     </>
