@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Box, Button, List, ListItem } from "../FivePluginApi";
 import InsuranceDetail from "./InsuranceDetail";
+import { Delete } from "@mui/icons-material";
 
 const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
   const [selectedPayors, setSelectedPayors] = useState([]);
@@ -58,6 +59,27 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
     }
   };
 
+  const handleDelete = async (payor, index) => {
+    const deleteObj = {
+      patientKey: patient?.data?.___PAT,
+      index: index
+    }
+
+    await five.executeFunction(
+      "DeleteInsurance",
+      deleteObj,
+      null,
+      null,
+      null,
+      //@ts-ignore
+      (result) => {
+        setPayors(payors.filter(payorItem => { return  payorItem.___PAY !== payor.___PAY}))
+      }
+    );
+
+  
+  }
+
   const handlePayor = async (payorData) => {
     if (isEdit) {
       console.log("Reached here", payorData);
@@ -75,6 +97,7 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
         (result) => {
         }
       );
+      
     } else {
       setPayors((prevPayor) => [...prevPayor, payorData]);
       const payorObj = {
@@ -130,10 +153,6 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
   }, [patient]);
 
 
-  useEffect(() => {
-    // Perform any additional actions or trigger a re-render when payors state changes
-  }, [payors]);
-
   console.log("Payors", payors);
   if (loading) {
     return (
@@ -168,6 +187,8 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
                   style={{
                     display: "flex",
                     flexDirection: "row",
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
                   <ListItem
@@ -202,6 +223,7 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
                   >
                     Edit
                   </Button>
+                  <Delete style={{fill: "#EC5750", color: "#EC5750", cursor: 'pointer', marginLeft: '5px'}} onClick={() => handleDelete(payor, index)} />
                   <InsuranceDetail
                     dialogOpenExternal={dialogOpen}
                     onClose={handleDialogClose}
