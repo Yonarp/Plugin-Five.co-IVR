@@ -298,6 +298,7 @@ const NewPatient = ({ data, handlePatient, five, patient, setPatient, handleNext
                   <MenuItem value="factsheet">Facesheet</MenuItem>
                   <MenuItem value="wound notes">Wound Notes</MenuItem>
                   <MenuItem value="identification">Identification</MenuItem>
+                  <MenuItem value="priorAuthorization">Prior Authorization</MenuItem>
                   <MenuItem value="other">Other</MenuItem>
                 </Select>
               </FormControl>

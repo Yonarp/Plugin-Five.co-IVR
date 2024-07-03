@@ -430,12 +430,17 @@ const ICDCode = ({
     const selectedICode = event.target.value;
     setICode(selectedICode);
     setICodeMain(selectedICode);
+    setVluCondition("")
+    setVluLocation("")
+    setVluSide("")
+    setVLU(null)
   };
 
   const handleECode = (event) => {
     const selectedECode = event.target.value;
     setECode(selectedECode);
     setECodeMain(selectedECode);
+    setDiabetesType("");
   };
 
   const handleMohsCode = (event) => {

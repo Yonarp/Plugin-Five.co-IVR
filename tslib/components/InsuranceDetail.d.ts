@@ -1,4 +1,4 @@
-declare const InsuranceDetail: ({ dialogOpenExternal, onClose, payor, handlePayor, isEdit }: {
+declare const InsuranceDetail: ({ dialogOpenExternal, onClose, payor, handlePayor, isEdit, }: {
     dialogOpenExternal: any;
     onClose: any;
     payor: any;

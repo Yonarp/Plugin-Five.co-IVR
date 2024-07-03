@@ -455,8 +455,6 @@ const CustomField = (props: CustomFieldProps) => {
               handleSubmit={handleSubmit}
             />
           )}
-
-         
             <Box
               style={{
                 position: "absolute",

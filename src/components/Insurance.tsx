@@ -126,6 +126,7 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
     };
 
     fetchData();
+    console.log("Patient from Insurance", patient)
   }, [patient]);
 
 
@@ -189,7 +190,7 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
                   >
                     <ListItemText
                       primary={payor?.CompanyName}
-                      secondary={payor?.PayorID}
+                      secondary={index === 0 ? patient.data?.Pay1MemberNumber : patient.data?.Pay2MemberNumber}
                     />
                   </ListItem>
                   <Button

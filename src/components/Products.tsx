@@ -33,7 +33,9 @@ const Products = ({setProducts, productsSaved}) => {
 
 
   const handleAddProduct = () => {
+    if(selectedProducts.length < 2){
     setSelectedProducts([...selectedProducts, { name: "", qty: "" }]);
+    }
   };
 
   const handleRemoveProduct = (index) => {
@@ -107,7 +109,7 @@ const Products = ({setProducts, productsSaved}) => {
           />
         </Box>
       ))}
-      <Box style={{ width: "50%" }}>
+      {selectedProducts.length < 2 ? (<Box style={{ width: "50%" }}>
         <Button
           variant="contained"
           color="primary"
@@ -116,7 +118,8 @@ const Products = ({setProducts, productsSaved}) => {
         >
           +
         </Button>
-      </Box>
+      </Box>) : null}
+      
     </Container>
   );
 };

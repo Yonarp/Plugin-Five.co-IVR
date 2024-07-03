@@ -60,6 +60,9 @@ const LCodeSelector = ({
     const selectedLcode = event.target.value;
     setLCode(selectedLcode);
     setLCodeMain(selectedLcode);
+    setLocation("")
+    setSide("")
+    setSeverity("")
   };
 
   useEffect(() => {
@@ -185,7 +188,7 @@ const LCodeSelector = ({
   }, [location, side, severity]);
 
   return (
-    <Box>
+    <Box mb={10}>
       <Box
         sx={{
           display: "flex",
