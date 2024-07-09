@@ -463,7 +463,7 @@ const CustomField = (props: CustomFieldProps) => {
                 zIndex: 99,
               }}
             >
-              {activeStep === 0 || (existingPatient && activeStep === 1) ? (
+              {activeStep === 0 ? null : (existingPatient && activeStep === 1) ? (
                 <Button
                   onClick={()=> { five.internal.actionID === "IVR" ? five.previousAction(true, 1) : handleDialogClose()}}
                   style={{
@@ -507,7 +507,7 @@ const CustomField = (props: CustomFieldProps) => {
                 >
                   Submit
                 </Button>
-              ) : (
+              ) :( activeStep !== 0 ? (
                 <Button
                   onClick={handleNext}
                   style={{
@@ -521,7 +521,7 @@ const CustomField = (props: CustomFieldProps) => {
                 >
                   Next
                 </Button>
-              )}
+              ) :null )}
             </Box>
         </DialogContent>
         <DialogActions>

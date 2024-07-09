@@ -345,7 +345,7 @@ const NewPatient = ({
               </Box>
             )}
 
-            <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
+            <Button type="submit" variant="contained" color="primary" style={{padding: "10px 20px"}} onClick={handleSubmit}>
               Submit
             </Button>
           </Box>
@@ -402,6 +402,7 @@ const NewPatient = ({
             five={five}
             patientSaved={patient}
             setPage={setPage}
+            handleNext={handleNext}
           />
         </div>
       )}

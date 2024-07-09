@@ -2,15 +2,14 @@ import { Button, Container, ListItemButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 //@ts-ignore
 import { Box, List, ListItemText } from "../FivePluginApi";
-//@ts-ignore
-const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
-  // Initialize selectedIndex based on patientSaved
+
+const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleNext }) => {
   const [selectedIndex, setSelectedIndex] = useState(
     patientSaved ? patientSaved.index : null
   );
 
   useEffect(() => {
-    console.log(patientSaved)
+    console.log(patientSaved);
     if (patientSaved) {
       console.log(
         "Setting selectedIndex from patientSaved:",
@@ -48,24 +47,25 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
       >
         Select a patient
       </Typography>
-      <Box style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                marginLeft:'30px',
-               
-              }}>
-      <Typography variant="body1" style={{width:'150px'}}>
-        <strong>Name</strong>
-      </Typography>
-      <Typography variant="body1" style={{width:'150px'}}>
-      <strong>Gender</strong>
-      </Typography>
-      <Typography variant="body1" style={{width:'150px'}}>
-      <strong> DOB</strong>
-      </Typography>
+      <Box
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          marginLeft: "30px",
+        }}
+      >
+        <Typography variant="body1" style={{ width: "150px" }}>
+          <strong>Name</strong>
+        </Typography>
+        <Typography variant="body1" style={{ width: "150px" }}>
+          <strong>Gender</strong>
+        </Typography>
+        <Typography variant="body1" style={{ width: "150px" }}>
+          <strong> DOB</strong>
+        </Typography>
       </Box>
       <List>
         {patients.map((patient, index) => (
@@ -93,19 +93,34 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
                 alignItems: "center",
               }}
             >
-              <Typography variant="body1" style={{width:'150px'}}>
+              <Typography variant="body1" style={{ width: "150px" }}>
                 {patient.PatientNameFirst + " " + patient.PatientNameLast}
               </Typography>
-              <Typography variant="body1"  style={{width:'100px'}}>
+              <Typography variant="body1" style={{ width: "100px" }}>
                 {patient.PatientGender}
               </Typography>
-              <Typography variant="body1"  style={{width:'100px'}}>
+              <Typography variant="body1" style={{ width: "100px" }}>
                 {patient.PatientBirthdate}
               </Typography>
             </Box>
           </ListItemButton>
         ))}
       </List>
+      {selectedIndex !== null && (
+        <Box
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            marginTop: "20px",
+          }}
+        >
+          <Button variant="contained" color="primary" onClick={handleNext}>
+            Next
+          </Button>
+        </Box>
+      )}
       <Box
         style={{
           width: "100%",
@@ -113,7 +128,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          marginRight: "20px",
+          marginTop: "20px",
         }}
       >
         <Typography style={{ color: "black" }} mt={5}>
@@ -121,14 +136,6 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage }) => {
         </Typography>
         <Button onClick={() => setPage(0)}>Create a new patient</Button>
       </Box>
-      <br></br>
-      <br />
-      <Typography style={{ color: "white" }} mt={5}>
-        IVR for a new patient?
-      </Typography>
-      <Button style={{ color: "white" }} onClick={() => setPage(0)}>
-        Create a new patient
-      </Button>
     </Container>
   );
 };
