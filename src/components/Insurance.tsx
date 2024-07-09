@@ -11,6 +11,7 @@ import { Box, Button, List, ListItem } from "../FivePluginApi";
 import InsuranceDetail from "./InsuranceDetail";
 import { Delete } from "@mui/icons-material";
 
+
 const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
   const [selectedPayors, setSelectedPayors] = useState([]);
   //@ts-ignore
@@ -146,6 +147,8 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
       const payorArray = await Promise.all(payorPromises);
       setPayors(payorArray);
       setLoading(false);
+
+
     };
 
     fetchData();

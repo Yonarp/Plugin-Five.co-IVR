@@ -1,5 +1,7 @@
 //@ts-nocheck
 
+//TODO: Remember to update FDF functions: pushPayer, getall
+
 //import { ThemeProvider } from "@mui/system";
 import React, { useCallback, useEffect, useState } from "react";
 

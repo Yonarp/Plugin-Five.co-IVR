@@ -10,9 +10,11 @@ import {
   DialogContent,
   DialogActions,
   CircularProgress,
+  Autocomplete,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+import { CompanyNames } from "../strings";
 
 //@ts-ignore
 const InsuranceDetail = ({
@@ -108,10 +110,7 @@ const InsuranceDetail = ({
             width: "100%",
             justifyContent: "center",
             alignItems: "center",
-            display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
             fontSize: ".5rem",
           }}
         >
@@ -130,13 +129,25 @@ const InsuranceDetail = ({
             <Typography mr={3} sx={{ minWidth: 120 }}>
               Company Name:
             </Typography>
-            <TextField
-              label="Company Name"
-              margin="normal"
-              sx={{ minWidth: 170 }}
-              name="CompanyName"
+            <Autocomplete
+              options={CompanyNames}
+              getOptionLabel={(option) => option}
               value={formState.CompanyName}
-              onChange={handleInputChange}
+              sx={{ minWidth: 170 }}
+              onChange={(event, newValue) => {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  CompanyName: newValue || "",
+                }));
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Company Name"
+                  margin="normal"
+                  sx={{ minWidth: 170 }}
+                />
+              )}
             />
           </Box>
           <Box
