@@ -173,44 +173,13 @@ const CustomField = (props: CustomFieldProps) => {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return "${year}-${month}-${day}";
   }
 
 
 
   const handleSubmit = async () => {
-    if (newPatient) {
-      
-      const IVR = {
-        patient: patient,
-        products,
-        practitioner,
-        eCode,
-        iCode,
-        admitted,
-        placeOfService,
-        lCode,
-        cdCode,
-        cptCode,
-        Date: getFormattedDate(),
-        vlu,
-        mohs,
-        diabeticFU,
-        cptWound,
-        pressureUlcer,
-      }
-      await five.executeFunction(
-        "createNewPatientAndPushToIVR",
-        IVR,
-        null,
-        null,
-        null,
-        (result) => {
-          console.log(result);
-          setSubmissionSuccess(true);
-        }
-      );
-    } else if(!existingPatient){
+   if(!existingPatient){
       const IVR = {
         patient: patient?.data?.___PAT,
         products,
@@ -371,6 +340,31 @@ const CustomField = (props: CustomFieldProps) => {
           {"Insurance Verification Request"}
         </DialogTitle>
         <DialogContent style={{ maxWidth: "100%", overflowX: "hidden" }}>
+          {patient ? (<div
+        className="patient-details"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%',
+          height: '5%',
+          margin: '20px 0',
+        }}
+      >
+        {patient ? (
+          <p>
+            <strong>{patient?.data.NameFirst + ' ' + patient?.data.NameLast}</strong>
+            <br />
+            <br />
+            {patient?.data.AddressStreet + ' ' + (patient.data.AddressStreet2 ? patient?.data.AddressStreet2 : '')}
+            <br />
+            {patient?.data.AddressCity + ' ' + patient?.data.AddressState + ' ' + patient?.data.AddressZip}
+          </p>
+        ) : (
+          <></>
+        )}
+
+        <p>Sunnyside</p>
+      </div>) : null}
           {activeStep === 0 && (
             <NewPatient
               data={data}
@@ -529,7 +523,6 @@ const CustomField = (props: CustomFieldProps) => {
                 </Button>
               )}
             </Box>
-        
         </DialogContent>
         <DialogActions>
           {

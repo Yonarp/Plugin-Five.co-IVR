@@ -10,30 +10,6 @@ const PatientDetails = ({ admitted, officeName, handleRadioChange, patient, plac
 
   return (
     <Box>
-      <div
-        className="patient-details"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-          margin: '20px 0',
-        }}
-      >
-        {patient ? (
-          <p>
-            <strong>{patient?.data.NameFirst + ' ' + patient?.data.NameLast}</strong>
-            <br />
-            <br />
-            {patient?.data.AddressStreet + ' ' + (patient.data.AddressStreet2 ? patient?.data.AddressStreet2 : '')}
-            <br />
-            {patient?.data.AddressCity + ' ' + patient?.data.AddressState + ' ' + patient?.data.AddressZip}
-          </p>
-        ) : (
-          <></>
-        )}
-
-        <p>Sunnyside</p>
-      </div>
 
       <div
         className="IVR-page-1"

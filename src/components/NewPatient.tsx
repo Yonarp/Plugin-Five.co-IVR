@@ -96,10 +96,14 @@ const NewPatient = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setNewPatient(true);
+    const patientObj = {
+      patient: formState,
+      document: selectedFilesBase64
+    }
     await five.executeFunction(
       'pushPatient',
       //@ts-ignore
-      formState,
+      patientObj,
       null,
       null,
       null,

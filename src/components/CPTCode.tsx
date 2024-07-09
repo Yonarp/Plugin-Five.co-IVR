@@ -55,7 +55,7 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain}) => {
     setWoundSize(event.target.value);
   };
 
-  const cptCodes = ["15271", "15272", "15273", "15274"];
+  const cptCodes = ["15271", "15272", "15273", "15274", "15275", "15276", "15277", "15278"];
 
   const cptCodeLookup = {
     1: { small: "15271", large: "15272" },
