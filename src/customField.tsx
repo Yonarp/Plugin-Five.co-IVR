@@ -175,9 +175,8 @@ const CustomField = (props: CustomFieldProps) => {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
-    return "${year}-${month}-${day}";
+    return `${year}-${month}-${day}`;
   }
-
 
 
   const handleSubmit = async () => {
@@ -248,7 +247,6 @@ const CustomField = (props: CustomFieldProps) => {
 
     console.log(IVR);
     
-    handleDialogClose();
     await five.executeFunction(
       "submissionSuccessful",
       //@ts-ignore
@@ -261,6 +259,10 @@ const CustomField = (props: CustomFieldProps) => {
         console.log("Loggin submissionSuccessful")
       }
     );
+    handleDialogClose();
+    if( five.internal.actionID === "IVR"){
+      five.previousAction(true, 1)
+    }
   };
 
   const handleCloseSnackbar = () => {

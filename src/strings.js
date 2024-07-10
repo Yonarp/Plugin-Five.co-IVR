@@ -685,5 +685,6 @@ export const CompanyNames = [
     "Medicaid Oregon (OR)",
     "Medicaid Pennsylvania (PA)",
     "Medicaid Rhode Island (RI) (Web Credentials Required)",
-    "Medicaid South Carolina (SC)"
+    "Medicaid South Carolina (SC)",
+    "Other"
 ]

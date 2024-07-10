@@ -36,6 +36,7 @@ const InsuranceDetail = ({
   });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [uploadType, setUploadType] = useState("");
+  const [isOtherSelected, setIsOtherSelected] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -130,11 +131,11 @@ const InsuranceDetail = ({
               Company Name:
             </Typography>
             <Autocomplete
-              options={CompanyNames}
+              options={[...CompanyNames, "Other"]}
               getOptionLabel={(option) => option}
               value={formState.CompanyName}
-              sx={{ minWidth: 170 }}
               onChange={(event, newValue) => {
+                setIsOtherSelected(newValue === "Other");
                 setFormState((prevState) => ({
                   ...prevState,
                   CompanyName: newValue || "",
@@ -145,11 +146,34 @@ const InsuranceDetail = ({
                   {...params}
                   label="Company Name"
                   margin="normal"
-                  sx={{ minWidth: 170 }}
+                  sx={{ minWidth: 250 }}  // Adjust the width here
                 />
               )}
             />
           </Box>
+          {isOtherSelected && (
+            <Box
+              mb={2}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography mr={3} sx={{ minWidth: 120 }}>
+                Enter Company Name:
+              </Typography>
+              <TextField
+                label="Company Name"
+                margin="normal"
+                sx={{ minWidth: 300 }}
+                name="CompanyName"
+                value={formState.CompanyName}
+                onChange={handleInputChange}
+              />
+            </Box>
+          )}
           <Box
             mb={2}
             style={{

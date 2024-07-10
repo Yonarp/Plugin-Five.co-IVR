@@ -247,6 +247,7 @@ const ICDCode = ({
     "D04.62",
     "D04.8",
     "D07.4",
+    "Other"
   ];
 
   const mohsConditionsMapping = {
@@ -298,6 +299,7 @@ const ICDCode = ({
     "E11.622",
     "E13.621",
     "E13.622",
+    "Other"
   ];
 
   const eCodeMapping = {
@@ -350,6 +352,7 @@ const ICDCode = ({
     "I87.311", // 13
     "I87.312", // 14
     "I87.313", // 15
+    "Other"
   ];
   //@ts-ignore
   const [loading, setLoading] = useState(false);
@@ -683,6 +686,7 @@ const ICDCode = ({
                 </MenuItem>
               ))}
             </Select>
+            {eCode === 'Other' ? <TextField placeholder="Input Ecode" onChange={handleECode}/> : null}
             </Box>
           </FormControl>
           {/* //@ts-ignore */}

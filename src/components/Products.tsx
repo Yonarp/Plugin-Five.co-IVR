@@ -13,8 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const Products = ({setProducts, productsSaved}) => {
   const [selectedProducts, setSelectedProducts] = useState(productsSaved ? productsSaved : [
-    { name: "", qty: "" },
-    { name: "", qty: "" },
+    { name: "", qty: "", key: "" },
   ]);
 
   const products = [
@@ -23,10 +22,16 @@ const Products = ({setProducts, productsSaved}) => {
     { Description: "Orion - Q4276", QCode: "Q4276", Brand: "Orion", PRD: '4909AE5B-8DEA-4845-91E3-8BED0BED8665' },
     { Description: "Surgraft - Q4268", QCode: "Q4268", Brand: "Surgraft", PRD: '0E067184-4777-49A7-9E8B-A9CAA959485A' }
 ];
-
+  //@ts-ignore
   const handleProductChange = (index, event) => {
     const newProducts = [...selectedProducts];
     newProducts[index].name = event.target.value;
+    const matchingProduct = products.find(product => product.Description === newProducts[index].name);
+    if (matchingProduct) {
+      newProducts[index].key = matchingProduct.PRD;
+    } else {
+      newProducts[index].key = ""; // Clear the key if no matching product is found
+    }
     setSelectedProducts(newProducts);
     setProducts(newProducts)
   };
@@ -34,7 +39,7 @@ const Products = ({setProducts, productsSaved}) => {
 
   const handleAddProduct = () => {
     if(selectedProducts.length < 2){
-    setSelectedProducts([...selectedProducts, { name: "", qty: "" }]);
+    setSelectedProducts([...selectedProducts, { name: "", qty: "", key: "" }]);
     }
   };
 
@@ -48,7 +53,7 @@ const Products = ({setProducts, productsSaved}) => {
     console.log("Use Effect From Products");
     if (productsSaved.length === 0) {
       setSelectedProducts([
-        { name: "", qty: "" },
+        { name: "", qty: "",key: "" },
       ]);
     } else {
       setSelectedProducts(productsSaved);
