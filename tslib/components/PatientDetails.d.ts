@@ -1,6 +1,5 @@
-declare const PatientDetails: ({ admitted, officeName, handleRadioChange, patient, placeOfService, setPlaceOfService }: {
+declare const PatientDetails: ({ admitted, handleRadioChange, patient, placeOfService, setPlaceOfService }: {
     admitted: any;
-    officeName: any;
     handleRadioChange: any;
     patient: any;
     placeOfService: any;

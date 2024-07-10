@@ -125,6 +125,8 @@ const NewPatient = ({
     handleNext();
   };
 
+  console.log("Logging Data from new patient", data)
+
   return (
     <>
       {page === 0 && (

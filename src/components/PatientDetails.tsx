@@ -5,7 +5,7 @@ import PlaceAndDatePicker from './PlaceAndDatePicker';
 import { Radio, RadioGroup } from '@mui/material';
 
 //@ts-ignore
-const PatientDetails = ({ admitted, officeName, handleRadioChange, patient, placeOfService, setPlaceOfService }) => {
+const PatientDetails = ({ admitted, handleRadioChange, patient, placeOfService, setPlaceOfService }) => {
   console.log("Comes from patient Detail", placeOfService);
 
   return (

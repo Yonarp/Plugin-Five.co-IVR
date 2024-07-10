@@ -69,10 +69,7 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
   const { theme, value, variant, five, formField, selectedRecord } = props;
 
-  //@ts-ignore
-  const form = five.form.Patients;
-  //@ts-ignore
-  const officeName = five.stack.OfficeName;
+
   //const accountKey = five.stack.Account.AccountKey;
 
   //@ts-ignore
@@ -89,7 +86,6 @@ const CustomField = (props: CustomFieldProps) => {
     five.actionID() !== "IVR" && five.actionID() !== "Accounts";
 
   const handleDialogOpen = () => {
-    console.log("Selected Records", selectedRecord.data.editLink)
     setDialogOpen(true);
     const fetchData = async () => {
       if (existingPatient) {
@@ -139,9 +135,6 @@ const CustomField = (props: CustomFieldProps) => {
       setLoading(true);
       // Check patient selection status
       //@ts-ignore
-      if (five.stack.Patient === undefined) {
-        setPatientSelected(false);
-      }
 
     }
 
@@ -273,7 +266,7 @@ const CustomField = (props: CustomFieldProps) => {
   useEffect(() => {
     //@ts-ignore
     if (five.internal.actionID === "IVR") {
-      setDialogOpen(true);
+      handleDialogOpen()
     }
     if (existingPatient && activeStep === 0) {
       setActiveStep(1);
@@ -386,7 +379,6 @@ const CustomField = (props: CustomFieldProps) => {
               patient={patient}
               admitted={admitted}
               handleRadioChange={handleRadioChange}
-              officeName={officeName}
               placeOfService= {placeOfService}
               setPlaceOfService= {setPlaceOfService}
             />
