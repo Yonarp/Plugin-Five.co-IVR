@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, FormControl, MenuItem, Select, Typography } from "@mui/material";
+import { TextField } from "../FivePluginApi";
 
 //@ts-ignore
 const LCodeSelector = ({
@@ -33,7 +34,7 @@ const LCodeSelector = ({
     { label: "Fat Layer Exposed", value: "fat_layer_exposed" },
   ];
 
-  const lCodes = [
+  const [lCodes, setLCodes] = useState([
     "L97.311", // 0
     "L97.312", // 1
     "L97.321", // 2
@@ -53,8 +54,9 @@ const LCodeSelector = ({
     "L97.811", // 16 (duplicate, if needed)
     "L97.812", // 17 (duplicate, if needed)
     "L97.821", // 18 (duplicate, if needed)
-    "L97.822", // 19 (duplicate, if needed)
-  ];
+    "L97.822", // 19
+    "Other",
+  ]);
 
   const handleLcode = (event) => {
     const selectedLcode = event.target.value;
@@ -63,6 +65,10 @@ const LCodeSelector = ({
     setLocation("")
     setSide("")
     setSeverity("")
+  };
+  const handleLcodeOther = (event) => {
+    const selectedLcode = event.target.value;
+    setLCodeMain(selectedLcode);
   };
 
   useEffect(() => {
@@ -183,6 +189,9 @@ const LCodeSelector = ({
     }
 
     if (lCode === "" && lCodeServer) {
+      if(!lCodes.includes(lCodeServer)){
+        setLCodes((prevCodes) => [...prevCodes, lCodeServer])
+      }
       setLCode(lCodeServer);
     }
   }, [location, side, severity]);
@@ -303,7 +312,7 @@ const LCodeSelector = ({
           marginBottom: "10px",
         }}
       >
-        <Typography variant="subtitle1" mr={2} sx={{minWidth: 40}}>L Code</Typography>
+        <Typography variant="subtitle1" mr={2} sx={{minWidth: 40}}>L Code<span style={{color: 'red'}}>*</span></Typography>
           <Select value={lCode} onChange={handleLcode} displayEmpty sx={{ flex: 1 }}>
             <MenuItem value="" disabled>
               <em>Select</em>
@@ -314,6 +323,11 @@ const LCodeSelector = ({
               </MenuItem>
             ))}
           </Select>
+          {lCode === "Other" ? (
+                <TextField
+                  placeholder="Input Ecode"
+                  onChange={handleLcodeOther}
+                />) : null }
       </Box>
         </FormControl>
     </Box>

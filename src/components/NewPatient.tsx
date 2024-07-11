@@ -169,11 +169,11 @@ const NewPatient = ({
             >
               <UploadFileIcon />
               <Typography variant="body1" mt={1}>
-                Add Document
+                Add Document 
               </Typography>
             </IconButton>
             <Typography variant="h5" mb={5}>
-              Enter patient details
+              Enter patient details 
             </Typography>
             <Box
               mb={2}
@@ -185,7 +185,7 @@ const NewPatient = ({
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                First Name:{' '}
+                First Name<span style={{color: 'red'}}>*</span>:{' '} 
               </Typography>
               <TextField
                 label="First Name"
@@ -205,7 +205,7 @@ const NewPatient = ({
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                Last Name:{' '}
+                Last Name<span style={{color: 'red'}}>*</span>:{' '}
               </Typography>
               <TextField
                 label="Last Name"

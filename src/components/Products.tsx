@@ -83,6 +83,7 @@ const Products = ({setProducts, productsSaved}) => {
             width: "50%",
           }}
         >
+          {index === 0 && <span style={{color: 'red'}}>*</span>}
           <Select
             fullWidth
             sx={{ margin: "10px 5px" }}

@@ -23,6 +23,8 @@ const InsuranceDetail = ({
   payor,
   handlePayor,
   isEdit,
+  patient,
+  index
 }) => {
   const [formState, setFormState] = useState({
     ___PAY: "",
@@ -88,11 +90,14 @@ const InsuranceDetail = ({
   };
 
   useEffect(() => {
+    
+
     if (payor) {
+
       setFormState({
-        ___PAY: payor.___PAY,
-        PayorID: payor.PayorID || "",
-        groupNumber: payor.groupNumber || "",
+        ___PAT: patient.___PAY,
+        PayorID: (index === 0 ? patient.data?.Pay1MemberNumber :  patient.data?.Pay2MemberNumber) || "",
+        groupNumber: payor?.groupNumber || "",
         CompanyName: payor.CompanyName || "",
         frontImage: null,
         backImage: null,
@@ -101,6 +106,11 @@ const InsuranceDetail = ({
       });
     }
   }, [payor]);
+
+  console.log("Logging Patient from inurance popup", patient)
+  console.log("Logging Index", index)
+
+
 
   return (
     <Dialog open={dialogOpenExternal} onClose={onClose}>

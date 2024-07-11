@@ -51,6 +51,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [vlu, setVLU] = useState({ condition: "", location: "", type: "" });
   const [mohs, setMohs] = useState("");
   const [cptWound, setCPTWound] = useState(null);
+  const [cptWoundSize, setCPTWoundSize] = useState(null)
   const [snf, setSNF] = useState()
   const [diabeticFU, setDiabeticFU] = useState();
   const [pressureUlcer, setPressureUlcer] = useState({
@@ -65,6 +66,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [members, setMembers] = useState(null);
   const [loading, setLoading] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [readyToSubmit, setReadyToSubmit] = useState(false)
 
   //@ts-ignore
   const { theme, value, variant, five, formField, selectedRecord } = props;
@@ -173,6 +175,13 @@ const CustomField = (props: CustomFieldProps) => {
 
 
   const handleSubmit = async () => {
+
+    if(!readyToSubmit){
+      setSubmissionSuccess(true)
+      return 0;
+    }
+
+
    if(!existingPatient){
       const IVR = {
         patient: patient?.data?.___PAT,
@@ -191,6 +200,8 @@ const CustomField = (props: CustomFieldProps) => {
         diabeticFU,
         cptWound,
         pressureUlcer,
+        cptWoundSize,
+        payors
       };
       await five.executeFunction(
         "pushToIVR",
@@ -223,6 +234,7 @@ const CustomField = (props: CustomFieldProps) => {
         diabeticFU,
         cptWound,
         pressureUlcer,
+        cptWoundSize
       };
       await five.executeFunction(
         "updateIVR",
@@ -233,7 +245,6 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         (result) => {
           console.log(result);
-          setSubmissionSuccess(true);
         }
       );
     }
@@ -429,7 +440,7 @@ const CustomField = (props: CustomFieldProps) => {
           )}
 
           {activeStep === 6 && (
-            <CPTCode setCPTCodeMain={setCPTCode} cptCodeMain={cptCode} />
+            <CPTCode setCPTCodeMain={setCPTCode} cptCodeMain={cptCode} setCPTWoundSize={setCPTWoundSize} />
           )}
           {activeStep === 7 && (
             <Summary
@@ -442,7 +453,9 @@ const CustomField = (props: CustomFieldProps) => {
               eCode={eCode}
               cdCode={cdCode}
               cptCode={cptCode}
+              admitted={admitted}
               handleSubmit={handleSubmit}
+              setReadyToSubmit={setReadyToSubmit}
             />
           )}
             <Box
@@ -533,17 +546,19 @@ const CustomField = (props: CustomFieldProps) => {
             )
           }
         </DialogActions>
-      </Dialog>
-      <Snackbar
+        <Snackbar
         open={submissionSuccess}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="success">
-          Submission Successful!
+        style={{zIndex: '99'}}
+        >
+        <Alert onClose={handleCloseSnackbar} severity="error">
+          Please Accept The Terms Before Submitting
         </Alert>
       </Snackbar>
+      </Dialog>
+      
     </Box>
   );
 };

@@ -211,7 +211,7 @@ const ICDCode = ({
     { label: "Carcinoma in situ of penis", value: "carcinoma_in_situ_penis" },
   ];
 
-  const mohsCodes = [
+  const [mohsCodes, setMohsCodes] = useState([
     "C00.0",
     "C00.1",
     "C00.2",
@@ -247,8 +247,8 @@ const ICDCode = ({
     "D04.62",
     "D04.8",
     "D07.4",
-    "Other"
-  ];
+    "Other",
+  ]);
 
   const mohsConditionsMapping = {
     external_upper_lip: mohsCodes[0],
@@ -288,7 +288,7 @@ const ICDCode = ({
     carcinoma_in_situ_penis: mohsCodes[34],
   };
 
-  const eCodes = [
+  const [eCodes, setECodes] = useState([
     "E08.621",
     "E08.622",
     "E09.621",
@@ -299,8 +299,8 @@ const ICDCode = ({
     "E11.622",
     "E13.621",
     "E13.622",
-    "Other"
-  ];
+    "Other",
+  ]);
 
   const eCodeMapping = {
     underlying_foot_ulcer: eCodes[0],
@@ -335,7 +335,7 @@ const ICDCode = ({
     { label: "Bilateral", value: "bilateral" },
   ];
 
-  const iCodes = [
+  const [iCodes, setICodes] = useState([
     "I83.012", // 0
     "I83.013", // 1
     "I83.014", // 2
@@ -352,8 +352,8 @@ const ICDCode = ({
     "I87.311", // 13
     "I87.312", // 14
     "I87.313", // 15
-    "Other"
-  ];
+    "Other",
+  ]);
   //@ts-ignore
   const [loading, setLoading] = useState(false);
   const [woundType, setWoundType] = useState("");
@@ -433,10 +433,10 @@ const ICDCode = ({
     const selectedICode = event.target.value;
     setICode(selectedICode);
     setICodeMain(selectedICode);
-    setVluCondition("")
-    setVluLocation("")
-    setVluSide("")
-    setVLU(null)
+    setVluCondition("");
+    setVluLocation("");
+    setVluSide("");
+    setVLU(null);
   };
 
   const handleECode = (event) => {
@@ -445,11 +445,24 @@ const ICDCode = ({
     setECodeMain(selectedECode);
     setDiabetesType("");
   };
+  const handleECodeOther = (event) => {
+    const selectedECode = event.target.value;
+    setECodeMain(selectedECode);
+  };
 
   const handleMohsCode = (event) => {
     const selectedLCode = event.target.value;
     setCDCode(selectedLCode);
     setCDCodeMain(selectedLCode);
+  };
+  const handleMohsCodeOther = (event) => {
+    const selectedLCode = event.target.value;
+    setCDCodeMain(selectedLCode);
+  };
+
+  const handleICodeOther = (event) => {
+    const selectedICode = event.target.value;
+    setICodeMain(selectedICode);
   };
 
   /*   { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
@@ -459,7 +472,6 @@ const ICDCode = ({
     { label: "Other...", value: "other" }, */
 
   useEffect(() => {
-  
     let code = "";
     if (vluCondition && vluLocation && vluSide) {
       switch (true) {
@@ -556,31 +568,45 @@ const ICDCode = ({
     console.log(codes);
 
     if (woundType === "" && codes?.cptWound !== null) {
-      console.log(codes)
+      console.log(codes);
       const wound = codes?.cptWound;
       setWoundType(wound);
 
       switch (wound) {
-        case 'Diabetic foot ulcer': setECode(codes?.eCode) 
-        setLCode(codes?.lCode)
-        break; 
-        case 'Venous leg ulcer': setICode(codes?.iCode)
-        setLCode(codes?.lCode)
-        break;
-        case 'Pressure ulcer': setLCode(codes?.lCode)
-        break 
-        case 'Mohs': setCDCode(codes.cdCode)
+        case "Diabetic foot ulcer":
+          if (!eCodes.includes(codes?.eCode)) {
+            setECodes((prevEcodes) => [...prevEcodes, codes?.eCode]);
+          }
+          setECode(codes?.eCode);
+          setLCode(codes?.lCode);
+          break;
+        case "Venous leg ulcer":
+          if (!iCodes.includes(codes?.iCode)) {
+            setICodes((prevIcodes) => [...prevIcodes, codes?.iCode]);
+          }
+          setICode(codes?.iCode);
+          setLCode(codes?.lCode);
+          break;
+        case "Pressure ulcer":
+          setLCode(codes?.lCode);
+          break;
+        case "Mohs":
+          if (!mohsCodes.includes(codes.cdCode)) {
+            setMohsCodes((prevCDCodes) => [...prevCDCodes, codes.cdCode]);
+          }
+          setCDCode(codes.cdCode);
+          break;
       }
     }
-
-
-
-
   }, [vluCondition, vluLocation, vluSide]);
   /* TODO: Makes Labels consistent with  */
   return (
     <Container>
-      <Typography variant="h5" sx={{ margin: "10px , 0", textAlign: "center" }}  mt={6}>
+      <Typography
+        variant="h5"
+        sx={{ margin: "10px , 0", textAlign: "center" }}
+        mt={6}
+      >
         Determine ICD-10 Codes
       </Typography>
       <Box
@@ -632,7 +658,7 @@ const ICDCode = ({
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="subtitle1" mr={2} sx={{minWidth: 40}}>
+              <Typography variant="subtitle1" mr={2} sx={{ minWidth: 40 }}>
                 Type:{"  "}
               </Typography>
               <Select
@@ -667,26 +693,32 @@ const ICDCode = ({
                 marginBottom: "10px",
               }}
             >
-            <Typography variant="subtitle1"sx={{minWidth: 40}} mr={2}>
-              E Code:{" "}
-            </Typography>
-            <Select
-              value={eCode}
-              variant="outlined"
-              onChange={handleECode}
-              displayEmpty
-              sx={{ flex: 1 }}
-            >
-              <MenuItem value="" disabled>
-                <em>Select</em>
-              </MenuItem>
-              {eCodes.map((eCode) => (
-                <MenuItem key={eCode} value={eCode}>
-                  {eCode}
+              <Typography variant="subtitle1" sx={{ minWidth: 40 }} mr={2}>
+                E Code<span style={{color: 'red'}}>*</span>:{" "}
+              </Typography>
+              <Select
+                value={eCode}
+                variant="outlined"
+                onChange={handleECode}
+                displayEmpty
+                sx={{ flex: 1 }}
+              >
+                <MenuItem value="" disabled>
+                  <em>Select</em>
                 </MenuItem>
-              ))}
-            </Select>
-            {eCode === 'Other' ? <TextField placeholder="Input Ecode" onChange={handleECode}/> : null}
+                {eCodes.map((eCode) => (
+                  <MenuItem key={eCode} value={eCode}>
+                    {eCode}
+                  </MenuItem>
+                ))}
+              </Select>
+
+              {eCode === "Other" ? (
+                <TextField
+                  placeholder="Input Ecode"
+                  onChange={handleECodeOther}
+                />
+              ) : null}
             </Box>
           </FormControl>
           {/* //@ts-ignore */}
@@ -810,17 +842,19 @@ const ICDCode = ({
             </Box>
 
             <FormControl fullWidth variant="outlined">
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                marginTop: "10px",
-              }}
-            >
-              <Typography variant="subtitle1" sx={{minWidth: 50}} mr={2}>I Code</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  marginTop: "10px",
+                }}
+              >
+                <Typography variant="subtitle1" sx={{ minWidth: 60 }} mr={2}>
+                  I Code<span style={{color: 'red'}}>*</span>:
+                </Typography>
                 <Select
                   value={iCode}
                   variant="outlined"
@@ -838,8 +872,13 @@ const ICDCode = ({
                     </MenuItem>
                   ))}
                 </Select>
-            </Box>
-              </FormControl>
+                {iCode === "Other" ? (
+                <TextField
+                  placeholder="Input Icode"
+                  onChange={handleICodeOther}
+                /> ) : null }
+              </Box>
+            </FormControl>
           </FormControl>
           <LCode
             location={lLocation}
@@ -873,7 +912,7 @@ const ICDCode = ({
             }}
           >
             <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
-              Select C/D Code:{" "}
+              Select C/D Code<span style={{color: 'red'}}>*</span>:{" "}
             </Typography>
             <Select
               value={mohs}
@@ -910,6 +949,11 @@ const ICDCode = ({
                 </MenuItem>
               ))}
             </Select>
+            {cdCode === "Other" ? (
+                <TextField
+                  placeholder="Input Icode"
+                  onChange={handleMohsCodeOther}
+                /> ) : null }
           </Box>
         </FormControl>
       )}
@@ -935,10 +979,10 @@ const ICDCode = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            flexDirection: 'column'
+            flexDirection: "column",
           }}
         >
-          <TextField  placeholder="Input ICD-10 Code" sx={{width: "60%"}}/>
+          <TextField placeholder="Input ICD-10 Code" sx={{ width: "60%" }} />
           <Typography variant="h6">Comments:</Typography>
           <TextField
             sx={{

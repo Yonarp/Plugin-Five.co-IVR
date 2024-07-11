@@ -9,7 +9,7 @@ import {
 } from "../FivePluginApi";
 import Container from "@mui/material/Container";
 //@ts-ignore
-const CPTCode = ({setCPTCodeMain, cptCodeMain}) => {
+const CPTCode = ({setCPTCodeMain, cptCodeMain, setCPTWoundSize}) => {
   const woundLocations = [
     { label: "Trunk, Arm, Leg", value: 1 },
     {
@@ -53,6 +53,7 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain}) => {
 
   const handleWoundSizeChange = (event) => {
     setWoundSize(event.target.value);
+    setCPTWoundSize(event.target.value)
   };
 
   const cptCodes = ["15271", "15272", "15273", "15274", "15275", "15276", "15277", "15278"];
@@ -139,7 +140,7 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain}) => {
           />
           
             <Typography variant="subtitle1" ml={3}>
-              CPT Code: {" "}
+              CPT Code<span style={{color: 'red'}}>*</span>: {" "}
             </Typography>
           <Select
             label="CPT Code"

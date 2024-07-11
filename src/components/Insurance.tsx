@@ -233,6 +233,8 @@ const Insurance = React.memo(({ patient, five, setPayorsMain, newPatient }) => {
                     payor={selectedPayor}
                     handlePayor={handlePayor}
                     isEdit={isEdit}
+                    patient={patient}
+                    index={index}
                   />
                 </Box>
               ))
