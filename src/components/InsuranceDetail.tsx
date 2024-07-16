@@ -22,6 +22,7 @@ const InsuranceDetail = ({
   onClose,
   payor,
   handlePayor,
+  handlePayorMain,
   isEdit,
   patient,
   index
@@ -36,6 +37,7 @@ const InsuranceDetail = ({
     frontImagePreview: "",
     backImagePreview: "",
   });
+  const [memberNumber, setMemberNumber] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [uploadType, setUploadType] = useState("");
   const [isOtherSelected, setIsOtherSelected] = useState(false);
@@ -61,10 +63,16 @@ const InsuranceDetail = ({
     onClose();
   };
 
+
+
   const handleSubmit = () => {
     console.log("Handle Submit");
     handleDialogCloseExternal();
-    handlePayor(formState);
+    handlePayor(formState, index);
+    handlePayorMain((prevPayor) => ({
+      ...prevPayor,
+      formState
+    }))
   };
 
   const handleFileChange = (event) => {
@@ -90,14 +98,37 @@ const InsuranceDetail = ({
   };
 
   useEffect(() => {
-    
+    console.log("Logging Index", index)
+    let memberNumber
+    let groupMemberNumber
+    if(index === 0) {
+      console.log("condition index = 0 true")
+      memberNumber = patient.data.Pay1MemberNumber
+      groupMemberNumber = patient.data.Pay1Group
+    } else {
+      console.log("condition index = 1 true")
+      memberNumber = patient.data.Pay2MemberNumber
+      groupMemberNumber = patient.data.Pay2Group
+      
+    }
 
-    if (payor) {
+    if(!isEdit){
+      setFormState({
+        ___PAT: "",
+        PayorID: "",
+        groupNumber:  "",
+        CompanyName:  "",
+        frontImage: null,
+        backImage: null,
+        frontImagePreview: "",
+        backImagePreview: "",
+      });
+    } else if (payor) {
 
       setFormState({
         ___PAT: patient.___PAY,
-        PayorID: (index === 0 ? patient.data?.Pay1MemberNumber :  patient.data?.Pay2MemberNumber) || "",
-        groupNumber: payor?.groupNumber || "",
+        PayorID: memberNumber,
+        groupNumber: groupMemberNumber || "",
         CompanyName: payor.CompanyName || "",
         frontImage: null,
         backImage: null,
@@ -108,7 +139,6 @@ const InsuranceDetail = ({
   }, [payor]);
 
   console.log("Logging Patient from inurance popup", patient)
-  console.log("Logging Index", index)
 
 
 

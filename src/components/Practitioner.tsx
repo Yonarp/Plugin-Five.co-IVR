@@ -85,7 +85,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
           practitioners.map((practitionerItem, index) => {
             
       
-            return  practitionerItem.Title !== 'Admin' ? 
+            return  practitionerItem.Title === 'Practitioner' ? 
              (
               <ListItemButton
                 key={index}

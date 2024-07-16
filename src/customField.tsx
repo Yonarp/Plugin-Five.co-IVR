@@ -76,7 +76,7 @@ const CustomField = (props: CustomFieldProps) => {
 
   //@ts-ignore
   const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66";
-  
+   
 
   const account = {
     AccountKey: accountKey,
@@ -406,6 +406,7 @@ const CustomField = (props: CustomFieldProps) => {
           {activeStep === 3 && patient &&(
             <Insurance
               patient={patient}
+              setPatient={setPatient}
               five={five}
               setPayorsMain={setPayors}
               newPatient={newPatient}
