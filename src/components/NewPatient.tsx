@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Container,
   Box,
@@ -17,9 +17,9 @@ import {
   DialogActions,
   Button,
   Grid,
-} from '@mui/material';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import Patient from './Patient'; // Ensure this import points to your Patient component
+} from "@mui/material";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import Patient from "./Patient"; // Ensure this import points to your Patient component
 
 const NewPatient = ({
   data,
@@ -29,25 +29,27 @@ const NewPatient = ({
   setPatient,
   handleNext,
   setNewPatient,
+  account,
+  handleDialogCloseExternal,
 }) => {
   const [page, setPage] = useState(0);
   const [formState, setFormState] = useState({
-    NameFirst: '',
-    NameLast: '',
-    Gender: '',
-    Birthdate: '',
-    AddressStreet: '',
-    AddressStreet2: '',
-    AddressCity: '',
-    AddressState: '',
-    AddressZip: '',
+    NameFirst: "",
+    NameLast: "",
+    Gender: "",
+    Birthdate: "",
+    AddressStreet: "",
+    AddressStreet2: "",
+    AddressCity: "",
+    AddressState: "",
+    AddressZip: "",
   });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedFilesBase64, setSelectedFilesBase64] = useState([]);
   const [documentTypes, setDocumentTypes] = useState([]);
-  const [documentType, setDocumentType] = useState('');
-  const [otherDocumentType, setOtherDocumentType] = useState('');
+  const [documentType, setDocumentType] = useState("");
+  const [otherDocumentType, setOtherDocumentType] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,7 +82,7 @@ const NewPatient = ({
     setSelectedFiles((prev) => [...prev, ...files]);
     setDocumentTypes((prev) => [
       ...prev,
-      documentType === 'other' ? otherDocumentType : documentType,
+      documentType === "other" ? otherDocumentType : documentType,
     ]);
 
     handleDialogClose();
@@ -88,8 +90,8 @@ const NewPatient = ({
 
   const handleDocumentTypeChange = (event) => {
     setDocumentType(event.target.value);
-    if (event.target.value !== 'other') {
-      setOtherDocumentType('');
+    if (event.target.value !== "other") {
+      setOtherDocumentType("");
     }
   };
 
@@ -98,10 +100,11 @@ const NewPatient = ({
     setNewPatient(true);
     const patientObj = {
       patient: formState,
-      document: selectedFilesBase64
-    }
+      document: selectedFilesBase64,
+      AccountKey: account.AccountKey,
+    };
     await five.executeFunction(
-      'pushPatient',
+      "pushPatient",
       //@ts-ignore
       patientObj,
       null,
@@ -111,7 +114,7 @@ const NewPatient = ({
       (result) => {
         const payorData = JSON.parse(result.serverResponse.results);
         const patientData = payorData.response;
-        console.log('Logging from push to patients', payorData);
+        console.log("Logging from push to patients", payorData);
         setPatient({
           data: patientData,
           documents: selectedFilesBase64.map((base64, index) => ({
@@ -125,67 +128,67 @@ const NewPatient = ({
     handleNext();
   };
 
-  console.log("Logging Data from new patient", data)
+  console.log("Logging Data from new patient", data);
 
   return (
     <>
       {page === 0 && (
         <Container
           style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            marginTop: '10px',
-            marginBottom: '100px',
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            marginTop: "10px",
+            marginBottom: "100px",
           }}
         >
           <Box
             style={{
-              maxWidth: '800px',
-              display: 'flex',
-              flexDirection: 'column',
-              border: '2px solid grey',
+              maxWidth: "800px",
+              display: "flex",
+              flexDirection: "column",
+              border: "2px solid grey",
               padding: 20,
-              borderRadius: '10px',
-              boxShadow: '5px 5px 5px rgba(0,0,0,0.1)',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: '.5rem',
-              marginLeft: '40px',
-              position: 'relative',
+              borderRadius: "10px",
+              boxShadow: "5px 5px 5px rgba(0,0,0,0.1)",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: ".5rem",
+              marginLeft: "40px",
+              position: "relative",
             }}
             component="form"
             onSubmit={handleSubmit}
           >
             <IconButton
               style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
+                position: "absolute",
+                top: "10px",
+                right: "10px",
               }}
               onClick={handleDialogOpen}
             >
               <UploadFileIcon />
               <Typography variant="body1" mt={1}>
-                Add Document 
+                Add Document
               </Typography>
             </IconButton>
             <Typography variant="h5" mb={5}>
-              Enter patient details 
+              Enter patient details
             </Typography>
             <Box
               mb={2}
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                First Name<span style={{color: 'red'}}>*</span>:{' '} 
+                First Name<span style={{ color: "red" }}>*</span>:{" "}
               </Typography>
               <TextField
                 label="First Name"
@@ -198,14 +201,14 @@ const NewPatient = ({
             <Box
               mb={2}
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                Last Name<span style={{color: 'red'}}>*</span>:{' '}
+                Last Name<span style={{ color: "red" }}>*</span>:{" "}
               </Typography>
               <TextField
                 label="Last Name"
@@ -219,16 +222,20 @@ const NewPatient = ({
             <Box
               mb={2}
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120, maxWidth: 120 }}>
-                Gender:{' '}
+                Gender:{" "}
               </Typography>
-              <FormControl margin="normal" variant="outlined" sx={{ minWidth: 200 }}>
+              <FormControl
+                margin="normal"
+                variant="outlined"
+                sx={{ minWidth: 200 }}
+              >
                 <InputLabel id="gender-select-label">Gender</InputLabel>
                 <Select
                   labelId="gender-select-label"
@@ -245,14 +252,14 @@ const NewPatient = ({
             <Box
               mb={2}
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                Birthdate:{' '}
+                Birthdate:{" "}
               </Typography>
               <TextField
                 label="Birthdate"
@@ -275,10 +282,10 @@ const NewPatient = ({
               </Grid>
               <Box
                 style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: '100%',
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
                 }}
               >
                 <TextField
@@ -287,7 +294,7 @@ const NewPatient = ({
                   variant="outlined"
                   value={formState.AddressStreet}
                   onChange={handleInputChange}
-                  sx={{ flex: 3, marginRight: '8px' }}
+                  sx={{ flex: 3, marginRight: "8px" }}
                   name="AddressStreet"
                 />
                 <TextField
@@ -302,10 +309,10 @@ const NewPatient = ({
               </Box>
               <Box
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: '100%',
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
                 }}
               >
                 <TextField
@@ -314,7 +321,7 @@ const NewPatient = ({
                   variant="outlined"
                   value={formState.AddressCity}
                   onChange={handleInputChange}
-                  sx={{ flex: 2, marginRight: '8px' }}
+                  sx={{ flex: 2, marginRight: "8px" }}
                   name="AddressCity"
                 />
                 <TextField
@@ -323,7 +330,7 @@ const NewPatient = ({
                   variant="outlined"
                   value={formState.AddressState}
                   onChange={handleInputChange}
-                  sx={{ flex: 1, maxWidth: '80px', marginRight: '8px' }}
+                  sx={{ flex: 1, maxWidth: "80px", marginRight: "8px" }}
                   name="AddressState"
                 />
                 <TextField
@@ -332,7 +339,7 @@ const NewPatient = ({
                   variant="outlined"
                   value={formState.AddressZip}
                   onChange={handleInputChange}
-                  sx={{ flex: 1, maxWidth: '120px' }}
+                  sx={{ flex: 1, maxWidth: "120px" }}
                   name="AddressZip"
                 />
               </Box>
@@ -342,19 +349,43 @@ const NewPatient = ({
               <Box mt={2}>
                 <Typography>Uploaded files:</Typography>
                 {selectedFiles.map((file, index) => (
-                  <Typography key={index}>{file.name} - {documentTypes[index]}</Typography>
+                  <Typography key={index}>
+                    {file.name} - {documentTypes[index]}
+                  </Typography>
                 ))}
               </Box>
             )}
-
-            <Button type="submit" variant="contained" color="primary" style={{padding: "10px 20px"}} onClick={handleSubmit}>
-              Submit
-            </Button>
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-evenly"
+              alignItems="center"
+            >
+              <Button
+                type="button"
+                variant="contained"
+                color="error"
+                style={{ padding: "10px 20px" }}
+                onClick={handleDialogCloseExternal}
+              >
+                Close
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ padding: "10px 20px",  }}
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Box>
           </Box>
 
           <Dialog open={dialogOpen} onClose={handleDialogClose}>
             <DialogTitle>Upload Document</DialogTitle>
-            <DialogContent style={{ width: '400px' }}>
+            <DialogContent style={{ width: "400px" }}>
               {/* Fixed width for dialog content */}
               <FormControl fullWidth margin="normal">
                 <InputLabel id="document-type-label">Document Type</InputLabel>
@@ -367,11 +398,13 @@ const NewPatient = ({
                   <MenuItem value="factsheet">Facesheet</MenuItem>
                   <MenuItem value="wound notes">Wound Notes</MenuItem>
                   <MenuItem value="identification">Identification</MenuItem>
-                  <MenuItem value="priorAuthorization">Prior Authorization</MenuItem>
+                  <MenuItem value="priorAuthorization">
+                    Prior Authorization
+                  </MenuItem>
                   <MenuItem value="other">Other</MenuItem>
                 </Select>
               </FormControl>
-              {documentType === 'other' && (
+              {documentType === "other" && (
                 <TextField
                   fullWidth
                   margin="normal"
@@ -380,7 +413,12 @@ const NewPatient = ({
                   onChange={(e) => setOtherDocumentType(e.target.value)}
                 />
               )}
-              <input type="file" multiple accept="image/jpeg,image/png,application/pdf" onChange={handleFileChange} />
+              <input
+                type="file"
+                multiple
+                accept="image/jpeg,image/png,application/pdf"
+                onChange={handleFileChange}
+              />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleDialogClose} color="primary">
@@ -388,16 +426,16 @@ const NewPatient = ({
               </Button>
             </DialogActions>
           </Dialog>
-          <Typography style={{ color: 'black' }} mt={5}>
+          <Typography style={{ color: "black" }} mt={5}>
             IVR for an existing patient?
           </Typography>
-          <Button style={{ color: 'black' }} onClick={() => setPage(1)}>
+          <Button style={{ color: "black" }} onClick={() => setPage(1)}>
             Select an existing patient
           </Button>
         </Container>
       )}
       {page === 1 && (
-        <div className="container" style={{ width: '100%' }}>
+        <div className="container" style={{ width: "100%" }}>
           <Patient
             patients={data.response.value}
             handlePatient={handlePatient}

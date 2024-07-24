@@ -220,7 +220,8 @@ const LCodeSelector = ({
           >
             <Typography variant="subtitle1" mr={2} sx={{minWidth: 40}}>
                 Location:{"  "}
-              </Typography>
+            </Typography>
+
             <Select
               value={location}
               onChange={(e) => setLocation(e.target.value)}

@@ -1,38 +1,46 @@
-import React from 'react';
-import { Box, FormControl, FormControlLabel } from '../FivePluginApi';
-import MedicareForm from './MedicareForm';
-import PlaceAndDatePicker from './PlaceAndDatePicker';
-import { Radio, RadioGroup } from '@mui/material';
+import React from "react";
+import { Box, FormControl, FormControlLabel } from "../FivePluginApi";
+import MedicareForm from "./MedicareForm";
+import PlaceAndDatePicker from "./PlaceAndDatePicker";
+import { Radio, RadioGroup } from "@mui/material";
 
 //@ts-ignore
-const PatientDetails = ({ admitted, handleRadioChange, patient, placeOfService, setPlaceOfService }) => {
+const PatientDetails = ({
+  admitted,
+  handleRadioChange,
+  placeOfService,
+  setPlaceOfService,
+}) => {
   console.log("Comes from patient Detail", placeOfService);
+  const [hospice, setHospice] = React.useState("");
 
   return (
     <Box>
-
       <div
         className="IVR-page-1"
         style={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <p>Has this patient been admitted to a Skilled Nursing Facility within the past 100 day.</p>
+        <p>
+          Has this patient been admitted to a Skilled Nursing Facility within
+          the past 100 day.
+        </p>
         <FormControl component="fieldset">
           <RadioGroup
             name="exclusive-options"
             style={{
-              width: 'auto',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginLeft: '10px',
+              width: "auto",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginLeft: "10px",
             }}
             onChange={(event) => handleRadioChange(event.target.value)}
-            value={admitted === null ? '' : admitted ? 'Yes' : 'No'}
+            value={admitted === null ? "" : admitted ? "Yes" : "No"}
           >
             <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
             <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -43,13 +51,57 @@ const PatientDetails = ({ admitted, handleRadioChange, patient, placeOfService, 
       <div
         className="medicare-form"
         style={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {admitted === null ? null : admitted ? <MedicareForm  placeOfServiceExternal ={placeOfService} setPlaceOfServiceExternal={setPlaceOfService}/> : <PlaceAndDatePicker placeOfServiceExternal={placeOfService}  setPlaceOfServiceExternal={setPlaceOfService}/>}
+        {admitted === null ? null : admitted ? (
+          <MedicareForm
+            placeOfServiceExternal={placeOfService}
+            setPlaceOfServiceExternal={setPlaceOfService}
+          />
+        ) : (
+          <PlaceAndDatePicker
+            placeOfServiceExternal={placeOfService}
+            setPlaceOfServiceExternal={setPlaceOfService}
+          />
+        )}
+      </div>
+      <div
+        className="medicare-form"
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <p>Is this patient in Hospice?</p>
+        <FormControl component="fieldset">
+          <RadioGroup
+            name="exclusive-options"
+            style={{
+              width: "auto",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginLeft: "10px",
+            }}
+            onChange={(event) => setHospice(event.target.value)}
+            value={hospice === null ? "" : hospice}
+          >
+            <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+            <FormControlLabel value="No" control={<Radio />} label="No" />
+          </RadioGroup>
+        </FormControl>
+        {hospice === "Yes" ? (
+          <p style={{ color: "red" }}>
+            This treatment will not be eligible for coverage, Please do not
+            continue with verification request
+          </p>
+        ) : null}
       </div>
     </Box>
   );

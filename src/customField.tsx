@@ -75,12 +75,12 @@ const CustomField = (props: CustomFieldProps) => {
   //const accountKey = five.stack.Account.AccountKey;
 
   //@ts-ignore
-  const accountKey = "5973932E-88D8-4ACA-9FFC-C17D037B5D66";
-   
-
+ 
+ 
   const account = {
-    AccountKey: accountKey,
+    AccountKey: selectedRecord?.data?.ACT
   };
+  
 
   const totalSteps = 8;
   const existingPatient =
@@ -88,7 +88,11 @@ const CustomField = (props: CustomFieldProps) => {
     five.actionID() !== "IVR" && five.actionID() !== "Accounts";
 
   const handleDialogOpen = () => {
+    console.log("five.stack from the plugin",selectedRecord)
+    console.log("five.form from the plugin",formField)
     setDialogOpen(true);
+    
+    console.log("Account Key", account)
     const fetchData = async () => {
       if (existingPatient) {
         await five.executeFunction(
@@ -129,11 +133,13 @@ const CustomField = (props: CustomFieldProps) => {
         (result) => {
           setData(JSON.parse(result.serverResponse.results));
           setLoading(false);
+          console.log('Getting this to check my data',JSON.parse(result.serverResponse.results))
         }
       );
     };
 
     if (data === null) {
+
       setLoading(true);
       // Check patient selection status
       //@ts-ignore
@@ -201,7 +207,8 @@ const CustomField = (props: CustomFieldProps) => {
         cptWound,
         pressureUlcer,
         cptWoundSize,
-        payors
+        payors,
+        AccountKey: selectedRecord?.data?.ACT
       };
       await five.executeFunction(
         "pushToIVR",
@@ -211,7 +218,6 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         null,
         (result) => {
-          console.log(result);
           setSubmissionSuccess(true);
         }
       );
@@ -381,7 +387,9 @@ const CustomField = (props: CustomFieldProps) => {
               patient={patient}
               setPatient={setPatient}
               handleNext={handleNext}
+              handleDialogCloseExternal={handleDialogClose}
               setNewPatient={setNewPatient}
+              account={account}
             />
           )}
 

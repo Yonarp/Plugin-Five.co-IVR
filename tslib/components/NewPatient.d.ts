@@ -1,4 +1,4 @@
-declare const NewPatient: ({ data, handlePatient, five, patient, setPatient, handleNext, setNewPatient, }: {
+declare const NewPatient: ({ data, handlePatient, five, patient, setPatient, handleNext, setNewPatient, account, handleDialogCloseExternal, }: {
     data: any;
     handlePatient: any;
     five: any;
@@ -6,5 +6,7 @@ declare const NewPatient: ({ data, handlePatient, five, patient, setPatient, han
     setPatient: any;
     handleNext: any;
     setNewPatient: any;
+    account: any;
+    handleDialogCloseExternal: any;
 }) => JSX.Element;
 export default NewPatient;

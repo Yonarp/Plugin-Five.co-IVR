@@ -1,7 +1,6 @@
-declare const PatientDetails: ({ admitted, handleRadioChange, patient, placeOfService, setPlaceOfService }: {
+declare const PatientDetails: ({ admitted, handleRadioChange, placeOfService, setPlaceOfService, }: {
     admitted: any;
     handleRadioChange: any;
-    patient: any;
     placeOfService: any;
     setPlaceOfService: any;
 }) => JSX.Element;

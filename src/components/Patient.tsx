@@ -72,7 +72,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
           <ListItemButton
             key={index}
             selected={selectedIndex === index}
-            onClick={() => handleClick(index, patient.__PAT)}
+            onClick={() => handleClick(index, patient.___PAT)}
             sx={{
               borderBottom: "1px solid #00000033",
               "&.Mui-selected": {
@@ -94,13 +94,13 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
               }}
             >
               <Typography variant="body1" style={{ width: "150px" }}>
-                {patient.PatientNameFirst + " " + patient.PatientNameLast}
+                {patient.NameFirst + " " + patient.NameLast}
               </Typography>
               <Typography variant="body1" style={{ width: "100px" }}>
-                {patient.PatientGender}
+                {patient.Gender}
               </Typography>
               <Typography variant="body1" style={{ width: "100px" }}>
-                {patient.PatientBirthdate}
+                {patient.Birthdate}
               </Typography>
             </Box>
           </ListItemButton>
