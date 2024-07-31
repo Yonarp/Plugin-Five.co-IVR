@@ -365,8 +365,7 @@ const NewPatient = ({
               <Button
                 type="button"
                 variant="contained"
-                color="error"
-                style={{ padding: "10px 20px" }}
+                style={{ padding: "10px 20px", background: '#780000', color:'white' }}
                 onClick={handleDialogCloseExternal}
               >
                 Close
@@ -374,8 +373,7 @@ const NewPatient = ({
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
-                style={{ padding: "10px 20px",  }}
+                style={{ padding: "10px 20px",  background: '#266787', color:'white'  }}
                 onClick={handleSubmit}
               >
                 Submit
@@ -395,7 +393,7 @@ const NewPatient = ({
                   onChange={handleDocumentTypeChange}
                   label="Document Type"
                 >
-                  <MenuItem value="factsheet">Facesheet</MenuItem>
+                  <MenuItem value="facesheet">Facesheet</MenuItem>
                   <MenuItem value="wound notes">Wound Notes</MenuItem>
                   <MenuItem value="identification">Identification</MenuItem>
                   <MenuItem value="priorAuthorization">

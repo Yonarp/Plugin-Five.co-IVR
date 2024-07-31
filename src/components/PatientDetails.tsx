@@ -10,9 +10,13 @@ const PatientDetails = ({
   handleRadioChange,
   placeOfService,
   setPlaceOfService,
+  hospiceMain,
+  setHospiceMain,
+  medicare,
+  setMedicare
 }) => {
   console.log("Comes from patient Detail", placeOfService);
-  const [hospice, setHospice] = React.useState("");
+ // const [hospice, setHospice] = React.useState("");
 
   return (
     <Box>
@@ -61,6 +65,8 @@ const PatientDetails = ({
           <MedicareForm
             placeOfServiceExternal={placeOfService}
             setPlaceOfServiceExternal={setPlaceOfService}
+            medicare={medicare}
+            setMedicare={setMedicare}
           />
         ) : (
           <PlaceAndDatePicker
@@ -89,14 +95,14 @@ const PatientDetails = ({
               justifyContent: "space-around",
               marginLeft: "10px",
             }}
-            onChange={(event) => setHospice(event.target.value)}
-            value={hospice === null ? "" : hospice}
+            onChange={(event) => setHospiceMain(event.target.value)}
+            value={hospiceMain === null ? "" : hospiceMain}
           >
             <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
             <FormControlLabel value="No" control={<Radio />} label="No" />
           </RadioGroup>
         </FormControl>
-        {hospice === "Yes" ? (
+        {hospiceMain === "Yes" ? (
           <p style={{ color: "red" }}>
             This treatment will not be eligible for coverage, Please do not
             continue with verification request

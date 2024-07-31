@@ -189,6 +189,8 @@ const Insurance = React.memo(
 
         const payorArray = await Promise.all(payorPromises);
         setPayors(payorArray);
+        setSelectedPayors(payorArray)
+        setPayorsMain(payorArray)
         setLoading(false);
       };
 
@@ -242,23 +244,17 @@ const Insurance = React.memo(
                   >
                     <ListItem
                       button
-                      onClick={() => handlePayorClick(payor)}
-                      selected={selectedPayors.some(
-                        (p) => p.PayorID === payor.PayorID
-                      )}
                       sx={{
                         borderBottom: "1px solid #00000033",
-                        "&.Mui-selected": {
-                          backgroundColor: "#F4F8D0",
-                          color: "black",
-                          "&:hover": {
-                            backgroundColor: "lightblue",
-                          },
-                        },
                         flex: 1,
                       }}
                     >
+                      <ListItemText 
+                      primary={index === 0 ? 'Primary' : 'Secondary'}
+                      sx={{flex:0.2, width: '15%'}}
+                      />
                       <ListItemText
+                        sx={{fontSize: '1rem'}}
                         primary={payor?.CompanyName}
                         secondary={
                           index === 0
@@ -314,26 +310,6 @@ const Insurance = React.memo(
             patient={patient}
             index={insuranceIndex}
           />
-          <div key={0}>
-            <Typography variant="subtitle1" gutterBottom>
-              <strong>Primary Payor</strong>
-            </Typography>
-            <Typography variant="body2">
-              {selectedPayors.length <=0 ? 'Please Select An Insurance From The List Above' : selectedPayors[0]?.CompanyName }
-            </Typography>
-          </div>
-          {selectedPayors.map((payor, index) => (
-            <div key={index}>
-              {index !== 0 && (
-                <div>
-                  <Typography variant="subtitle1" gutterBottom>
-                    <strong>{getPayorLabel(index)}</strong>
-                  </Typography>
-                  <Typography variant="body1">{payor?.CompanyName}</Typography>
-                </div>
-              )}
-            </div>
-          ))}
         </Box>
       </Container>
     );

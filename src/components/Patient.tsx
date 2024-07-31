@@ -1,12 +1,39 @@
+//@ts-nocheck
 import { Button, Container, ListItemButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-//@ts-ignore
 import { Box, List, ListItemText } from "../FivePluginApi";
 
 const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleNext }) => {
   const [selectedIndex, setSelectedIndex] = useState(
     patientSaved ? patientSaved.index : null
   );
+
+  function convertToAmericanFormat(dateString) {
+    if (!dateString || typeof dateString !== 'string') {
+      return 'Invalid date';
+    }
+  
+    dateString = dateString.trim();
+  
+    let year, month, day;
+    
+    if (dateString.includes('-')) {
+      [year, month, day] = dateString.split('-');
+    } else if (dateString.length === 8) {
+      year = dateString.substring(0, 4);
+      month = dateString.substring(4, 6);
+      day = dateString.substring(6, 8);
+    } else {
+      return 'Invalid date format';
+    }
+    
+    // Check if the extracted values are valid
+    if (!year || !month || !day) {
+      return 'Invalid date';
+    }
+  
+    return `${month}/${day}/${year}`;
+  }
 
   useEffect(() => {
     console.log(patientSaved);
@@ -38,6 +65,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
     );
   };
 
+  
   return (
     <Container style={{ maxWidth: "100%", marginBottom: "10px" }}>
       <Typography
@@ -68,7 +96,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
         </Typography>
       </Box>
       <List>
-        {patients.map((patient, index) => (
+        {patients.map((patient, index) =>  (
           <ListItemButton
             key={index}
             selected={selectedIndex === index}
@@ -84,6 +112,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
               },
             }}
           >
+            {console.log(convertToAmericanFormat(patient.Birthdate))}
             <Box
               style={{
                 width: "100%",
@@ -100,7 +129,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
                 {patient.Gender}
               </Typography>
               <Typography variant="body1" style={{ width: "100px" }}>
-                {patient.Birthdate}
+                {convertToAmericanFormat(patient.Birthdate)}
               </Typography>
             </Box>
           </ListItemButton>

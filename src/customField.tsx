@@ -51,8 +51,8 @@ const CustomField = (props: CustomFieldProps) => {
   const [vlu, setVLU] = useState({ condition: "", location: "", type: "" });
   const [mohs, setMohs] = useState("");
   const [cptWound, setCPTWound] = useState(null);
-  const [cptWoundSize, setCPTWoundSize] = useState(null)
-  const [snf, setSNF] = useState()
+  const [cptWoundSize, setCPTWoundSize] = useState(null);
+  const [snf, setSNF] = useState();
   const [diabeticFU, setDiabeticFU] = useState();
   const [pressureUlcer, setPressureUlcer] = useState({
     location: "",
@@ -66,21 +66,21 @@ const CustomField = (props: CustomFieldProps) => {
   const [members, setMembers] = useState(null);
   const [loading, setLoading] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
-  const [readyToSubmit, setReadyToSubmit] = useState(false)
-
+  const [readyToSubmit, setReadyToSubmit] = useState(false);
+  const [hospice, setHospice] = useState(null);
+  const [medicare, setMedicare] = useState(null);
   //@ts-ignore
   const { theme, value, variant, five, formField, selectedRecord } = props;
-
 
   //const accountKey = five.stack.Account.AccountKey;
 
   //@ts-ignore
- 
- 
+
   const account = {
-    AccountKey: selectedRecord?.data?.ACT
+    AccountKey: selectedRecord?.data?.ACT,
   };
-  
+
+  const AccountDetails = selectedRecord?.data;
 
   const totalSteps = 8;
   const existingPatient =
@@ -88,11 +88,11 @@ const CustomField = (props: CustomFieldProps) => {
     five.actionID() !== "IVR" && five.actionID() !== "Accounts";
 
   const handleDialogOpen = () => {
-    console.log("five.stack from the plugin",selectedRecord)
-    console.log("five.form from the plugin",formField)
+    console.log("five.stack from the plugin", selectedRecord);
+    console.log("five.form from the plugin", formField);
     setDialogOpen(true);
-    
-    console.log("Account Key", account)
+
+    console.log("Account Key", account);
     const fetchData = async () => {
       if (existingPatient) {
         await five.executeFunction(
@@ -118,8 +118,10 @@ const CustomField = (props: CustomFieldProps) => {
             handlePractitioner(data?.practitioner);
             setCPTWound(ivr?.WoundType);
             setLoading(false);
-            setAdmitted(() => ivr?.SNFAttendance ? ivr?.SNFAttendance : false)
-            setPlaceOfService(ivr?.PlaceofService)
+            setAdmitted(() =>
+              ivr?.SNFAttendance ? ivr?.SNFAttendance : false
+            );
+            setPlaceOfService(ivr?.PlaceofService);
           }
         );
       }
@@ -133,17 +135,14 @@ const CustomField = (props: CustomFieldProps) => {
         (result) => {
           setData(JSON.parse(result.serverResponse.results));
           setLoading(false);
-          console.log('Getting this to check my data',JSON.parse(result.serverResponse.results))
         }
       );
     };
 
     if (data === null) {
-
       setLoading(true);
       // Check patient selection status
       //@ts-ignore
-
     }
 
     fetchData();
@@ -179,22 +178,20 @@ const CustomField = (props: CustomFieldProps) => {
     return `${year}-${month}-${day}`;
   }
 
-
-  const handleSubmit = async () => {
-
-    if(!readyToSubmit){
-      setSubmissionSuccess(true)
+  const handleSubmit = async (complete) => {
+    if (!readyToSubmit && complete) {
+      setSubmissionSuccess(true);
       return 0;
     }
 
-
-   if(!existingPatient){
+    if (!existingPatient) {
       const IVR = {
         patient: patient?.data?.___PAT,
         products,
         admitted,
         placeOfService,
         practitioner,
+        status: complete ? "Pending" : 'Unsubmitted',
         eCode,
         iCode,
         lCode,
@@ -208,7 +205,7 @@ const CustomField = (props: CustomFieldProps) => {
         pressureUlcer,
         cptWoundSize,
         payors,
-        AccountKey: selectedRecord?.data?.ACT
+        AccountKey: selectedRecord?.data?.ACT,
       };
       await five.executeFunction(
         "pushToIVR",
@@ -222,7 +219,7 @@ const CustomField = (props: CustomFieldProps) => {
         }
       );
     } else {
-      console.log("This should execute on Update")
+      console.log("This should execute on Update");
       const IVR = {
         link: selectedRecord.data.editLink,
         products,
@@ -240,7 +237,7 @@ const CustomField = (props: CustomFieldProps) => {
         diabeticFU,
         cptWound,
         pressureUlcer,
-        cptWoundSize
+        cptWoundSize,
       };
       await five.executeFunction(
         "updateIVR",
@@ -256,7 +253,7 @@ const CustomField = (props: CustomFieldProps) => {
     }
 
     console.log(IVR);
-    
+
     await five.executeFunction(
       "submissionSuccessful",
       //@ts-ignore
@@ -266,12 +263,12 @@ const CustomField = (props: CustomFieldProps) => {
       null,
       //@ts-ignore
       (result) => {
-        console.log("Loggin submissionSuccessful")
+        console.log("Loggin submissionSuccessful");
       }
     );
     handleDialogClose();
-    if( five.internal.actionID === "IVR"){
-      five.previousAction(true, 1)
+    if (five.internal.actionID === "IVR") {
+      five.previousAction(true, 1);
     }
   };
 
@@ -283,7 +280,7 @@ const CustomField = (props: CustomFieldProps) => {
   useEffect(() => {
     //@ts-ignore
     if (five.internal.actionID === "IVR") {
-      handleDialogOpen()
+      handleDialogOpen();
     }
     if (existingPatient && activeStep === 0) {
       setActiveStep(1);
@@ -308,7 +305,6 @@ const CustomField = (props: CustomFieldProps) => {
   }, []);
 
   // Event handlers
-
 
   if (loading) {
     return (
@@ -354,31 +350,57 @@ const CustomField = (props: CustomFieldProps) => {
           {"Insurance Verification Request"}
         </DialogTitle>
         <DialogContent style={{ maxWidth: "100%", overflowX: "hidden" }}>
-          {patient ? (<div
-        className="patient-details"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-          height: '5%',
-          margin: '20px 0',
-        }}
-      >
-        {patient ? (
-          <p>
-            <strong>{patient?.data.NameFirst + ' ' + patient?.data.NameLast}</strong>
-            <br />
-            <br />
-            {patient?.data.AddressStreet + ' ' + (patient.data.AddressStreet2 ? patient?.data.AddressStreet2 : '')}
-            <br />
-            {patient?.data.AddressCity + ' ' + patient?.data.AddressState + ' ' + patient?.data.AddressZip}
-          </p>
-        ) : (
-          <></>
-        )}
-
-        <p>Sunnyside</p>
-      </div>) : null}
+          {patient ? (
+            <div
+              className="patient-details"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                height: "5%",
+                margin: "20px 0",
+              }}
+            >
+              {patient ? (
+                <p>
+                  <strong>
+                    {patient?.data.NameFirst + " " + patient?.data.NameLast}
+                  </strong>
+                  <br />
+                  <br />
+                  {patient?.data.AddressStreet +
+                    " " +
+                    (patient.data.AddressStreet2
+                      ? patient?.data.AddressStreet2
+                      : "")}
+                  <br />
+                  {patient?.data.AddressCity +
+                    " " +
+                    patient?.data.AddressState +
+                    " " +
+                    patient?.data.AddressZip}
+                </p>
+              ) : (
+                <></>
+              )}{" "}
+              {}
+              <p>
+                <strong>{AccountDetails.OfficeName}</strong>
+                <br />
+                {AccountDetails.AddressStreet}
+                <br />
+                {AccountDetails.AddressCity +
+                  ", " +
+                  AccountDetails.AddressState +
+                  " " +
+                  AccountDetails.AddressZip}
+                <br />
+                {AccountDetails.Email}
+                <br />
+                {AccountDetails.Phone}
+              </p>
+            </div>
+          ) : null}
           {activeStep === 0 && (
             <NewPatient
               data={data}
@@ -393,13 +415,17 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
 
-          {activeStep === 1 && patient &&(
+          {activeStep === 1 && patient && (
             <PatientDetails
               patient={patient}
               admitted={admitted}
               handleRadioChange={handleRadioChange}
-              placeOfService= {placeOfService}
-              setPlaceOfService= {setPlaceOfService}
+              placeOfService={placeOfService}
+              setPlaceOfService={setPlaceOfService}
+              hospiceMain={hospice}
+              setHospiceMain={setHospice}
+              medicare={medicare}
+              setMedicare={setMedicare}
             />
           )}
           {activeStep === 2 && (
@@ -411,7 +437,7 @@ const CustomField = (props: CustomFieldProps) => {
               account={account}
             />
           )}
-          {activeStep === 3 && patient &&(
+          {activeStep === 3 && patient && (
             <Insurance
               patient={patient}
               setPatient={setPatient}
@@ -449,7 +475,11 @@ const CustomField = (props: CustomFieldProps) => {
           )}
 
           {activeStep === 6 && (
-            <CPTCode setCPTCodeMain={setCPTCode} cptCodeMain={cptCode} setCPTWoundSize={setCPTWoundSize} />
+            <CPTCode
+              setCPTCodeMain={setCPTCode}
+              cptCodeMain={cptCode}
+              setCPTWoundSize={setCPTWoundSize}
+            />
           )}
           {activeStep === 7 && (
             <Summary
@@ -467,35 +497,60 @@ const CustomField = (props: CustomFieldProps) => {
               setReadyToSubmit={setReadyToSubmit}
             />
           )}
-            <Box
-              style={{
-                position: "absolute",
-                bottom: "1%",
-                width: "100%",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white",
-                padding: 5,
-                zIndex: 99,
-              }}
-            >
-              {activeStep === 0 ? null : (existingPatient && activeStep === 1) ? (
+          <Box
+            style={{
+              position: "absolute",
+              bottom: "1%",
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "white",
+              padding: 5,
+              zIndex: 99,
+            }}
+          >
+            {activeStep === 0 ? null : existingPatient && activeStep === 1 ? (
+              <Button
+                onClick={() => {
+                  five.internal.actionID === "IVR"
+                    ? five.previousAction(true, 1)
+                    : handleDialogClose();
+                }}
+                style={{
+                  width: "100px",
+                  height: "50px",
+                  borderRadius: "0px",
+                  background: "#285C79",
+                  color: "white",
+                  marginRight: "20px",
+                }}
+              >
+                Close
+              </Button>
+            ) : (
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Button
-                  onClick={()=> { five.internal.actionID === "IVR" ? five.previousAction(true, 1) : handleDialogClose()}}
+                  onClick={() => handleSubmit(false)}
                   style={{
                     width: "100px",
                     height: "50px",
                     borderRadius: "0px",
                     background: "#285C79",
                     color: "white",
-                    marginRight: "20px",
+                    marginRight: "40px",
                   }}
                 >
-                  Close
+                  Save
                 </Button>
-              ) : (
                 <Button
                   onClick={handleBack}
                   style={{
@@ -509,38 +564,39 @@ const CustomField = (props: CustomFieldProps) => {
                 >
                   Previous
                 </Button>
-              )}
+              </Box>
+            )}
 
-              {(activeStep === 7 )? (
-                <Button
-                  onClick={handleSubmit}
-                  style={{
-                    width: "100px",
-                    height: "50px",
-                    borderRadius: "0px",
-                    background: "#285C79",
-                    color: "white",
-                    margin: "20px",
-                  }}
-                >
-                  Submit
-                </Button>
-              ) :( activeStep !== 0 ? (
-                <Button
-                  onClick={handleNext}
-                  style={{
-                    width: "100px",
-                    height: "50px",
-                    borderRadius: "0px",
-                    background: "#285C79",
-                    color: "white",
-                    margin: "20px",
-                  }}
-                >
-                  Next
-                </Button>
-              ) :null )}
-            </Box>
+            {activeStep === 7 ? (
+              <Button
+                onClick={() => handleSubmit(true)}
+                style={{
+                  width: "100px",
+                  height: "50px",
+                  borderRadius: "0px",
+                  background: "#285C79",
+                  color: "white",
+                  margin: "20px",
+                }}
+              >
+                Submit
+              </Button>
+            ) : activeStep !== 0 ? (
+              <Button
+                onClick={handleNext}
+                style={{
+                  width: "100px",
+                  height: "50px",
+                  borderRadius: "0px",
+                  background: "#285C79",
+                  color: "white",
+                  margin: "20px",
+                }}
+              >
+                Next
+              </Button>
+            ) : null}
+          </Box>
         </DialogContent>
         <DialogActions>
           {
@@ -556,18 +612,17 @@ const CustomField = (props: CustomFieldProps) => {
           }
         </DialogActions>
         <Snackbar
-        open={submissionSuccess}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        style={{zIndex: '99'}}
+          open={submissionSuccess}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          style={{ zIndex: "99" }}
         >
-        <Alert onClose={handleCloseSnackbar} severity="error">
-          Please Accept The Terms Before Submitting
-        </Alert>
-      </Snackbar>
+          <Alert onClose={handleCloseSnackbar} severity="error">
+            Please Accept The Terms Before Submitting
+          </Alert>
+        </Snackbar>
       </Dialog>
-      
     </Box>
   );
 };

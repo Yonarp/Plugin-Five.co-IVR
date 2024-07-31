@@ -17,6 +17,8 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
     setPractitioner(practitioner, index);
   };
 
+  
+
   useEffect(() => {
 
 
@@ -37,7 +39,18 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
             console.log("Loggin From Practitioners");
             console.log(result.serverResponse.results);
             const data = JSON.parse(result.serverResponse.results)
-            setPractitioners(JSON.parse(result.serverResponse.results));
+            const sortedData = data.sort((a, b) => {
+              if (a.NameFirst < b.NameFirst) {
+                return -1;
+              }
+              if (a.NameFirst > b.NameFirst) {
+                return 1;
+              }
+              return 0;
+            });
+            
+
+            setPractitioners(sortedData);
             if(existingPatient){
               data.map((item,index) => {
                 if(item?.___USR === practitioner?.data.___USR){
@@ -80,7 +93,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
       >
         Select a practitioner for this request
       </Typography>
-      <List>
+      <List style={{marginBottom: '70px'}}>
         {practitioners ? (
           practitioners.map((practitionerItem, index) => {
             
