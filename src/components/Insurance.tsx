@@ -226,9 +226,12 @@ const Insurance = React.memo(
           <Typography
             variant="h5"
             mt={5}
-            style={{ textAlign: "center", marginBottom: "20px" }}
+            style={{ textAlign: "center", marginBottom: "10px" }}
           >
             Select An Insurance
+          </Typography>
+          <Typography variant="body1" mt={5} style={{ textAlign: "center", marginBottom: "20px" }}> 
+            Each payor must contain a member number.
           </Typography>
           <List>
             {payors

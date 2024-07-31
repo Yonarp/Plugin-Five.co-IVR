@@ -96,6 +96,7 @@ const NewPatient = ({
   };
 
   const isFormValid = () => {
+    // Checking if the required fields have data or not
     const requiredFields = ["NameFirst", "NameLast", "Gender", "Birthdate", "AddressStreet", "AddressCity", "AddressState", "AddressZip"];
     return requiredFields.every(field => formState[field].trim() !== "");
   };
@@ -104,7 +105,7 @@ const NewPatient = ({
     e.preventDefault();
 
     if (!isFormValid()) {
-      alert("Please fill in all required fields.");
+      five.message("Please fill in all required fields.")
       return;
     }
 
@@ -199,7 +200,7 @@ const NewPatient = ({
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                First Name<span style={{ color: "red" }}>*</span>:{" "}
+                First Name<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <TextField
                 label="First Name"
@@ -219,7 +220,7 @@ const NewPatient = ({
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                Last Name<span style={{ color: "red" }}>*</span>:{" "}
+                Last Name<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <TextField
                 label="Last Name"
@@ -240,7 +241,7 @@ const NewPatient = ({
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120, maxWidth: 120 }}>
-                Gender:{" "}
+                Gender<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <FormControl
                 margin="normal"
@@ -270,7 +271,7 @@ const NewPatient = ({
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                Birthdate:{" "}
+                Birthdate<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <TextField
                 label="Birthdate"
@@ -289,7 +290,7 @@ const NewPatient = ({
             </Box>
             <Grid container spacing={2} mb={2}>
               <Grid item xs={12}>
-                <Typography variant="h6">Address Information</Typography>
+                <Typography variant="h6">Address Information <span style={{ color: "red" }}>*</span></Typography>
               </Grid>
               <Box
                 style={{

@@ -254,10 +254,13 @@ const CustomField = (props: CustomFieldProps) => {
 
     console.log(IVR);
 
+    const submissionText = {
+      message: complete ? 'Submission Successfull' : 'The IVR has been saved.'
+    }
     await five.executeFunction(
       "submissionSuccessful",
       //@ts-ignore
-      IVR,
+      submissionText,
       null,
       null,
       null,

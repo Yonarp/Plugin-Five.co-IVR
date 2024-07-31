@@ -623,7 +623,7 @@ const ICDCode = ({
           variant="subtitle1"
           sx={{ marginRight: "10px", marginBottom: "20px" }}
         >
-          Wound Type:{" "}
+          Wound Type{" "}
         </Typography>
         <FormControl
           variant="outlined"
@@ -659,7 +659,7 @@ const ICDCode = ({
               }}
             >
               <Typography variant="subtitle1" mr={2} sx={{ minWidth: 40 }}>
-                Type:{"  "}
+                Type{"  "}
               </Typography>
               <Select
                 value={diabetesType}
@@ -694,7 +694,7 @@ const ICDCode = ({
               }}
             >
               <Typography variant="subtitle1" sx={{ minWidth: 40 }} mr={2}>
-                E Code<span style={{color: 'red'}}>*</span>:{" "}
+                E Code<span style={{color: 'red'}}>*</span>{" "}
               </Typography>
               <Select
                 value={eCode}
@@ -759,7 +759,7 @@ const ICDCode = ({
                 variant="subtitle1"
                 sx={{ marginRight: "10px", minWidth: "150px" }}
               >
-                Condition:{" "}
+                Condition{" "}
               </Typography>
               <Select
                 value={vluCondition}
@@ -791,7 +791,7 @@ const ICDCode = ({
                 variant="subtitle1"
                 sx={{ marginRight: "10px", minWidth: "150px" }}
               >
-                Location:{" "}
+                Location{" "}
               </Typography>
               <Select
                 value={vluLocation}
@@ -822,7 +822,7 @@ const ICDCode = ({
                 variant="subtitle1"
                 sx={{ marginRight: "10px", minWidth: "150px" }}
               >
-                Side:{" "}
+                Side{" "}
               </Typography>
               <Select
                 value={vluSide}
@@ -853,7 +853,7 @@ const ICDCode = ({
                 }}
               >
                 <Typography variant="subtitle1" sx={{ minWidth: 60 }} mr={2}>
-                  I Code<span style={{color: 'red'}}>*</span>:
+                  I Code<span style={{color: 'red'}}>*</span>
                 </Typography>
                 <Select
                   value={iCode}
@@ -912,7 +912,7 @@ const ICDCode = ({
             }}
           >
             <Typography variant="subtitle1" sx={{ marginRight: "10px" }}>
-              Select C/D Code<span style={{color: 'red'}}>*</span>:{" "}
+              Select C/D Code<span style={{color: 'red'}}>*</span>{" "}
             </Typography>
             <Select
               value={mohs}
@@ -930,7 +930,6 @@ const ICDCode = ({
               ))}
             </Select>
             <Select
-              label="C / D Code"
               value={cdCode}
               variant="outlined"
               onChange={handleMohsCode}

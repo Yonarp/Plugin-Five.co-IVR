@@ -140,10 +140,9 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain, setCPTWoundSize}) => {
           />
           
             <Typography variant="subtitle1" ml={3}>
-              CPT Code<span style={{color: 'red'}}>*</span>: {" "}
+              CPT Code<span style={{color: 'red'}}>*</span> {" "}
             </Typography>
           <Select
-            label="CPT Code"
             type="text"
             variant="outlined"
             sx={{ width: "48%" }}

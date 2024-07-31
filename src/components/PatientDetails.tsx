@@ -31,7 +31,7 @@ const PatientDetails = ({
       >
         <p>
           Has this patient been admitted to a Skilled Nursing Facility within
-          the past 100 day.
+          the past 100 day.<span style={{ color: "red" }}>*</span>
         </p>
         <FormControl component="fieldset">
           <RadioGroup
@@ -84,7 +84,7 @@ const PatientDetails = ({
           alignItems: "center",
         }}
       >
-        <p>Is this patient in Hospice?</p>
+        <p>Is this patient in Hospice? <span style={{ color: "red" }}>*</span></p>
         <FormControl component="fieldset">
           <RadioGroup
             name="exclusive-options"

@@ -219,7 +219,7 @@ const LCodeSelector = ({
             }}
           >
             <Typography variant="subtitle1" mr={2} sx={{minWidth: 40}}>
-                Location:{"  "}
+                Location{"  "}
             </Typography>
 
             <Select
@@ -251,7 +251,7 @@ const LCodeSelector = ({
             }}
           >
             <Typography variant="subtitle1" mr={2}>
-                Side:{"  "}
+                Side{"  "}
               </Typography>
             <Select
               value={side}
@@ -282,7 +282,7 @@ const LCodeSelector = ({
             }}
           >
             <Typography variant="subtitle1" mr={2}>
-                Severity:{"  "}
+                Severity{"  "}
               </Typography>
             <Select
               value={severity}
