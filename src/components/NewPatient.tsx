@@ -95,8 +95,19 @@ const NewPatient = ({
     }
   };
 
+  const isFormValid = () => {
+    const requiredFields = ["NameFirst", "NameLast", "Gender", "Birthdate", "AddressStreet", "AddressCity", "AddressState", "AddressZip"];
+    return requiredFields.every(field => formState[field].trim() !== "");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isFormValid()) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     setNewPatient(true);
     const patientObj = {
       patient: formState,

@@ -35,6 +35,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
     return `${month}/${day}/${year}`;
   }
 
+
   useEffect(() => {
     console.log(patientSaved);
     if (patientSaved) {
