@@ -292,7 +292,7 @@ const CustomField = (props: CustomFieldProps) => {
 
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
-    if (
+   /*  if (
       activeStep === 1 &&
       (hospice === null || admitted === null || placeOfService === null)
     ) {
@@ -368,7 +368,7 @@ const CustomField = (props: CustomFieldProps) => {
       five.message("Please select a CPT Code.");
       return 0;
     }
-
+ */
     if (activeStep < totalSteps - 1) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
