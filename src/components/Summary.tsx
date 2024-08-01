@@ -168,7 +168,7 @@ const Summary = ({
                   },
                 }}
               >
-                <Typography variant="body1">Document {index + 1}</Typography>
+                <Typography variant="body1">{item?.Name}</Typography>
               </ListItemButton>
             ))
           }

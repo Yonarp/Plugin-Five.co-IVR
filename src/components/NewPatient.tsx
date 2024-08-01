@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Patient from "./Patient"; // Ensure this import points to your Patient component
+import { Category } from "@mui/icons-material";
 
 const NewPatient = ({
   data,
@@ -50,6 +51,8 @@ const NewPatient = ({
   const [documentTypes, setDocumentTypes] = useState([]);
   const [documentType, setDocumentType] = useState("");
   const [otherDocumentType, setOtherDocumentType] = useState("");
+  const [documentName, setDocumentName] = useState("")
+  const [documentNames, setDocumentNames] = useState([])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -84,6 +87,9 @@ const NewPatient = ({
       ...prev,
       documentType === "other" ? otherDocumentType : documentType,
     ]);
+    
+    setDocumentNames((prev) => [...prev, documentName]);
+    
 
     handleDialogClose();
   };
@@ -113,6 +119,8 @@ const NewPatient = ({
     const patientObj = {
       patient: formState,
       document: selectedFilesBase64,
+      documentNames: documentNames,
+      documentCategory: documentTypes,
       AccountKey: account.AccountKey,
     };
     await five.executeFunction(
@@ -129,9 +137,10 @@ const NewPatient = ({
         console.log("Logging from push to patients", payorData);
         setPatient({
           data: patientData,
-          documents: selectedFilesBase64.map((base64, index) => ({
+          document: selectedFilesBase64.map((base64, index) => ({
             Base64: base64,
-            type: documentTypes[index],
+            Category: documentTypes[index],
+            Name: documentNames[index]
           })),
         });
       }
@@ -140,7 +149,7 @@ const NewPatient = ({
     handleNext();
   };
 
-  console.log("Logging patients from new patient", patient);
+  console.log("Logging documents Names and Document Name", documentNames, documentName);
 
   return (
     <>
@@ -397,6 +406,13 @@ const NewPatient = ({
             <DialogTitle>Upload Document</DialogTitle>
             <DialogContent style={{ width: "400px" }}>
               {/* Fixed width for dialog content */}
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Set Document Name"
+                    value={documentName}
+                    onChange={(e) => setDocumentName(e.target.value)}
+                  />
               <FormControl fullWidth margin="normal">
                 <InputLabel id="document-type-label">Document Type</InputLabel>
                 <Select
