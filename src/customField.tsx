@@ -162,8 +162,8 @@ const CustomField = (props: CustomFieldProps) => {
     setPatientSelected(true);
   }, []);
 
-  const handlePatient = useCallback((patientData, index = null) => {
-    setPatient({ data: patientData, index: index });
+  const handlePatient = useCallback((patientData, index = null, document) => {
+    setPatient({ data: patientData, index: index, document: document  });
   }, []);
 
   const handlePractitioner = useCallback((practitionerData, index = null) => {
@@ -191,7 +191,7 @@ const CustomField = (props: CustomFieldProps) => {
         admitted,
         placeOfService,
         practitioner,
-        status: complete ? "Pending" : 'Unsubmitted',
+        status: complete ? "Pending" : "Unsubmitted",
         eCode,
         iCode,
         lCode,
@@ -255,8 +255,8 @@ const CustomField = (props: CustomFieldProps) => {
     console.log(IVR);
 
     const submissionText = {
-      message: complete ? 'Submission Successfull' : 'The IVR has been saved.'
-    }
+      message: complete ? "Submission Successfull" : "The IVR has been saved.",
+    };
     await five.executeFunction(
       "submissionSuccessful",
       //@ts-ignore
@@ -288,14 +288,106 @@ const CustomField = (props: CustomFieldProps) => {
     if (existingPatient && activeStep === 0) {
       setActiveStep(1);
     }
-  }, [dialogOpen, existingPatient, activeStep, ivr]);
+  }, [dialogOpen, existingPatient, activeStep, ivr, hospice]);
 
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
+    if (
+      activeStep === 1 &&
+      (hospice === null || admitted === null || placeOfService === null)
+    ) {
+      five.message("Please fill in the required fields.");
+      return 0;
+    }
+
+    if (activeStep === 2 && practitioner === null) {
+      five.message("Please select a practitioner.");
+      return 0;
+    }
+
+    if (
+      activeStep === 3 &&
+      (patient.data.Pay1MemberNumber === null ||
+        patient.data.Pay1MemberNumber === undefined ||
+        patient.data.Pay1MemberNumber === "")
+    ) {
+      five.message(
+        "Please specify your member number for your primary insurance."
+      );
+      return 0;
+    }
+
+    if (activeStep === 4 && products.length < 1) {
+      five.message("Please select atleast one product.");
+      return 0;
+    }
+
+    if (activeStep === 5) {
+      console.log(
+        "logging the details required",
+        cptWound,
+        typeof eCode,
+        lCode
+      );
+
+          if (cptWound === null || cptWound === "") {
+            five.message("Please specify the wound type");
+            return 0;
+          }
+
+          if (cptWound === "Diabetic foot ulcer") {
+            if (eCode === "" || lCode === "") {
+              five.message("Please select an E-Code and a L-Code.");
+              return 0;
+            }
+          }
+
+          if (cptWound === "Venous leg ulcer") {
+            if (iCode === "" || lCode === "") {
+              five.message("Please select an I-Code and a L-Code.");
+              return 0;
+            }
+          }
+
+          if (cptWound === "Pressure ulcer") {
+            if (lCode === "") {
+              five.message("Please select a L-Code.");
+              return 0;
+            }
+          }
+          if (cptWound === "Mohs") {
+            if (cdCode === "") {
+              five.message("Please select a C/D Code");
+              return 0;
+            }
+          }
+
+        }
+
+    if(activeStep === 6 && (cptCode === null || cptCode === "")){
+      five.message("Please select a CPT Code.");
+      return 0;
+    }
+
     if (activeStep < totalSteps - 1) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-  }, [activeStep, totalSteps]);
+  }, [
+    activeStep,
+    totalSteps,
+    hospice,
+    admitted,
+    placeOfService,
+    practitioner,
+    patient?.data?.Pay1MemberNumber,
+    products,
+    cptWound,
+    eCode,
+    lCode,
+    iCode,
+    cdCode,
+    cptCode
+  ]);
 
   const handleBack = useCallback(() => {
     setActiveStep((prevActiveStep) => {
@@ -447,6 +539,7 @@ const CustomField = (props: CustomFieldProps) => {
               five={five}
               setPayorsMain={setPayors}
               newPatient={newPatient}
+              payorExternal={payors}
             />
           )}
           {activeStep === 4 && (

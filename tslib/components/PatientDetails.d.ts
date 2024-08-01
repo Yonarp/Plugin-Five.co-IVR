@@ -1,4 +1,4 @@
-declare const PatientDetails: ({ admitted, handleRadioChange, placeOfService, setPlaceOfService, hospiceMain, setHospiceMain, medicare, setMedicare }: {
+declare const PatientDetails: ({ admitted, handleRadioChange, placeOfService, setPlaceOfService, hospiceMain, setHospiceMain, medicare, setMedicare, patient }: {
     admitted: any;
     handleRadioChange: any;
     placeOfService: any;
@@ -7,5 +7,6 @@ declare const PatientDetails: ({ admitted, handleRadioChange, placeOfService, se
     setHospiceMain: any;
     medicare: any;
     setMedicare: any;
+    patient: any;
 }) => JSX.Element;
 export default PatientDetails;

@@ -1,4 +1,5 @@
-declare const Summary: ({ products, practitioner, eCode, iCode, lCode, cdCode, cptCode, payors, setReadyToSubmit, }: {
+declare const Summary: ({ patient, products, practitioner, eCode, iCode, lCode, cdCode, cptCode, payors, setReadyToSubmit, }: {
+    patient: any;
     products: any;
     practitioner: any;
     eCode: any;

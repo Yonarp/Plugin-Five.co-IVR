@@ -61,7 +61,8 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
       null,
       (result) => {
         const patientData = JSON.parse(result.serverResponse.results);
-        handlePatient(patientData.response.value[0], index);
+        console.log("Patient Data ->", patientData)
+        handlePatient(patientData.patient, index, patientData.document);
       }
     );
   };

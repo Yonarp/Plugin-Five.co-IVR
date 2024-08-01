@@ -98,7 +98,7 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain, setCPTWoundSize}) => {
         height: "100%",
       }}>
         <Typography variant="h5" mt={6} style={{ textAlign: "center", marginBottom: "20px" }}>
-          Determine the CPT and ICD 10 Codes
+          Determine the CPT Code
         </Typography>
         <Box sx={{ marginBottom: "20px" }}>
           <Typography variant="subtitle1">Wound location</Typography>

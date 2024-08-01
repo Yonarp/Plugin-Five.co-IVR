@@ -13,9 +13,10 @@ const PatientDetails = ({
   hospiceMain,
   setHospiceMain,
   medicare,
-  setMedicare
+  setMedicare,
+  patient
 }) => {
-  console.log("Comes from patient Detail", placeOfService);
+  console.log("Comes from patient Detail", patient);
  // const [hospice, setHospice] = React.useState("");
 
   return (

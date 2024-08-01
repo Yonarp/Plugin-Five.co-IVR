@@ -12,7 +12,7 @@ import InsuranceDetail from "./InsuranceDetail";
 import { Delete } from "@mui/icons-material";
 
 const Insurance = React.memo(
-  ({ patient, five, setPayorsMain, newPatient, setPatient }) => {
+  ({ patient, five, setPayorsMain, newPatient, setPatient, payorExternal }) => {
     const [selectedPayors, setSelectedPayors] = useState([]);
     //@ts-ignore
     const [selectedPayor, setSelectedPayor] = useState(null);
@@ -139,7 +139,7 @@ const Insurance = React.memo(
           //@ts-ignore
           (result) => {
             const payorData = JSON.parse(result.serverResponse.results);
-            setPatient({data: payorData.response})
+            setPatient((prevPatient) => ({data: payorData.response, document: [...prevPatient.document]}))
           }
         );
       } else {
@@ -157,7 +157,7 @@ const Insurance = React.memo(
           //@ts-ignore
           (result) => {
             const payorData = JSON.parse(result.serverResponse.results);
-            setPatient({data: payorData.response})
+            setPatient((prevPatient) => ({data: payorData.response, document: prevPatient.document}))
           }
         );
       }
@@ -165,6 +165,7 @@ const Insurance = React.memo(
     };
 
     useEffect(() => {
+      console.log("Logging paoyrs from insurance", payorExternal)
       const fetchData = async () => {
         setLoading(true);
         const payorKeys = [patient?.data?.__PAY1, patient?.data?.__PAY2].filter(

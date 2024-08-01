@@ -10,6 +10,7 @@ import {
 
 //@ts-ignore
 const Summary = ({
+  patient,
   products,
   practitioner,
   eCode,
@@ -21,6 +22,7 @@ const Summary = ({
   setReadyToSubmit,
 }) => {
   console.log("SNF Admissions :", payors);
+  console.log("Patient:", patient);
   const [isChecked, setIsChecked] = useState(false);
 
   // Handle checkbox change

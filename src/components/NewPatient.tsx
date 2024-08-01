@@ -130,7 +130,7 @@ const NewPatient = ({
         setPatient({
           data: patientData,
           documents: selectedFilesBase64.map((base64, index) => ({
-            base64,
+            Base64: base64,
             type: documentTypes[index],
           })),
         });
@@ -140,7 +140,7 @@ const NewPatient = ({
     handleNext();
   };
 
-  console.log("Logging Data from new patient", data);
+  console.log("Logging patients from new patient", patient);
 
   return (
     <>
