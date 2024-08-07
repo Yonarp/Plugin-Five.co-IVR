@@ -163,7 +163,7 @@ const CustomField = (props: CustomFieldProps) => {
   }, []);
 
   const handlePatient = useCallback((patientData, index = null, document) => {
-    setPatient({ data: patientData, index: index, document: document  });
+    setPatient({ data: patientData, index: index, document: document });
   }, []);
 
   const handlePractitioner = useCallback((practitionerData, index = null) => {
@@ -292,7 +292,7 @@ const CustomField = (props: CustomFieldProps) => {
 
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
-   /*  if (
+    if (
       activeStep === 1 &&
       (hospice === null || admitted === null || placeOfService === null)
     ) {
@@ -330,45 +330,44 @@ const CustomField = (props: CustomFieldProps) => {
         lCode
       );
 
-          if (cptWound === null || cptWound === "") {
-            five.message("Please specify the wound type");
-            return 0;
-          }
+      if (cptWound === null || cptWound === "") {
+        five.message("Please specify the wound type");
+        return 0;
+      }
 
-          if (cptWound === "Diabetic foot ulcer") {
-            if (eCode === "" || lCode === "") {
-              five.message("Please select an E-Code and a L-Code.");
-              return 0;
-            }
-          }
-
-          if (cptWound === "Venous leg ulcer") {
-            if (iCode === "" || lCode === "") {
-              five.message("Please select an I-Code and a L-Code.");
-              return 0;
-            }
-          }
-
-          if (cptWound === "Pressure ulcer") {
-            if (lCode === "") {
-              five.message("Please select a L-Code.");
-              return 0;
-            }
-          }
-          if (cptWound === "Mohs") {
-            if (cdCode === "") {
-              five.message("Please select a C/D Code");
-              return 0;
-            }
-          }
-
+      if (cptWound === "Diabetic foot ulcer") {
+        if (eCode === "" || lCode === "") {
+          five.message("Please select an E-Code and a L-Code.");
+          return 0;
         }
+      }
 
-    if(activeStep === 6 && (cptCode === null || cptCode === "")){
+      if (cptWound === "Venous leg ulcer") {
+        if (iCode === "" || lCode === "") {
+          five.message("Please select an I-Code and a L-Code.");
+          return 0;
+        }
+      }
+
+      if (cptWound === "Pressure ulcer") {
+        if (lCode === "") {
+          five.message("Please select a L-Code.");
+          return 0;
+        }
+      }
+      if (cptWound === "Mohs") {
+        if (cdCode === "") {
+          five.message("Please select a C/D Code");
+          return 0;
+        }
+      }
+    }
+
+    if (activeStep === 6 && (cptCode === null || cptCode === "")) {
       five.message("Please select a CPT Code.");
       return 0;
     }
- */
+
     if (activeStep < totalSteps - 1) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -386,7 +385,7 @@ const CustomField = (props: CustomFieldProps) => {
     lCode,
     iCode,
     cdCode,
-    cptCode
+    cptCode,
   ]);
 
   const handleBack = useCallback(() => {
@@ -459,7 +458,7 @@ const CustomField = (props: CustomFieldProps) => {
               {patient ? (
                 <p>
                   <strong>
-                    {patient?.data.NameFirst + " " + patient?.data.NameLast}
+                    {patient?.data?.NameFirst + " " + patient?.data?.NameLast}
                   </strong>
                   <br />
                   <br />
@@ -510,19 +509,32 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
 
-          {activeStep === 1 && patient && (
-            <PatientDetails
-              patient={patient}
-              admitted={admitted}
-              handleRadioChange={handleRadioChange}
-              placeOfService={placeOfService}
-              setPlaceOfService={setPlaceOfService}
-              hospiceMain={hospice}
-              setHospiceMain={setHospice}
-              medicare={medicare}
-              setMedicare={setMedicare}
-            />
-          )}
+          {activeStep === 1 &&
+            (patient ? (
+              <PatientDetails
+                patient={patient}
+                admitted={admitted}
+                handleRadioChange={handleRadioChange}
+                placeOfService={placeOfService}
+                setPlaceOfService={setPlaceOfService}
+                hospiceMain={hospice}
+                setHospiceMain={setHospice}
+                medicare={medicare}
+                setMedicare={setMedicare}
+              />
+            ) : (
+              <Container
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress />
+              </Container>
+            ))}
           {activeStep === 2 && (
             <Practitioner
               five={five}
@@ -689,7 +701,9 @@ const CustomField = (props: CustomFieldProps) => {
                   margin: "20px",
                 }}
               >
-                Next
+                
+              Next
+
               </Button>
             ) : null}
           </Box>

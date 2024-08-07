@@ -61,7 +61,7 @@ const Summary = ({
   };
 
   return (
-    <Container style={{ width: "100%", height: "100%"}}>
+    <Container style={{ width: "100%"}}>
       <Box
         sx={{ p: 2, maxWidth: 600, mx: "auto", boxShadow: 3, borderRadius: 2 }}
         mt={10}

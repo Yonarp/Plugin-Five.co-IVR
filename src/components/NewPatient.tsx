@@ -116,6 +116,7 @@ const NewPatient = ({
     }
 
     setNewPatient(true);
+
     const patientObj = {
       patient: formState,
       document: selectedFilesBase64,
@@ -123,6 +124,7 @@ const NewPatient = ({
       documentCategory: documentTypes,
       AccountKey: account.AccountKey,
     };
+    
     await five.executeFunction(
       "pushPatient",
       //@ts-ignore

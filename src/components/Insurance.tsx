@@ -211,6 +211,7 @@ const Insurance = React.memo(
           }}
         >
           <CircularProgress />
+          
         </Container>
       );
     }

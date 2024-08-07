@@ -65,6 +65,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
         handlePatient(patientData.patient, index, patientData.document);
       }
     );
+    handleNext()
   };
 
   
@@ -114,7 +115,6 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
               },
             }}
           >
-            {console.log(convertToAmericanFormat(patient.Birthdate))}
             <Box
               style={{
                 width: "100%",

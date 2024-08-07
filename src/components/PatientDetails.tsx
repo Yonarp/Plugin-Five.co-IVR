@@ -1,8 +1,13 @@
-import React from "react";
-import { Box, FormControl, FormControlLabel } from "../FivePluginApi";
+import React, { useEffect } from "react";
+import {
+  Box,
+  CircularProgress,
+  FormControl,
+  FormControlLabel,
+} from "../FivePluginApi";
 import MedicareForm from "./MedicareForm";
 import PlaceAndDatePicker from "./PlaceAndDatePicker";
-import { Radio, RadioGroup } from "@mui/material";
+import { Container, Radio, RadioGroup } from "@mui/material";
 
 //@ts-ignore
 const PatientDetails = ({
@@ -14,10 +19,35 @@ const PatientDetails = ({
   setHospiceMain,
   medicare,
   setMedicare,
-  patient
+  patient,
 }) => {
   console.log("Comes from patient Detail", patient);
- // const [hospice, setHospice] = React.useState("");
+  // const [hospice, setHospice] = React.useState("");
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    console.log("Check Patient", patient)
+    setLoading(true);
+
+    if (patient) {
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <Container
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    );
+  }
 
   return (
     <Box>
@@ -85,7 +115,9 @@ const PatientDetails = ({
           alignItems: "center",
         }}
       >
-        <p>Is this patient in Hospice? <span style={{ color: "red" }}>*</span></p>
+        <p>
+          Is this patient in Hospice? <span style={{ color: "red" }}>*</span>
+        </p>
         <FormControl component="fieldset">
           <RadioGroup
             name="exclusive-options"
@@ -103,12 +135,6 @@ const PatientDetails = ({
             <FormControlLabel value="No" control={<Radio />} label="No" />
           </RadioGroup>
         </FormControl>
-        {hospiceMain === "Yes" ? (
-          <p style={{ color: "red" }}>
-            This treatment will not be eligible for coverage, Please do not
-            continue with verification request
-          </p>
-        ) : null}
       </div>
     </Box>
   );
