@@ -7,7 +7,7 @@ import {
   CircularProgress,
   ListItemText,
 } from "@mui/material";
-import { Box, Button, List, ListItem } from "../FivePluginApi";
+import { Box, Button, List, ListItem, TextField } from "../FivePluginApi";
 import InsuranceDetail from "./InsuranceDetail";
 import { Delete } from "@mui/icons-material";
 
@@ -21,6 +21,10 @@ const Insurance = React.memo(
     const [insuranceIndex, setInsuranceIndex] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [primaryMemberNumber, setPrimaryMemberNumber] = useState(null);
+    const [secondaryMemberNumber, setSecondaryMemberNumber] = useState(null);
+    const [primaryGroupNumber, setPrimaryGroupNumber] = useState("");
+    const [secondaryGroupNumber, setSecondaryGroupNumber] = useState("");
 
     const handleDialogOpen = (payor = null, isEdit) => {
       setSelectedPayor(payor);
@@ -62,6 +66,29 @@ const Insurance = React.memo(
           return "Tertiary payor";
         default:
           return null;
+      }
+    };
+
+    const handleMemberNumberChange = (event, index) => {
+      if (index === 0) {
+        setPrimaryMemberNumber(event.target.value);
+        setPayors((prevState) => [...prevState]);
+        setPatient((prevState) => ({
+          ...prevState,
+          data: {
+            ...prevState.data,
+            Pay1MemberNumber: event.target.value,
+          },
+        }));
+      } else {
+        setSecondaryMemberNumber(event.target.value);
+        setPatient((prevState) => ({
+          ...prevState,
+          data: {
+            ...prevState.data,
+            Pay2MemberNumber: event.target.value,
+          },
+        }));
       }
     };
 
@@ -119,7 +146,7 @@ const Insurance = React.memo(
 
     const handlePayor = async (payorData, index) => {
       if (isEdit) {
-        console.log("Reached here", payorData);
+        console.log("Reached here Handle Payor", payorData);
         setPayors((prevPayors) =>
           prevPayors.map((p) => (p.___PAY === payorData.___PAY ? payorData : p))
         );
@@ -127,7 +154,7 @@ const Insurance = React.memo(
         const payorObj = {
           payor: payorData,
           patient: patient?.data,
-          index: index
+          index: index,
         };
 
         await five.executeFunction(
@@ -139,7 +166,10 @@ const Insurance = React.memo(
           //@ts-ignore
           (result) => {
             const payorData = JSON.parse(result.serverResponse.results);
-            setPatient((prevPatient) => ({data: payorData.response, document: [...prevPatient.document]}))
+            setPatient((prevPatient) => ({
+              data: payorData.response,
+              document: [...prevPatient.document],
+            }));
           }
         );
       } else {
@@ -157,7 +187,10 @@ const Insurance = React.memo(
           //@ts-ignore
           (result) => {
             const payorData = JSON.parse(result.serverResponse.results);
-            setPatient((prevPatient) => ({data: payorData.response, document: prevPatient.document}))
+            setPatient((prevPatient) => ({
+              data: payorData.response,
+              document: prevPatient.document,
+            }));
           }
         );
       }
@@ -165,7 +198,7 @@ const Insurance = React.memo(
     };
 
     useEffect(() => {
-      console.log("Logging paoyrs from insurance", payorExternal)
+      console.log("Logging paoyrs from insurance", payorExternal);
       const fetchData = async () => {
         setLoading(true);
         const payorKeys = [patient?.data?.__PAY1, patient?.data?.__PAY2].filter(
@@ -189,9 +222,14 @@ const Insurance = React.memo(
         });
 
         const payorArray = await Promise.all(payorPromises);
+        setPrimaryMemberNumber(patient.data?.Pay1MemberNumber || "");
+        setSecondaryMemberNumber(patient.data?.Pay2MemberNumber || "");
+        setPrimaryGroupNumber(patient.data?.Pay1Group || "");
+        setSecondaryGroupNumber(patient.data?.Pay2Group || "");
+
         setPayors(payorArray);
-        setSelectedPayors(payorArray)
-        setPayorsMain(payorArray)
+        setSelectedPayors(payorArray);
+        setPayorsMain(payorArray);
         setLoading(false);
       };
 
@@ -211,7 +249,6 @@ const Insurance = React.memo(
           }}
         >
           <CircularProgress />
-          
         </Container>
       );
     }
@@ -232,7 +269,11 @@ const Insurance = React.memo(
           >
             Select An Insurance
           </Typography>
-          <Typography variant="body1" mt={5} style={{ textAlign: "center", marginBottom: "20px" }}> 
+          <Typography
+            variant="body1"
+            mt={5}
+            style={{ textAlign: "center", marginBottom: "20px" }}
+          >
             Each payor must contain a member number.
           </Typography>
           <List>
@@ -254,17 +295,97 @@ const Insurance = React.memo(
                         flex: 1,
                       }}
                     >
-                      <ListItemText 
-                      primary={index === 0 ? 'Primary' : 'Secondary'}
-                      sx={{flex:0.2, width: '15%'}}
+                      <ListItemText
+                        primary={index === 0 ? "Primary" : "Secondary"}
+                        sx={{ flex: 0.2, width: "15%", marginTop: "10px" }}
                       />
                       <ListItemText
-                        sx={{fontSize: '1rem'}}
+                        sx={{ fontSize: "1rem", flex: 1, marginTop: "10px" }}
                         primary={payor?.CompanyName}
                         secondary={
-                          index === 0
-                            ? patient.data?.Pay1MemberNumber
-                            : patient.data?.Pay2MemberNumber
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="flex-start"
+                            sx={{ marginBottom: "16px" }}
+                          >
+                            <Box
+                              display="flex"
+                              flexDirection="row"
+                              alignItems="center"
+                            >
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  fontSize: "0.875rem",
+                                  marginRight: "8px",
+                                  color: "#555",
+                                }}
+                              >
+                                Member Number:
+                              </Typography>
+                              <TextField
+                                InputProps={{
+                                  disableUnderline: true,
+                                  readOnly: true,
+                                }}
+                                variant="standard"
+                                placeholder="Enter Group Number"
+                                value={
+                                  index === 0
+                                    ? primaryMemberNumber
+                                    : secondaryMemberNumber
+                                }
+                                sx={{
+                                  minWidth: "200px",
+                                  backgroundColor: "transparent",
+                                  input: {
+                                    padding: "1px 4px",
+                                    fontSize: "0.875rem",
+                                  },
+                                }}
+                              />
+                            </Box>
+
+                            <Box
+                              display="flex"
+                              flexDirection="row"
+                              alignItems="center"
+                              mt={1}
+                            >
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  fontSize: "0.875rem",
+                                  marginRight: "8px",
+                                  color: "#555",
+                                }}
+                              >
+                                Group Number:
+                              </Typography>
+                              <TextField
+                                InputProps={{
+                                  disableUnderline: true,
+                                  readOnly: true,
+                                }}
+                                variant="standard"
+                                placeholder="Enter Group Number"
+                                value={
+                                  index === 0
+                                    ? primaryGroupNumber
+                                    : secondaryGroupNumber
+                                }
+                                sx={{
+                                  minWidth: "200px",
+                                  backgroundColor: "transparent",
+                                  input: {
+                                    padding: "1px 4px",
+                                    fontSize: "0.875rem",
+                                  },
+                                }}
+                              />
+                            </Box>
+                          </Box>
                         }
                       />
                     </ListItem>
