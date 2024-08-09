@@ -32,6 +32,7 @@ FiveInitialize();
 const CustomField = (props: CustomFieldProps) => {
   // Initialize states
   const [activeStep, setActiveStep] = useState(0);
+  const [page, setPage] = useState(0); //pages for NewPatient component
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
   const [placeOfService, setPlaceOfService] = useState(null);
@@ -88,7 +89,7 @@ const CustomField = (props: CustomFieldProps) => {
     five.actionID() !== "IVR" && five.actionID() !== "Accounts";
 
   const handleDialogOpen = () => {
-    console.log("five.stack from the plugin", selectedRecord);
+    console.log("Seleted Record is logging", selectedRecord);
     console.log("five.form from the plugin", formField);
     setDialogOpen(true);
 
@@ -149,9 +150,51 @@ const CustomField = (props: CustomFieldProps) => {
 
     //@ts-ignore
   };
+
+  const resetForm = () => {
+    setActiveStep(0);
+    setPage(0);
+    setAdmitted(null);
+    setPlaceOfService(null);
+    setPatientSelected(true);
+    setIVR({});
+    setPayors([]);
+    setProducts([]);
+    setPractitioner(null);
+    setNewPatient(false);
+    setICode(null);
+    setLCode(null);
+    setECode(null);
+    setCDCode(null);
+    setCPTCode(null);
+    setVLU({ condition: "", location: "", type: "" });
+    setMohs("");
+    setCPTWound(null);
+    setCPTWoundSize(null);
+    setSNF(undefined);
+    setDiabeticFU(undefined);
+    setPressureUlcer({ location: "", side: "", severity: "" });
+    setPatient(null);
+    setData(null);
+    setMembers(null);
+    setLoading(false);
+    setSubmissionSuccess(false);
+    setReadyToSubmit(false);
+    setHospice(null);
+    setMedicare(null);
+  };
+
   const handleDialogClose = () => {
     setDialogOpen(false);
+    resetForm();
   };
+
+  const handleCloseOutsideClick = (event, reason) => {
+    if (reason !== "backdropClick") {
+      handleDialogClose();
+    }
+  };
+
   //@ts-ignore
 
   const handleRadioChange = useCallback((value) => {
@@ -430,7 +473,7 @@ const CustomField = (props: CustomFieldProps) => {
       </Button>
       <Dialog
         open={dialogOpen}
-        onClose={handleDialogClose}
+        onClose={handleCloseOutsideClick}
         fullWidth
         fullScreen
         PaperProps={{
@@ -477,7 +520,6 @@ const CustomField = (props: CustomFieldProps) => {
               ) : (
                 <></>
               )}{" "}
-              {}
               <p>
                 <strong>{AccountDetails.OfficeName}</strong>
                 <br />
@@ -500,6 +542,8 @@ const CustomField = (props: CustomFieldProps) => {
               data={data}
               handlePatient={handlePatient}
               five={five}
+              page={page}
+              setPage={setPage}
               patient={patient}
               setPatient={setPatient}
               handleNext={handleNext}
@@ -601,6 +645,7 @@ const CustomField = (props: CustomFieldProps) => {
               cdCode={cdCode}
               cptCode={cptCode}
               admitted={admitted}
+              npi={AccountDetails?.NPI}
               handleSubmit={handleSubmit}
               setReadyToSubmit={setReadyToSubmit}
             />
@@ -701,9 +746,7 @@ const CustomField = (props: CustomFieldProps) => {
                   margin: "20px",
                 }}
               >
-                
-              Next
-
+                Next
               </Button>
             ) : null}
           </Box>

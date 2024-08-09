@@ -28,6 +28,7 @@ const Summary = ({
   lCode,
   cdCode,
   cptCode,
+  npi,
   payors,
   setReadyToSubmit,
 }) => {
@@ -82,7 +83,7 @@ const Summary = ({
         />
         <TextField
           label="NPI"
-          value="2468597750"
+          value={npi}
           fullWidth
           margin="dense"
           InputProps={{

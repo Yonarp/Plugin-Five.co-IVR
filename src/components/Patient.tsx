@@ -3,7 +3,7 @@ import { Button, Container, ListItemButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Box, List, ListItemText } from "../FivePluginApi";
 
-const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleNext }) => {
+const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleNext, handleDialogClose }) => {
   const [selectedIndex, setSelectedIndex] = useState(
     patientSaved ? patientSaved.index : null
   );
@@ -137,21 +137,9 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
           </ListItemButton>
         ))}
       </List>
-      {selectedIndex !== null && (
-        <Box
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            marginTop: "20px",
-          }}
-        >
-          <Button variant="contained" color="primary" onClick={handleNext}>
-            Next
-          </Button>
-        </Box>
-      )}
+       
+ 
+      
       <Box
         style={{
           width: "100%",
@@ -167,6 +155,24 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
         </Typography>
         <Button onClick={() => setPage(0)}>Create a new patient</Button>
       </Box>
+      <Box
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "20px",
+          }}
+        >
+          <Button onClick={handleDialogClose} style={{
+                  padding: "10px 35px",
+                  background: "#780000",
+                  color: "white",
+                }}>
+            Cancel
+          </Button>
+        </Box>
+
     </Container>
   );
 };

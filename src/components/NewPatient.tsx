@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Box,
@@ -32,8 +32,10 @@ const NewPatient = ({
   setNewPatient,
   account,
   handleDialogCloseExternal,
+  page,
+  setPage,
 }) => {
-  const [page, setPage] = useState(0);
+  //const [page, setPage] = useState(0);
   const [formState, setFormState] = useState({
     NameFirst: "",
     NameLast: "",
@@ -51,8 +53,8 @@ const NewPatient = ({
   const [documentTypes, setDocumentTypes] = useState([]);
   const [documentType, setDocumentType] = useState("");
   const [otherDocumentType, setOtherDocumentType] = useState("");
-  const [documentName, setDocumentName] = useState("")
-  const [documentNames, setDocumentNames] = useState([])
+  const [documentName, setDocumentName] = useState("");
+  const [documentNames, setDocumentNames] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -87,9 +89,8 @@ const NewPatient = ({
       ...prev,
       documentType === "other" ? otherDocumentType : documentType,
     ]);
-    
+
     setDocumentNames((prev) => [...prev, documentName]);
-    
 
     handleDialogClose();
   };
@@ -103,15 +104,24 @@ const NewPatient = ({
 
   const isFormValid = () => {
     // Checking if the required fields have data or not
-    const requiredFields = ["NameFirst", "NameLast", "Gender", "Birthdate", "AddressStreet", "AddressCity", "AddressState", "AddressZip"];
-    return requiredFields.every(field => formState[field].trim() !== "");
+    const requiredFields = [
+      "NameFirst",
+      "NameLast",
+      "Gender",
+      "Birthdate",
+      "AddressStreet",
+      "AddressCity",
+      "AddressState",
+      "AddressZip",
+    ];
+    return requiredFields.every((field) => formState[field].trim() !== "");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isFormValid()) {
-      five.message("Please fill in all required fields.")
+      five.message("Please fill in all required fields.");
       return;
     }
 
@@ -124,7 +134,7 @@ const NewPatient = ({
       documentCategory: documentTypes,
       AccountKey: account.AccountKey,
     };
-    
+
     await five.executeFunction(
       "pushPatient",
       //@ts-ignore
@@ -142,7 +152,7 @@ const NewPatient = ({
           document: selectedFilesBase64.map((base64, index) => ({
             Base64: base64,
             Category: documentTypes[index],
-            Name: documentNames[index]
+            Name: documentNames[index],
           })),
         });
       }
@@ -151,7 +161,15 @@ const NewPatient = ({
     handleNext();
   };
 
-  console.log("Logging documents Names and Document Name", documentNames, documentName);
+  useEffect(() => {
+      setPatient(null);
+  }, []);
+
+  console.log(
+    "Logging documents Names and Document Name",
+    documentNames,
+    documentName
+  );
 
   return (
     <>
@@ -301,7 +319,9 @@ const NewPatient = ({
             </Box>
             <Grid container spacing={2} mb={2}>
               <Grid item xs={12}>
-                <Typography variant="h6">Address Information <span style={{ color: "red" }}>*</span></Typography>
+                <Typography variant="h6">
+                  Address Information <span style={{ color: "red" }}>*</span>
+                </Typography>
               </Grid>
               <Box
                 style={{
@@ -388,7 +408,11 @@ const NewPatient = ({
               <Button
                 type="button"
                 variant="contained"
-                style={{ padding: "10px 20px", background: '#780000', color:'white' }}
+                style={{
+                  padding: "10px 20px",
+                  background: "#780000",
+                  color: "white",
+                }}
                 onClick={handleDialogCloseExternal}
               >
                 Close
@@ -396,7 +420,11 @@ const NewPatient = ({
               <Button
                 type="submit"
                 variant="contained"
-                style={{ padding: "10px 20px",  background: '#266787', color:'white'  }}
+                style={{
+                  padding: "10px 20px",
+                  background: "#266787",
+                  color: "white",
+                }}
                 onClick={handleSubmit}
               >
                 Submit
@@ -408,13 +436,13 @@ const NewPatient = ({
             <DialogTitle>Upload Document</DialogTitle>
             <DialogContent style={{ width: "400px" }}>
               {/* Fixed width for dialog content */}
-                <TextField
-                    fullWidth
-                    margin="normal"
-                    label="Set Document Name"
-                    value={documentName}
-                    onChange={(e) => setDocumentName(e.target.value)}
-                  />
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Set Document Name"
+                value={documentName}
+                onChange={(e) => setDocumentName(e.target.value)}
+              />
               <FormControl fullWidth margin="normal">
                 <InputLabel id="document-type-label">Document Type</InputLabel>
                 <Select
@@ -471,6 +499,7 @@ const NewPatient = ({
             patientSaved={patient}
             setPage={setPage}
             handleNext={handleNext}
+            handleDialogClose={handleDialogCloseExternal}
           />
         </div>
       )}
