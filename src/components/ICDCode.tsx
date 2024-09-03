@@ -394,6 +394,7 @@ const ICDCode = ({
     setDiabetesType(selectedDiabetesType);
     setDiabeticFU(selectedDiabetesType);
     setECode(eCodeMapping[selectedDiabetesType] || "");
+    setECodeMain(eCodeMapping[selectedDiabetesType] || "")
   };
 
   const handleMohsType = (event) => {
@@ -401,6 +402,7 @@ const ICDCode = ({
     setMohs(selectedMohsType);
     setMohsMain(selectedMohsType);
     setCDCode(mohsConditionsMapping[selectedMohsType] || "");
+    setCDCodeMain(mohsConditionsMapping[selectedMohsType] || "");
   };
   const handleVluCondition = (event) => {
     const selectedVLU = event.target.value;
