@@ -52,17 +52,27 @@ const Summary = ({
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
-
-  const getDataUri = (base64) => {
-    if (base64.startsWith('data:image/')) {
-      return base64;
-    } else {
-      return `data:image/jpeg;base64,${base64}`;
+  //@ts-ignore
+  const getDataUri = (base64: string, contentType: string) => {
+    // Check if the base64 string is already a Data URI
+    if (base64.startsWith("data:")) {
+      return base64; // It's already a Data URI, return as-is
     }
+
+    // If not, construct the Data URI using the contentType and base64 string
+    return `data:${contentType};base64,${base64}`;
   };
 
+  const getMimeTypeFromDataUri = (dataUri) => {
+    // Extract the MIME type from the Data URI, e.g., "application/pdf", "image/jpeg"
+    const mimeType = dataUri.match(/data:([^;]+);base64,/);
+    return mimeType ? mimeType[1] : null;
+  };
+
+  console.log("Logging Patients to see the document Type: ", patient);
+
   return (
-    <Container style={{ width: "100%"}}>
+    <Container style={{ width: "100%" }}>
       <Box
         sx={{ p: 2, maxWidth: 600, mx: "auto", boxShadow: 3, borderRadius: 2 }}
         mt={10}
@@ -157,21 +167,31 @@ const Summary = ({
         <List>
           {
             //@ts-ignore
-            patient.document.map((item, index) => (
-              <ListItemButton
-                key={index}
-                onClick={() => handleDialogOpen(item)}
-                sx={{
-                  borderBottom: "1px solid #00000033",
-                  color: "black",
-                  "&:hover": {
-                    backgroundColor: "lightblue",
-                  },
-                }}
-              >
-                <Typography variant="body1">{item?.Name}</Typography>
-              </ListItemButton>
-            ))
+            patient.document.map((item, index) => {
+              // Handle both cases: if item.Base64 is a string or an object
+              const base64Data =
+                typeof item.Base64 === "string"
+                  ? item.Base64
+                  : item.Base64.Base64;
+
+              return (
+                <ListItemButton
+                  key={index}
+                  onClick={() =>
+                    handleDialogOpen({ ...item, Base64: base64Data })
+                  } // Pass corrected Base64
+                  sx={{
+                    borderBottom: "1px solid #00000033",
+                    color: "black",
+                    "&:hover": {
+                      backgroundColor: "lightblue",
+                    },
+                  }}
+                >
+                  <Typography variant="body1">{item?.Name}</Typography>
+                </ListItemButton>
+              );
+            })
           }
         </List>
 
@@ -206,20 +226,40 @@ const Summary = ({
         PaperProps={{
           style: {
             minWidth: "70vw",
-            height: "90%", // Sets the dialog to 90% of the screen width
+            height: "90%", // Dialog height
           },
         }}
       >
-        <DialogTitle>Document</DialogTitle>
+        <DialogTitle>Document Preview</DialogTitle>
         <DialogContent style={{ width: "100%", height: "100%" }}>
-          {selectedDocument && selectedDocument.Base64 && (
-            <img
-              src={getDataUri(selectedDocument.Base64)}
-              alt="Document"
-              style={{ width: "100%", height: "100%", objectFit: 'contain' }}
-            />
+          {selectedDocument && selectedDocument.Base64 ? (
+            getMimeTypeFromDataUri(selectedDocument.Base64) ===
+            "application/pdf" ? (
+              // Render PDF using iframe
+              <iframe
+                src={selectedDocument.Base64}
+                title="PDF Document"
+                width="100%"
+                height="100%"
+                style={{ border: "none" }}
+              />
+            ) : getMimeTypeFromDataUri(selectedDocument.Base64).startsWith(
+                "image/"
+              ) ? (
+              // Render image
+              <img
+                src={selectedDocument.Base64}
+                alt="Document"
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
+            ) : (
+              <Typography variant="body2">Unknown file type</Typography>
+            )
+          ) : (
+            <Typography variant="body2">No document available</Typography>
           )}
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleDialogClose} color="primary">
             Close

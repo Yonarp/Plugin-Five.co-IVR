@@ -74,24 +74,30 @@ const NewPatient = ({
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-
-    // Convert files to base64 strings
+  
     files.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedFilesBase64((prev) => [...prev, reader.result]);
+        const fileType = file.type;  // Get the file MIME type (e.g., application/pdf, image/jpeg)
+        
+        setSelectedFilesBase64((prev) => [
+          ...prev,
+          { Base64: reader.result, ContentType: fileType },  // Store both Base64 and file type
+        ]);
       };
-      reader.readAsDataURL(file);
+      
+      reader.readAsDataURL(file);  // Convert the file to Base64
     });
-
+  
+    // Add the selected files and document types to the state
     setSelectedFiles((prev) => [...prev, ...files]);
     setDocumentTypes((prev) => [
       ...prev,
       documentType === "other" ? otherDocumentType : documentType,
     ]);
-
+  
     setDocumentNames((prev) => [...prev, documentName]);
-
+  
     handleDialogClose();
   };
 
@@ -101,6 +107,8 @@ const NewPatient = ({
       setOtherDocumentType("");
     }
   };
+
+
 
   const isFormValid = () => {
     // Checking if the required fields have data or not
