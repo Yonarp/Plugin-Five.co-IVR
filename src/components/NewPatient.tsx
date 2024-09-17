@@ -58,6 +58,32 @@ const NewPatient = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Validate birthdate only
+    if (name === "Birthdate") {
+      const birthdate = new Date(value);
+      const today = new Date();
+
+      if (birthdate > today) {
+        five.message("Birthdate cannot be in the future.");
+        return;
+      }
+
+      // Optional: Minimum age validation (e.g., must be at least 18 years old)
+      const minimumAge = 18;
+      const ageDiff = today.getFullYear() - birthdate.getFullYear();
+      const isBirthdayPassed =
+        today >= new Date(birthdate.setFullYear(today.getFullYear()));
+
+      if (
+        ageDiff < minimumAge ||
+        (ageDiff === minimumAge && !isBirthdayPassed)
+      ) {
+        five.message(`You must be at least ${minimumAge} years old.`);
+        return;
+      }
+    }
+
     setFormState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -74,30 +100,30 @@ const NewPatient = ({
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-  
+
     files.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const fileType = file.type;  // Get the file MIME type (e.g., application/pdf, image/jpeg)
-        
+        const fileType = file.type; // Get the file MIME type (e.g., application/pdf, image/jpeg)
+
         setSelectedFilesBase64((prev) => [
           ...prev,
-          { Base64: reader.result, ContentType: fileType },  // Store both Base64 and file type
+          { Base64: reader.result, ContentType: fileType }, // Store both Base64 and file type
         ]);
       };
-      
-      reader.readAsDataURL(file);  // Convert the file to Base64
+
+      reader.readAsDataURL(file); // Convert the file to Base64
     });
-  
+
     // Add the selected files and document types to the state
     setSelectedFiles((prev) => [...prev, ...files]);
     setDocumentTypes((prev) => [
       ...prev,
       documentType === "other" ? otherDocumentType : documentType,
     ]);
-  
+
     setDocumentNames((prev) => [...prev, documentName]);
-  
+
     handleDialogClose();
   };
 
@@ -107,8 +133,6 @@ const NewPatient = ({
       setOtherDocumentType("");
     }
   };
-
-
 
   const isFormValid = () => {
     // Checking if the required fields have data or not
@@ -170,7 +194,7 @@ const NewPatient = ({
   };
 
   useEffect(() => {
-      setPatient(null);
+    setPatient(null);
   }, []);
 
   console.log(
