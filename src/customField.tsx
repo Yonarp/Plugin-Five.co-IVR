@@ -59,7 +59,7 @@ const CustomField = (props: CustomFieldProps) => {
     location: "",
     side: "",
     severity: "",
-  });
+  })
   //@ts-ignore
   const [patient, setPatient] = useState(null);
   const [data, setData] = useState(null);
@@ -263,6 +263,7 @@ const CustomField = (props: CustomFieldProps) => {
       );
     } else {
       console.log("This should execute on Update");
+
       const IVR = {
         link: selectedRecord.data.editLink,
         products,
@@ -282,6 +283,7 @@ const CustomField = (props: CustomFieldProps) => {
         pressureUlcer,
         cptWoundSize,
       };
+
       await five.executeFunction(
         "updateIVR",
         //@ts-ignore
@@ -293,6 +295,7 @@ const CustomField = (props: CustomFieldProps) => {
           console.log(result);
         }
       );
+      
     }
 
     console.log(IVR);
@@ -576,7 +579,9 @@ const CustomField = (props: CustomFieldProps) => {
                   alignItems: "center",
                 }}
               >
+              
                 <CircularProgress />
+
               </Container>
             ))}
           {activeStep === 2 && (

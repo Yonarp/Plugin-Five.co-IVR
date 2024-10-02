@@ -21,7 +21,9 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain, setCPTWoundSize}) => {
 
   const [woundLocation, setWoundLocation] = useState("");
   const [woundSize, setWoundSize] = useState("");
+  const [woundSize2, setWoundSize2] = useState("")
   const [cptCode, setCptCode] = useState("");
+  const [cptCode2, setCptCode2] = useState("");
 
 
   const handleCPTCode = (event) => {
@@ -73,6 +75,12 @@ const CPTCode = ({setCPTCodeMain, cptCodeMain, setCPTWoundSize}) => {
     if (!area || isNaN(size)) {
       setCptCode("");
       return;
+    }
+
+    if(size > 100) {
+      setCptCode("100")
+      const remainder = size - 100
+      setCptCode2(remainder.toString());
     }
 
     const codeType = size <= 100 ? "small" : "large";

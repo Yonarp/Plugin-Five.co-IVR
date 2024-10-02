@@ -32,6 +32,7 @@ const Insurance = React.memo(
       setDialogOpen(true);
     };
 
+  
     const handleDialogClose = () => {
       setDialogOpen(false);
     };
@@ -146,7 +147,6 @@ const Insurance = React.memo(
 
     const handlePayor = async (payorData, index) => {
       if (isEdit) {
-        console.log("Reached here Handle Payor", payorData);
         setPayors((prevPayors) =>
           prevPayors.map((p) => (p.___PAY === payorData.___PAY ? payorData : p))
         );
@@ -198,7 +198,7 @@ const Insurance = React.memo(
     };
 
     useEffect(() => {
-      console.log("Logging paoyrs from insurance", payorExternal);
+      console.log("Logging Patient To see documents", patient);
       const fetchData = async () => {
         setLoading(true);
         const payorKeys = [patient?.data?.__PAY1, patient?.data?.__PAY2].filter(

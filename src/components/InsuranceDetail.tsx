@@ -138,7 +138,7 @@ const InsuranceDetail = ({
     }
   }, [payor]);
 
-  console.log("Logging Patient from inurance popup", patient)
+  console.log("Logging Form State", formState)
 
 
 
