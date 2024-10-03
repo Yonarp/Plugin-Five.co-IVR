@@ -49,10 +49,12 @@ const CustomField = (props: CustomFieldProps) => {
   const [eCode, setECode] = useState(null);
   const [cdCode, setCDCode] = useState(null);
   const [cptCode, setCPTCode] = useState(null);
+  const [cptCode2,setCPTCode2] = useState(null);
   const [vlu, setVLU] = useState({ condition: "", location: "", type: "" });
   const [mohs, setMohs] = useState("");
   const [cptWound, setCPTWound] = useState(null);
   const [cptWoundSize, setCPTWoundSize] = useState(null);
+  const [cptWoundSize2,setCPTWoundSize2] = useState(null)
   const [snf, setSNF] = useState();
   const [diabeticFU, setDiabeticFU] = useState();
   const [pressureUlcer, setPressureUlcer] = useState({
@@ -240,6 +242,7 @@ const CustomField = (props: CustomFieldProps) => {
         lCode,
         cdCode,
         cptCode,
+        cptCode2,
         Date: getFormattedDate(),
         vlu,
         mohs,
@@ -247,6 +250,7 @@ const CustomField = (props: CustomFieldProps) => {
         cptWound,
         pressureUlcer,
         cptWoundSize,
+        cptWoundSize2,
         payors,
         AccountKey: selectedRecord?.data?.ACT,
       };
@@ -460,6 +464,10 @@ const CustomField = (props: CustomFieldProps) => {
     );
   }
 
+
+    console.log("Logging CPT Wounds and Codes from Main", cptWoundSize,cptWoundSize2, cptCode, cptCode2)
+
+
   return (
     <Box>
       <Button
@@ -636,6 +644,8 @@ const CustomField = (props: CustomFieldProps) => {
               setCPTCodeMain={setCPTCode}
               cptCodeMain={cptCode}
               setCPTWoundSize={setCPTWoundSize}
+              setCPTCode2Main={setCPTCode2}
+              setCPTWoundSize2={setCPTWoundSize2}
             />
           )}
           {activeStep === 7 && (
