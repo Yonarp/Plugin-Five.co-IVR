@@ -15,6 +15,9 @@ const LCodeSelector = ({
   setLCodeMain,
   setPressureUlcer,
   lCodeServer,
+  vluSide,
+  vluLocation,
+  type,
 }) => {
   const lCodeLocations = [
     { label: "Calf", value: "calf" },
@@ -62,9 +65,9 @@ const LCodeSelector = ({
     const selectedLcode = event.target.value;
     setLCode(selectedLcode);
     setLCodeMain(selectedLcode);
-    setLocation("")
-    setSide("")
-    setSeverity("")
+    setLocation("");
+    setSide("");
+    setSeverity("");
   };
   const handleLcodeOther = (event) => {
     const selectedLcode = event.target.value;
@@ -189,12 +192,17 @@ const LCodeSelector = ({
     }
 
     if (lCode === "" && lCodeServer) {
-      if(!lCodes.includes(lCodeServer)){
-        setLCodes((prevCodes) => [...prevCodes, lCodeServer])
+      if (!lCodes.includes(lCodeServer)) {
+        setLCodes((prevCodes) => [...prevCodes, lCodeServer]);
       }
       setLCode(lCodeServer);
     }
-  }, [location, side, severity]);
+
+    if (type === "VLU") {
+      setSide(vluSide);
+      setLocation(vluLocation);
+    }
+  }, [location, side, severity, vluSide, vluLocation]);
 
   return (
     <Box mb={10}>
@@ -207,7 +215,10 @@ const LCodeSelector = ({
           marginTop: 2,
         }}
       >
-        <FormControl sx={{ minWidth: 120 }}>
+        <FormControl sx={{ minWidth: 120, ...(type === "VLU" && {
+          display: 'none',
+          minWidth: 0
+        }) }}>
           <Box
             sx={{
               display: "flex",
@@ -216,17 +227,25 @@ const LCodeSelector = ({
               alignItems: "center",
               width: "100%",
               marginBottom: "10px",
+              ...(type === "VLU" && {
+                display: "none",
+              }),
             }}
           >
-            <Typography variant="subtitle1" mr={2} sx={{minWidth: 40}}>
-                Location{"  "}
+            <Typography variant="subtitle1" mr={2} sx={{ minWidth: 40 }}>
+              Location{"  "}
             </Typography>
 
             <Select
-              value={location}
+              value={type === "VLU" ? vluLocation : location}
               onChange={(e) => setLocation(e.target.value)}
               displayEmpty
-              sx={{ flex: 1 }}
+              sx={{
+                flex: 1,
+                ...(type === "VLU" && {
+                  display: "none",
+                }),
+              }}
             >
               <MenuItem value="" disabled>
                 <em>Select</em>
@@ -239,7 +258,10 @@ const LCodeSelector = ({
             </Select>
           </Box>
         </FormControl>
-        <FormControl sx={{ minWidth: 120 }}>
+        <FormControl sx={{ minWidth: 120, ...(type === "VLU" && {
+          display: 'none',
+          minWidth: 0
+        }) }}>
           <Box
             sx={{
               display: "flex",
@@ -248,16 +270,24 @@ const LCodeSelector = ({
               alignItems: "center",
               width: "100%",
               marginBottom: "10px",
+              ...(type === "VLU" && {
+                display: "none",
+              }),
             }}
           >
             <Typography variant="subtitle1" mr={2}>
-                Side{"  "}
-              </Typography>
+              Side{"  "}
+            </Typography>
             <Select
-              value={side}
+              value={type === "VLU" ? vluSide : side}
               onChange={(e) => setSide(e.target.value)}
               displayEmpty
-              sx={{ flex: 1 }}
+              sx={{
+                flex: 1,
+                ...(type === "VLU" && {
+                  display: "none",
+                }),
+              }}
             >
               <MenuItem value="" disabled>
                 <em>Select</em>
@@ -270,7 +300,9 @@ const LCodeSelector = ({
             </Select>
           </Box>
         </FormControl>
-        <FormControl sx={{ minWidth: 180 }}>
+        <FormControl sx={{ minWidth: 180, ...(type === "VLU" && {
+          minWidth: '100%'
+        }) }}>
           <Box
             sx={{
               display: "flex",
@@ -282,8 +314,8 @@ const LCodeSelector = ({
             }}
           >
             <Typography variant="subtitle1" mr={2}>
-                Severity{"  "}
-              </Typography>
+              Severity{"  "}
+            </Typography>
             <Select
               value={severity}
               onChange={(e) => setSeverity(e.target.value)}
@@ -302,19 +334,26 @@ const LCodeSelector = ({
           </Box>
         </FormControl>
       </Box>
-        <FormControl fullWidth variant="outlined">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography variant="subtitle1" mr={2} sx={{minWidth: 40}}>L Code<span style={{color: 'red'}}>*</span></Typography>
-          <Select value={lCode} onChange={handleLcode} displayEmpty sx={{ flex: 1 }}>
+      <FormControl fullWidth variant="outlined">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: "10px",
+          }}
+        >
+          <Typography variant="subtitle1" mr={2} sx={{ minWidth: 40 }}>
+            L Code<span style={{ color: "red" }}>*</span>
+          </Typography>
+          <Select
+            value={lCode}
+            onChange={handleLcode}
+            displayEmpty
+            sx={{ flex: 1 }}
+          >
             <MenuItem value="" disabled>
               <em>Select</em>
             </MenuItem>
@@ -325,12 +364,10 @@ const LCodeSelector = ({
             ))}
           </Select>
           {lCode === "Other" ? (
-                <TextField
-                  placeholder="Input Ecode"
-                  onChange={handleLcodeOther}
-                />) : null }
-      </Box>
-        </FormControl>
+            <TextField placeholder="Input Ecode" onChange={handleLcodeOther} />
+          ) : null}
+        </Box>
+      </FormControl>
     </Box>
   );
 };

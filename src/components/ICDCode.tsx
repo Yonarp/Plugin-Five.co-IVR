@@ -335,6 +335,13 @@ const ICDCode = ({
     { label: "Bilateral", value: "bilateral" },
   ];
 
+  const vluPart2WBilateral = [
+    { label: "Right", value: "right" },
+    { label: "Left", value: "left" },
+  ]
+
+  
+
   const [iCodes, setICodes] = useState([
     "I83.012", // 0
     "I83.013", // 1
@@ -369,6 +376,9 @@ const ICDCode = ({
   const [lCode, setLCode] = useState("");
   const [cdCode, setCDCode] = useState("");
   const [iCode, setICode] = useState("");
+
+
+  const vluPart2Selected = vluCondition === 'varicose_veins' ? vluPart2WBilateral : vluPart2
 
   const resetCodes = () => {
     setLCode("");
@@ -728,11 +738,14 @@ const ICDCode = ({
             location={lLocation}
             setLocation={setLLocation}
             side={lSide}
+            vluSide= {vluSide}
+            vluLocation={vluLocation}
+            type="DFU"
             setSide={setLSide}
             severity={lSeverity}
+            lCodeServer={codes?.lCode}
             setSeverity={setLSeverity}
             setLCode={setLCode}
-            lCodeServer={codes?.lCode}
             lCode={lCode}
             setLCodeMain={setLCodeMain}
             setPressureUlcer={setPressureUlcer}
@@ -835,7 +848,7 @@ const ICDCode = ({
                 <MenuItem value="" disabled>
                   <em>Select</em>
                 </MenuItem>
-                {vluPart2.map((location) => (
+                {vluPart2Selected.map((location) => (
                   <MenuItem key={location.value} value={location.value}>
                     {location.label}
                   </MenuItem>
@@ -886,6 +899,9 @@ const ICDCode = ({
             location={lLocation}
             setLocation={setLLocation}
             side={lSide}
+            vluSide= {vluSide}
+            vluLocation={vluLocation}
+            type="VLU"
             setSide={setLSide}
             severity={lSeverity}
             lCodeServer={codes?.lCode}
@@ -959,19 +975,22 @@ const ICDCode = ({
         </FormControl>
       )}
       {woundType === "Pressure ulcer" && (
-        <LCode
-          location={lLocation}
-          setLocation={setLLocation}
-          side={lSide}
-          lCodeServer={codes?.lCode}
-          setSide={setLSide}
-          severity={lSeverity}
-          setSeverity={setLSeverity}
-          setLCode={setLCode}
-          lCode={lCode}
-          setLCodeMain={setLCodeMain}
-          setPressureUlcer={setPressureUlcer}
-        />
+      <LCode
+      location={lLocation}
+      setLocation={setLLocation}
+      side={lSide}
+      vluSide= {vluSide}
+      vluLocation={vluLocation}
+      type="PU"
+      setSide={setLSide}
+      severity={lSeverity}
+      lCodeServer={codes?.lCode}
+      setSeverity={setLSeverity}
+      setLCode={setLCode}
+      lCode={lCode}
+      setLCodeMain={setLCodeMain}
+      setPressureUlcer={setPressureUlcer}
+    />
       )}
       {woundType === "Other" && (
         <Box
