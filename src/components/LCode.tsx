@@ -33,8 +33,8 @@ const LCodeSelector = ({
   ];
 
   const lCodeSeverity = [
-    { label: "Limited to Breakdown of Skin", value: "breakdown_skin" },
-    { label: "Fat Layer Exposed", value: "fat_layer_exposed" },
+    { label: "Non-Pressure Chronic Ulcer Limited to Breakdown of Skin", value: "breakdown_skin" },
+    { label: "Non-Pressure Chronic Ulcer With Fat Layer Exposed", value: "fat_layer_exposed" },
   ];
 
   const [lCodes, setLCodes] = useState([
@@ -313,14 +313,14 @@ const LCodeSelector = ({
               marginBottom: "10px",
             }}
           >
-            <Typography variant="subtitle1" mr={2}>
+            <Typography variant="subtitle1" sx={ type === 'VLU' && { marginRight: "10px", minWidth: "150px" }}>
               Severity{"  "}
             </Typography>
             <Select
               value={severity}
               onChange={(e) => setSeverity(e.target.value)}
               displayEmpty
-              sx={{ flex: 1 }}
+              sx={{ flex: 1, ... type !== "VLU" && {marginLeft: '3px'} }}
             >
               <MenuItem value="" disabled>
                 <em>Select</em>
@@ -345,7 +345,7 @@ const LCodeSelector = ({
             marginBottom: "10px",
           }}
         >
-          <Typography variant="subtitle1" mr={2} sx={{ minWidth: 40 }}>
+          <Typography variant="subtitle1"  sx={{ marginRight: "10px", minWidth: "150px" }}>
             L Code<span style={{ color: "red" }}>*</span>
           </Typography>
           <Select
