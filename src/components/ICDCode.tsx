@@ -17,7 +17,7 @@ const ICDCode = ({
 }) => {
   const woundTypes = [
     { label: "Diabetic foot ulcer", value: "Diabetic foot ulcer" },
-    { label: "Ven leg ulcer", value: "Venous leg ulcer" },
+    { label: "Venous leg ulcer", value: "Venous leg ulcer" },
     { label: "Pressure ulcer", value: "Pressure ulcer" },
     { label: "Mohs", value: "Mohs" },
     { label: "Other", value: "Other" },
