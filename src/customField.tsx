@@ -305,7 +305,7 @@ const CustomField = (props: CustomFieldProps) => {
     console.log(IVR);
 
     const submissionText = {
-      message: complete ? "Submission Successfull" : "The IVR has been saved.",
+      message: complete ? "Submission Successful" : "The IVR has been saved.",
     };
     await five.executeFunction(
       "submissionSuccessful",
@@ -464,7 +464,7 @@ const CustomField = (props: CustomFieldProps) => {
     );
   }
 
-
+    
     console.log("Logging CPT Wounds and Codes from Main", cptWoundSize,cptWoundSize2, cptCode, cptCode2)
 
 
@@ -590,7 +590,7 @@ const CustomField = (props: CustomFieldProps) => {
               
                 <CircularProgress />
 
-              </Container>
+              </Container> 
             ))}
           {activeStep === 2 && (
             <Practitioner

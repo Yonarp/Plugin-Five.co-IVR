@@ -118,6 +118,7 @@ const CPTCode = ({
       setCPTCode2Main(secondCptCode);
     } else {
       setWoundSize(totalWoundSize.toString());
+      setCPTWoundSize(totalWoundSize.toString())
       setCptCode(cptCode);
       setCPTCodeMain(cptCode);
       setWoundSize2(0);
@@ -126,12 +127,11 @@ const CPTCode = ({
 
     if (totalWoundSize <= 0) {
       setCptCode2("");
-
       setCptCode("");
     }
   };
 
-  console.log("Logging both all codes respectively", cptCode, cptCode2);
+  console.log("Logging both all codes respectively", woundSize, woundSize2,cptCode, cptCode2);
 
   return (
     <Container

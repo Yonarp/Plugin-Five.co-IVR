@@ -91,11 +91,17 @@ const NewPatient = ({
   };
 
   const handleDialogOpen = () => {
+    setDocumentName("");
+    setDocumentType("");
+    setOtherDocumentType("");
     setDialogOpen(true);
   };
 
   const handleDialogClose = () => {
     setDialogOpen(false);
+    setDocumentName("");
+    setDocumentType("");
+    setOtherDocumentType("");
   };
 
   const handleFileChange = (event) => {
@@ -125,6 +131,15 @@ const NewPatient = ({
     setDocumentNames((prev) => [...prev, documentName]);
 
     handleDialogClose();
+  };
+
+  const handleDocumentDelete = (index) => {
+    setSelectedFilesBase64((prevFiles) =>
+      prevFiles.filter((item, i) => i !== index)
+    );
+    setDocumentTypes((prevFiles) => prevFiles.filter((item, i) => i !== index));
+    setDocumentNames((prevFiles) => prevFiles.filter((item, i) => i !== index));
+    setSelectedFiles((prevFiles) => prevFiles.filter((item, i) => i !== index));
   };
 
   const handleDocumentTypeChange = (event) => {
@@ -422,11 +437,24 @@ const NewPatient = ({
 
             {selectedFiles.length > 0 && (
               <Box mt={2}>
-                <Typography>Uploaded files:</Typography>
+                <Typography variant="h6">Uploaded files:</Typography>
                 {selectedFiles.map((file, index) => (
-                  <Typography key={index}>
-                    {file.name} - {documentTypes[index]}
-                  </Typography>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Typography key={index}>
+                      {file.name} - {documentTypes[index]}
+                    </Typography>
+                    <Button
+                      onClick={() => handleDocumentDelete(index)}
+                      sx={{ marginLeft: "10px", color: "red" }}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
                 ))}
               </Box>
             )}
