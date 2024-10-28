@@ -617,6 +617,57 @@ const ICDCode = ({
           inflammation:
           code = iCodes[64];
           break;
+        case vluCondition === "varicose_veins" &&
+          vluLocation === "unspecified" &&
+          !inflammation:
+          code = iCodes[23];
+          break;
+        case vluCondition === "postthrombotic_syndrome" &&
+          vluSide === "right" &&
+          !inflammation:
+          code = iCodes[10];
+
+          break;
+        case vluCondition === "postthrombotic_syndrome" &&
+          vluSide === "left" &&
+          !inflammation:
+          code = iCodes[11];
+          break;
+        case vluCondition === "varicose_veins" &&
+          vluLocation === "thigh" &&
+          !inflammation:
+          code = iCodes[17];
+          break;
+        case vluCondition === "varicose_veins" &&
+          vluLocation === "calf" &&
+          !inflammation:
+          code = iCodes[18];
+          break;
+        case vluCondition === "varicose_veins" &&
+          vluLocation === "ankle" &&
+          !inflammation:
+          code = iCodes[19];
+          break;
+        case vluCondition === "varicose_veins" &&
+          vluLocation === "heel_midfoot" &&
+          !inflammation:
+          code = iCodes[20];
+          break;
+        case vluCondition === "varicose_veins" &&
+          vluLocation === "other_foot" &&
+          !inflammation:
+          code = iCodes[21];
+          break;
+        case vluCondition === "varicose_veins" &&
+          vluLocation === "other_lower_leg" &&
+          !inflammation:
+          code = iCodes[22];
+          break;
+          case vluCondition === "varicose_veins" &&
+          vluLocation === "thigh" &&
+          inflammation:
+          code = iCodes[28];
+          break;
       }
       setICode(code);
       setICodeMain(code);
@@ -629,6 +680,12 @@ const ICDCode = ({
           vluSide === "right" &&
           inflammation:
           code = iCodes[35];
+          break;
+        case vluCondition === "varicose_veins" &&
+          vluLocation === "thigh" &&
+          vluSide === "right" &&
+          !inflammation:
+          code = iCodes[24];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "calf" &&
@@ -711,82 +768,96 @@ const ICDCode = ({
 
         case vluCondition === "varicose_veins" &&
           vluLocation === "calf" &&
-          vluSide === "right":
+          vluSide === "right" &&
+          !inflammation:
           code = iCodes[0];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "ankle" &&
-          vluSide === "right":
+          vluSide === "right" &&
+          !inflammation:
           code = iCodes[1];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "heel_midfoot" &&
-          vluSide === "right":
+          vluSide === "right" &&
+          !inflammation:
           code = iCodes[2];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_foot" &&
-          vluSide === "right":
+          vluSide === "right" &&
+          !inflammation:
           code = iCodes[3];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_lower_leg" &&
-          vluSide === "right":
+          vluSide === "right" &&
+          !inflammation:
           code = iCodes[4];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "calf" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[5];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "ankle" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[6];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "heel_midfoot" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[7];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_foot" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[8];
 
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "other_lower_leg" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[9];
 
           break;
         case vluCondition === "postthrombotic_syndrome" &&
           vluLocation === "lower_extremity" &&
-          vluSide === "right":
+          vluSide === "right" &&
+          !inflammation:
           code = iCodes[49];
           break;
         case vluCondition === "postthrombotic_syndrome" &&
           vluLocation === "lower_extremity" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[50];
           break;
         case vluCondition === "postthrombotic_syndrome" &&
           vluLocation === "lower_extremity" &&
-          vluSide === "bilateral":
+          vluSide === "bilateral" &&
+          !inflammation:
           code = iCodes[51];
           break;
-        case vluCondition === "postthrombotic_syndrome" &&
+        case (vluCondition === "postthrombotic_syndrome" &&
           vluLocation === "unspecified_lower" &&
-          vluSide === "bilateral" ||
+          !inflammation &&
+          vluSide === "bilateral") ||
           "left" ||
           "right" ||
           "":
@@ -810,58 +881,42 @@ const ICDCode = ({
           inflammation:
           code = iCodes[55];
           break;
-        case vluCondition === "postthrombotic_syndrome" &&
+        case (vluCondition === "postthrombotic_syndrome" &&
           vluLocation === "unspecified_lower" &&
           inflammation &&
-          vluSide === "bilateral" ||
+          vluSide === "bilateral") ||
           "left" ||
           "right" ||
           "":
           code = iCodes[56];
           break;
 
-        case vluCondition === "postthrombotic_syndrome" && vluSide === "right":
-          code = iCodes[10];
-
-          break;
-        case vluCondition === "postthrombotic_syndrome" && vluSide === "left":
-          code = iCodes[11];
-
-          break;
         case vluCondition === "postthrombotic_syndrome" &&
-          vluSide === "bilateral":
+          vluSide === "bilateral" &&
+          !inflammation:
           code = iCodes[12];
-
           break;
-        case vluCondition === "venous_hypertension" && vluSide === "right":
-          code = iCodes[13];
-
-          break;
-        case vluCondition === "venous_hypertension" && vluSide === "left":
-          code = iCodes[14];
-
-          break;
-        case vluCondition === "venous_hypertension" && vluSide === "bilateral":
-          code = iCodes[15];
-          break;
-
         case vluCondition === "venous_hypertension" &&
           vluLocation === "lower_extremity" &&
-          vluSide === "right":
+          vluSide === "right" &&
+          !inflammation:
           code = iCodes[57];
           break;
         case vluCondition === "venous_hypertension" &&
           vluLocation === "lower_extremity" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[58];
           break;
         case vluCondition === "venous_hypertension" &&
           vluLocation === "lower_extremity" &&
-          vluSide === "bilateral":
+          vluSide === "bilateral" &&
+          !inflammation:
           code = iCodes[59];
           break;
         case (vluCondition === "venous_hypertension" &&
           vluLocation === "unspecified_lower" &&
+          !inflammation &&
           vluSide === "bilateral") ||
           "left" ||
           "right":
@@ -894,55 +949,25 @@ const ICDCode = ({
           code = iCodes[64];
           break;
 
-        case vluCondition === "varicose_veins" && vluLocation === "thigh":
-          code = iCodes[17];
-          break;
-        case vluCondition === "varicose_veins" && vluLocation === "calf":
-          code = iCodes[18];
-          break;
-        case vluCondition === "varicose_veins" && vluLocation === "ankle":
-          code = iCodes[19];
-          break;
-        case vluCondition === "varicose_veins" &&
-          vluLocation === "heel_midfoot":
-          code = iCodes[20];
-          break;
-        case vluCondition === "varicose_veins" && vluLocation === "other_foot":
-          code = iCodes[21];
-          break;
-        case vluCondition === "varicose_veins" &&
-          vluLocation === "other_lower_leg":
-          code = iCodes[22];
-          break;
-        case vluCondition === "varicose_veins" && vluLocation === "unspecified":
-          code = iCodes[23];
-          break;
-        case vluCondition === "varicose_veins" &&
-          vluLocation === "thigh" &&
-          vluSide === "right":
-          code = iCodes[24];
-          break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "unspecified" &&
-          vluSide === "right":
+          vluSide === "right" &&
+          !inflammation:
           code = iCodes[25];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "thigh" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[26];
           break;
         case vluCondition === "varicose_veins" &&
           vluLocation === "unspecified" &&
-          vluSide === "left":
+          vluSide === "left" &&
+          !inflammation:
           code = iCodes[27];
           break;
-        case vluCondition === "varicose_veins" &&
-          vluLocation === "thigh" &&
-          inflammation:
-          code = iCodes[28];
-          break;
-
+    
         default:
           code = "";
       }
@@ -1012,7 +1037,7 @@ const ICDCode = ({
           sx={{ marginBottom: "20px", width: "50%" }}
         >
           <Select value={woundType} displayEmpty onChange={handleWoundType}>
-            <MenuItem value="" disabled>
+            <MenuItem value="" >
               <em>Select</em>
             </MenuItem>
             {woundTypes.map((location) => (
@@ -1049,7 +1074,7 @@ const ICDCode = ({
                 onChange={handleDiabetesType}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem value="" >
                   <em>Select</em>
                 </MenuItem>
                 {diabetesTypes.map((location) => (
@@ -1085,7 +1110,7 @@ const ICDCode = ({
                 displayEmpty
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem value="" >
                   <em>Select</em>
                 </MenuItem>
                 {eCodes.map((eCode) => (
@@ -1152,7 +1177,7 @@ const ICDCode = ({
                 onChange={handleVluCondition}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem value="">
                   <em>Select</em>
                 </MenuItem>
                 {vluAdditional.map((location) => (
@@ -1184,7 +1209,7 @@ const ICDCode = ({
                 onChange={handleVluLocation}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem value="">
                   <em>Select</em>
                 </MenuItem>
                 {vluPart1Selected.map((location) => (
@@ -1265,7 +1290,7 @@ const ICDCode = ({
                 onChange={handleVluSide}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" disabled>
+                <MenuItem value="" >
                   <em>Select</em>
                 </MenuItem>
                 {vluPart2Selected.map((location) => (
@@ -1301,7 +1326,7 @@ const ICDCode = ({
                   onChange={handleICode}
                   placeholder="Select"
                 >
-                  <MenuItem value="" disabled>
+                  <MenuItem value="" >
                     <em>Select</em>
                   </MenuItem>
                   {iCodes.map((iCode) => (
@@ -1362,7 +1387,7 @@ const ICDCode = ({
               onChange={handleMohsType}
               sx={{ width: "50%" }}
             >
-              <MenuItem value="" disabled>
+              <MenuItem value="" >
                 <em>Select</em>
               </MenuItem>
               {mohsConditions.map((location) => (
@@ -1381,7 +1406,7 @@ const ICDCode = ({
                 marginLeft: "5px",
               }}
             >
-              <MenuItem value="" disabled>
+              <MenuItem value="" >
                 <em>Select</em>
               </MenuItem>
               {mohsCodes.map((mohs) => (

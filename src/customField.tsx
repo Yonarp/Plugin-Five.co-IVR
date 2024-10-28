@@ -515,7 +515,6 @@ const CustomField = (props: CustomFieldProps) => {
                     {patient?.data?.NameFirst + " " + patient?.data?.NameLast}
                   </strong>
                   <br />
-                  <br />
                   {patient?.data.AddressStreet +
                     " " +
                     (patient.data.AddressStreet2
