@@ -412,14 +412,16 @@ const ICDCode = ({
     "I87.032", // 54
     "I87.033", // 55
     "I87.039", // 56
-    "I87.311", // 57
-    "I87.312", // 58
-    "I87.313", // 59
-    "I87.319", // 60
-    "I87.331", // 61
-    "I87.332", // 62
-    "I87.333", // 63
-    "I87.339", // 64
+    "I87.2", // 57
+    "I87.311", // 58
+    "I87.312", // 59
+    "I87.313", // 60
+    "I87.319", // 61
+    "I87.331", // 62
+    "I87.332", // 63
+    "I87.333", // 64
+    "I87.339", // 65
+
   ]);
   //@ts-ignore
   const [loading, setLoading] = useState(false);
@@ -900,19 +902,19 @@ const ICDCode = ({
           vluLocation === "lower_extremity" &&
           vluSide === "right" &&
           !inflammation:
-          code = iCodes[57];
+          code = iCodes[58];
           break;
         case vluCondition === "venous_hypertension" &&
           vluLocation === "lower_extremity" &&
           vluSide === "left" &&
           !inflammation:
-          code = iCodes[58];
+          code = iCodes[59];
           break;
         case vluCondition === "venous_hypertension" &&
           vluLocation === "lower_extremity" &&
           vluSide === "bilateral" &&
           !inflammation:
-          code = iCodes[59];
+          code = iCodes[60];
           break;
         case (vluCondition === "venous_hypertension" &&
           vluLocation === "unspecified_lower" &&
@@ -920,25 +922,25 @@ const ICDCode = ({
           vluSide === "bilateral") ||
           "left" ||
           "right":
-          code = iCodes[60];
-          break;
-        case vluCondition === "venous_hypertension" &&
-          vluLocation === "lower_extremity" &&
-          inflammation &&
-          vluSide === "right":
           code = iCodes[61];
           break;
         case vluCondition === "venous_hypertension" &&
           vluLocation === "lower_extremity" &&
           inflammation &&
-          vluSide === "left":
+          vluSide === "right":
           code = iCodes[62];
           break;
         case vluCondition === "venous_hypertension" &&
           vluLocation === "lower_extremity" &&
           inflammation &&
-          vluSide === "bilateral":
+          vluSide === "left":
           code = iCodes[63];
+          break;
+        case vluCondition === "venous_hypertension" &&
+          vluLocation === "lower_extremity" &&
+          inflammation &&
+          vluSide === "bilateral":
+          code = iCodes[64];
           break;
         case (vluCondition === "venous_hypertension" &&
           vluLocation === "unspecified_lower" &&
@@ -946,7 +948,7 @@ const ICDCode = ({
           vluSide === "bilateral") ||
           "left" ||
           "right":
-          code = iCodes[64];
+          code = iCodes[65];
           break;
 
         case vluCondition === "varicose_veins" &&
@@ -1065,7 +1067,7 @@ const ICDCode = ({
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="subtitle1" mr={2} sx={{ minWidth: 40 }}>
+              <Typography variant="subtitle1"  sx={{ marginRight: "10px", minWidth: "150px" }}>
                 Type{"  "}
               </Typography>
               <Select
@@ -1100,7 +1102,7 @@ const ICDCode = ({
                 marginBottom: "10px",
               }}
             >
-              <Typography variant="subtitle1" sx={{ minWidth: 40 }} mr={2}>
+              <Typography variant="subtitle1"  sx={{ marginRight: "10px", minWidth: "150px" }}>
                 E Code<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <Select
@@ -1130,6 +1132,7 @@ const ICDCode = ({
           </FormControl>
           {/* //@ts-ignore */}
           <LCode
+            woundType = {woundType}
             location={lLocation}
             setLocation={setLLocation}
             side={lSide}
@@ -1345,6 +1348,7 @@ const ICDCode = ({
             </FormControl>
           </FormControl>
           <LCode
+          woundType = {woundType}
             location={lLocation}
             setLocation={setLLocation}
             side={lSide}
@@ -1426,6 +1430,7 @@ const ICDCode = ({
       )}
       {woundType === "Pressure ulcer" && (
         <LCode
+        woundType = {woundType}
           location={lLocation}
           setLocation={setLLocation}
           side={lSide}

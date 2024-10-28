@@ -4,6 +4,7 @@ import { TextField } from "../FivePluginApi";
 
 //@ts-ignore
 const LCodeSelector = ({
+  woundType,
   location,
   setLocation,
   side,
@@ -20,12 +21,13 @@ const LCodeSelector = ({
   type,
 }) => {
   const lCodeLocations = [
+    { label: "Thigh", value: "thigh" },
     { label: "Calf", value: "calf" },
     { label: "Ankle", value: "ankle" },
     { label: "Heel and Midfoot", value: "heel_midfoot" },
-    { label: "Other part of Foot", value: "other_foot" },
-    { label: "Other part of Lower Leg", value: "other_lower_leg" },
-    { label: "Unspecified", value: "unspecified" },
+    { label: "Other Part of Foot", value: "other_foot" },
+    { label: "Other Part of Lower Leg", value: "other_lower_leg" },
+    { label: "Unspecified Part of Lower Leg", value: "unspecified" },
     { label: "Left Buttock", value: "left_buttock" },
     { label: "Right Buttock", value: "right_buttock" },
     { label: "Unspecified Buttock", value: "unspecified_buttock" },
@@ -41,8 +43,38 @@ const LCodeSelector = ({
     { label: "Head", value: "head" },
     { label: "Other Site", value: "other_site" },
     { label: "Unspecified Site", value: " unspecified_site" },
-    
   ];
+
+  const lCodeLocationsPressureUlcer = [
+    { label: "Calf", value: "calf" },
+    { label: "Ankle", value: "ankle" },
+    { label: "Heel", value: "heel_midfoot" },
+    { label: "Other Part of Foot", value: "other_foot" },
+    { label: "Other Part of Lower Leg", value: "other_lower_leg" },
+    { label: "Unspecified Part of Lower Leg", value: "unspecified" },
+    { label: "Left Buttock", value: "left_buttock" },
+    { label: "Right Buttock", value: "right_buttock" },
+    { label: "Unspecified Buttock", value: "unspecified_buttock" },
+    { label: "Hip", value: "hip" },
+    { label: "Unspecified Hip", value: "unspecified_hip" },
+    { label: "Contiguous Site of Back, Buttock and Hip", value: "contiguous" },
+    { label: "Upper Back", value: "upper_back" },
+    { label: "Lower Back", value: "lower_back" },
+    { label: "Skin of Other Sites", value: "skin" },
+    { label: "Elbow", value: "elbow" },
+    { label: "Unspecified Elbow", value: "unspecified_elbow" },
+    { label: "Sacral Region", value: "sacral_region" },
+    { label: "Unspecified Part of Back", value: "skin" },
+    { label: "Head", value: "head" },
+    { label: "Other Site", value: "other_site" },
+    { label: "Unspecified Site", value: " unspecified_site" },
+  ];
+
+  //When Wound Type is Pressure Ulcer the selected dropdown for Location Changes
+  const selectedLcodeList =
+    woundType === "Pressure ulcer"
+      ? lCodeLocationsPressureUlcer
+      : lCodeLocations;
 
   const lCodeSides = [
     { label: "Right", value: "right" },
@@ -58,19 +90,22 @@ const LCodeSelector = ({
       label: "Non-Pressure Chronic Ulcer With Fat Layer Exposed",
       value: "fat_layer_exposed",
     },
-    {
+    /* {
       label: "Non-Pressure Chronic Ulcer With Necrosis Of Muscle",
       value: "necrosis_of_muscle",
     },
     {
       label: "Non-Pressure Chronic Ulcer With Necrosis Of Bone",
       value: "necrosis_of_bone",
-    },
+    }, */
     {
       label: "Non-Pressure Chronic Ulcer With Unspecified Severity",
       value: "unspecified_severity",
     },
   ];
+
+  const [stage, setStage] = useState("");
+  console.log("Loggin Stage", stage);
 
   const [lCodes, setLCodes] = useState([
     "L97.101", // 0
@@ -193,6 +228,156 @@ const LCodeSelector = ({
     "L98.493", // 117
     "L98.494", // 118
     "L98.499", // 119
+    "L89.000", // 120
+    "L89.001", // 121
+    "L89.002", // 122
+    "L89.003", // 123
+    "L89.004", // 124
+    "L89.009", // 125
+    "L89.010", // 126
+    "L89.011", // 127
+    "L89.012", // 128
+    "L89.013", // 129
+    "L89.014", // 130
+    "L89.019", // 131
+    "L89.020", // 132
+    "L89.021", // 133
+    "L89.022", // 134
+    "L89.023", // 135
+    "L89.024", // 136
+    "L89.029", // 137
+    "L89.100", // 138
+    "L89.101", // 139
+    "L89.102", // 140
+    "L89.103", // 141
+    "L89.104", // 142
+    "L89.109", // 143
+    "L89.110", // 144
+    "L89.111", // 145
+    "L89.112", // 146
+    "L89.113", // 147
+    "L89.114", // 148
+    "L89.119", // 149
+    "L89.120", // 150
+    "L89.121", // 151
+    "L89.122", // 152
+    "L89.123", // 153
+    "L89.124", // 154
+    "L89.129", // 155
+    "L89.130", // 156
+    "L89.131", // 157
+    "L89.132", // 158
+    "L89.133", // 159
+    "L89.134", // 160
+    "L89.139", // 161
+    "L89.140", // 162
+    "L89.141", // 163
+    "L89.142", // 164
+    "L89.143", // 165
+    "L89.144", // 166
+    "L89.149", // 167
+    "L89.150", // 168
+    "L89.151", // 169
+    "L89.152", // 170
+    "L89.153", // 171
+    "L89.154", // 172
+    "L89.159", // 173
+    "L89.200", // 174
+    "L89.201", // 175
+    "L89.202", // 176
+    "L89.203", // 177
+    "L89.204", // 178
+    "L89.209", // 179
+    "L89.210", // 180
+    "L89.211", // 181
+    "L89.212", // 182
+    "L89.213", // 183
+    "L89.214", // 184
+    "L89.219", // 185
+    "L89.220", // 186
+    "L89.221", // 187
+    "L89.222", // 188
+    "L89.223", // 189
+    "L89.224", // 190
+    "L89.229", // 191
+    "L89.300", // 192
+    "L89.301", // 193
+    "L89.302", // 194
+    "L89.303", // 195
+    "L89.304", // 196
+    "L89.309", // 197
+    "L89.310", // 198
+    "L89.311", // 199
+    "L89.312", // 200
+    "L89.313", // 201
+    "L89.314", // 202
+    "L89.319", // 203
+    "L89.320", // 204
+    "L89.321", // 205
+    "L89.322", // 206
+    "L89.323", // 207
+    "L89.324", // 208
+    "L89.329", // 209
+    "L89.40", // 210
+    "L89.41", // 211
+    "L89.42", // 212
+    "L89.43", // 213
+    "L89.44", // 214
+    "L89.45", // 215
+    "L89.500", // 216
+    "L89.501", // 217
+    "L89.502", // 218
+    "L89.503", // 219
+    "L89.504", // 220
+    "L89.509", // 221
+    "L89.510", // 222
+    "L89.511", // 223
+    "L89.512", // 224
+    "L89.513", // 225
+    "L89.514", // 226
+    "L89.519", // 227
+    "L89.520", // 228
+    "L89.521", // 229
+    "L89.522", // 230
+    "L89.523", // 231
+    "L89.524", // 232
+    "L89.529", // 233
+    "L89.600", // 234
+    "L89.601", // 235
+    "L89.602", // 236
+    "L89.603", // 237
+    "L89.604", // 238
+    "L89.609", // 239
+    "L89.610", // 240
+    "L89.611", // 241
+    "L89.612", // 242
+    "L89.613", // 243
+    "L89.614", // 244
+    "L89.619", // 245
+    "L89.620", // 246
+    "L89.621", // 247
+    "L89.622", // 248
+    "L89.623", // 249
+    "L89.624", // 250
+    "L89.629", // 251
+    "L89.810", // 252
+    "L89.811", // 253
+    "L89.812", // 254
+    "L89.813", // 255
+    "L89.814", // 256
+    "L89.819", // 257
+    "L89.890", // 258
+    "L89.891", // 259
+    "L89.892", // 260
+    "L89.893", // 261
+    "L89.894", // 262
+    "L89.899", // 263
+    "L89.90", // 264
+    "L89.91", // 265
+    "L89.92", // 266
+    "L89.93", // 267
+    "L89.94", // 268
+    "L89.95", // 269
   ]);
 
   /*             "L97.811", // 12
@@ -318,7 +503,8 @@ const LCodeSelector = ({
 
   useEffect(() => {
     let lCode = "";
-    if (location && side && severity) {
+
+    if (location && severity) {
       setPressureUlcer((prevState) => ({
         ...prevState,
         location,
@@ -341,6 +527,112 @@ const LCodeSelector = ({
         case location === "thigh" && severity === "unspecified_severity":
           lCode = lCodes[4];
           break;
+        case location === "calf" && severity === "breakdown_skin":
+          lCode = lCodes[15];
+          break;
+        case location === "calf" && severity === "fat_layer_exposed":
+          lCode = lCodes[16];
+          break;
+        case location === "calf" && severity === "necrosis_of_muscle":
+          lCode = lCodes[17];
+          break;
+        case location === "calf" && severity === "necrosis_of_bone":
+          lCode = lCodes[18];
+          break;
+        case location === "calf" && severity === "unspecified_severity":
+          lCode = lCodes[19];
+          break;
+        case location === "ankle" && severity === "breakdown_skin":
+          lCode = lCodes[30];
+          break;
+        case location === "ankle" && severity === "fat_layer_exposed":
+          lCode = lCodes[31];
+          break;
+        case location === "ankle" && severity === "necrosis_of_muscle":
+          lCode = lCodes[32];
+          break;
+        case location === "ankle" && severity === "necrosis_of_bone":
+          lCode = lCodes[33];
+          break;
+        case location === "ankle" && severity === "unspecified_severity":
+          lCode = lCodes[34];
+          break;
+        case location === "heel_midfoot" && severity === "breakdown_skin":
+          lCode = lCodes[45];
+          break;
+        case location === "heel_midfoot" && severity === "fat_layer_exposed":
+          lCode = lCodes[46];
+          break;
+        case location === "heel_midfoot" && severity === "necrosis_of_muscle":
+          lCode = lCodes[47];
+          break;
+        case location === "heel_midfoot" && severity === "necrosis_of_bone":
+          lCode = lCodes[48];
+          break;
+        case location === "heel_midfoot" && severity === "unspecified_severity":
+          lCode = lCodes[49];
+          break;
+        case location === "other_foot" && severity === "breakdown_skin":
+          lCode = lCodes[60];
+          break;
+        case location === "other_foot" && severity === "fat_layer_exposed":
+          lCode = lCodes[61];
+          break;
+        case location === "other_foot" && severity === "necrosis_of_muscle":
+          lCode = lCodes[62];
+          break;
+        case location === "other_foot" && severity === "necrosis_of_bone":
+          lCode = lCodes[63];
+          break;
+        case location === "other_foot" && severity === "unspecified_severity":
+          lCode = lCodes[64];
+          break;
+        case location === "other_lower_leg" && severity === "breakdown_skin":
+          lCode = lCodes[75];
+          break;
+        case location === "other_lower_leg" && severity === "fat_layer_exposed":
+          lCode = lCodes[76];
+          break;
+        case location === "other_lower_leg" &&
+          severity === "necrosis_of_muscle":
+          lCode = lCodes[77];
+          break;
+        case location === "other_lower_leg" && severity === "necrosis_of_bone":
+          lCode = lCodes[78];
+          break;
+
+        case location === "other_lower_leg" &&
+          severity === "unspecified_severity":
+          lCode = lCodes[79];
+          break;
+        case location === "unspecified" && severity === "breakdown_skin":
+          lCode = lCodes[90];
+          break;
+        case location === "unspecified" && severity === "fat_layer_exposed":
+          lCode = lCodes[91];
+          break;
+        case location === "unspecified" && severity === "necrosis_of_muscle":
+          lCode = lCodes[92];
+          break;
+        case location === "unspecified" && severity === "necrosis_of_bone":
+          lCode = lCodes[93];
+          break;
+        case location === "unspecified" && severity === "unspecified_severity":
+          lCode = lCodes[94];
+          break;
+      }
+      setLCode(lCode);
+      setLCodeMain(lCode);
+    }
+
+    if (location && side && severity) {
+      setPressureUlcer((prevState) => ({
+        ...prevState,
+        location,
+        side,
+        severity,
+      }));
+      switch (true) {
         case location === "thigh" &&
           severity === "breakdown_skin" &&
           side === "right":
@@ -392,21 +684,6 @@ const LCodeSelector = ({
           lCode = lCodes[14];
           break;
 
-        case location === "calf" && severity === "breakdown_skin":
-          lCode = lCodes[15];
-          break;
-        case location === "calf" && severity === "fat_layer_exposed":
-          lCode = lCodes[16];
-          break;
-        case location === "calf" && severity === "necrosis_of_muscle":
-          lCode = lCodes[17];
-          break;
-        case location === "calf" && severity === "necrosis_of_bone":
-          lCode = lCodes[18];
-          break;
-        case location === "calf" && severity === "unspecified_severity":
-          lCode = lCodes[19];
-          break;
         case location === "calf" &&
           severity === "breakdown_skin" &&
           side === "right":
@@ -459,21 +736,6 @@ const LCodeSelector = ({
           lCode = lCodes[29];
           break;
 
-        case location === "ankle" && severity === "breakdown_skin":
-          lCode = lCodes[30];
-          break;
-        case location === "ankle" && severity === "fat_layer_exposed":
-          lCode = lCodes[31];
-          break;
-        case location === "ankle" && severity === "necrosis_of_muscle":
-          lCode = lCodes[32];
-          break;
-        case location === "ankle" && severity === "necrosis_of_bone":
-          lCode = lCodes[33];
-          break;
-        case location === "ankle" && severity === "unspecified_severity":
-          lCode = lCodes[34];
-          break;
         case location === "ankle" &&
           severity === "breakdown_skin" &&
           side === "right":
@@ -523,22 +785,6 @@ const LCodeSelector = ({
           severity === "unspecified_severity" &&
           side === "left":
           lCode = lCodes[44];
-          break;
-
-        case location === "heel_midfoot" && severity === "breakdown_skin":
-          lCode = lCodes[45];
-          break;
-        case location === "heel_midfoot" && severity === "fat_layer_exposed":
-          lCode = lCodes[46];
-          break;
-        case location === "heel_midfoot" && severity === "necrosis_of_muscle":
-          lCode = lCodes[47];
-          break;
-        case location === "heel_midfoot" && severity === "necrosis_of_bone":
-          lCode = lCodes[48];
-          break;
-        case location === "heel_midfoot" && severity === "unspecified_severity":
-          lCode = lCodes[49];
           break;
 
         case location === "heel_midfoot" &&
@@ -591,21 +837,7 @@ const LCodeSelector = ({
           side === "left":
           lCode = lCodes[59];
           break;
-        case location === "other_foot" && severity === "breakdown_skin":
-          lCode = lCodes[60];
-          break;
-        case location === "other_foot" && severity === "fat_layer_exposed":
-          lCode = lCodes[61];
-          break;
-        case location === "other_foot" && severity === "necrosis_of_muscle":
-          lCode = lCodes[62];
-          break;
-        case location === "other_foot" && severity === "necrosis_of_bone":
-          lCode = lCodes[63];
-          break;
-        case location === "other_foot" && severity === "unspecified_severity":
-          lCode = lCodes[64];
-          break;
+
         case location === "other_foot" &&
           severity === "breakdown_skin" &&
           side === "right":
@@ -656,23 +888,7 @@ const LCodeSelector = ({
           side === "left":
           lCode = lCodes[74];
           break;
-        case location === "other_lower_leg" && severity === "breakdown_skin":
-          lCode = lCodes[75];
-          break;
-        case location === "other_lower_leg" && severity === "fat_layer_exposed":
-          lCode = lCodes[76];
-          break;
-        case location === "other_lower_leg" &&
-          severity === "necrosis_of_muscle":
-          lCode = lCodes[77];
-          break;
-        case location === "other_lower_leg" && severity === "necrosis_of_bone":
-          lCode = lCodes[78];
-          break;
-        case location === "other_lower_leg" &&
-          severity === "unspecified_severity":
-          lCode = lCodes[79];
-          break;
+
         case location === "other_lower_leg" &&
           severity === "breakdown_skin" &&
           side === "right":
@@ -723,21 +939,7 @@ const LCodeSelector = ({
           side === "left":
           lCode = lCodes[89];
           break;
-        case location === "unspecified" && severity === "breakdown_skin":
-          lCode = lCodes[90];
-          break;
-        case location === "unspecified" && severity === "fat_layer_exposed":
-          lCode = lCodes[91];
-          break;
-        case location === "unspecified" && severity === "necrosis_of_muscle":
-          lCode = lCodes[92];
-          break;
-        case location === "unspecified" && severity === "necrosis_of_bone":
-          lCode = lCodes[93];
-          break;
-        case location === "unspecified" && severity === "unspecified_severity":
-          lCode = lCodes[94];
-          break;
+
         case location === "unspecified" &&
           severity === "breakdown_skin" &&
           side === "right":
@@ -811,8 +1013,8 @@ const LCodeSelector = ({
       <Box
         sx={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "space-between",
-          alignItems: "center",
           marginBottom: 2,
           marginTop: 2,
         }}
@@ -839,7 +1041,10 @@ const LCodeSelector = ({
               }),
             }}
           >
-            <Typography variant="subtitle1" mr={2} sx={{ minWidth: 40 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ marginRight: "10px", minWidth: "150px" }}
+            >
               Location{"  "}
             </Typography>
 
@@ -857,7 +1062,7 @@ const LCodeSelector = ({
               <MenuItem value="" disabled>
                 <em>Select</em>
               </MenuItem>
-              {lCodeLocations.map((item) => (
+              {selectedLcodeList.map((item) => (
                 <MenuItem key={item.value} value={item.value}>
                   {item.label}
                 </MenuItem>
@@ -887,7 +1092,10 @@ const LCodeSelector = ({
               }),
             }}
           >
-            <Typography variant="subtitle1" mr={2}>
+            <Typography
+              variant="subtitle1"
+              sx={{ marginRight: "10px", minWidth: "150px" }}
+            >
               Side{"  "}
             </Typography>
             <Select
@@ -928,11 +1136,14 @@ const LCodeSelector = ({
               alignItems: "center",
               width: "100%",
               marginBottom: "10px",
+              ...(woundType === "Pressure ulcer" && {
+                display: "none",
+              }),
             }}
           >
             <Typography
               variant="subtitle1"
-              sx={type === "VLU" && { marginRight: "10px", minWidth: "150px" }}
+              sx={{ marginRight: "10px", minWidth: "150px" }}
             >
               Severity{"  "}
             </Typography>
@@ -940,7 +1151,7 @@ const LCodeSelector = ({
               value={severity}
               onChange={(e) => setSeverity(e.target.value)}
               displayEmpty
-              sx={{ flex: 1, ...(type !== "VLU" && { marginLeft: "3px" }) }}
+              sx={{ flex: 1 }}
             >
               <MenuItem value="" disabled>
                 <em>Select</em>
@@ -950,6 +1161,52 @@ const LCodeSelector = ({
                   {item.label}
                 </MenuItem>
               ))}
+            </Select>
+          </Box>
+        </FormControl>
+        <FormControl
+          sx={{
+            minWidth: 180,
+            ...(type === "VLU" && {
+              minWidth: "100%",
+            }),
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              marginBottom: "10px",
+              ...(woundType !== "Pressure ulcer" && {
+                display: "none",
+              }),
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{ marginRight: "10px", minWidth: "150px" }}
+            >
+              Stage
+            </Typography>
+            {/* @ts-ignore */}
+            <Select
+              sx={{ flex: 1 }}
+              onChange={(e) => setStage(e.target.value)}
+              displayEmpty
+              value={stage}
+            >
+              <MenuItem value="">
+                <em>Select</em>
+              </MenuItem>
+              <MenuItem value="unstageable">Unstageable</MenuItem>
+              <MenuItem value="one">1</MenuItem>
+              <MenuItem value="two">2</MenuItem>
+              <MenuItem value="three">3</MenuItem>
+              <MenuItem value="four">4</MenuItem>
+              <MenuItem value="unspecified">Unspecified Stage</MenuItem>
             </Select>
           </Box>
         </FormControl>

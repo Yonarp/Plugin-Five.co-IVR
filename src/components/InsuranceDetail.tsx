@@ -173,6 +173,7 @@ const InsuranceDetail = ({
             <Autocomplete
               options={[...CompanyNames, "Other"]}
               getOptionLabel={(option) => option}
+              placeholder="Search"
               value={formState.CompanyName}
               onChange={(event, newValue) => {
                 setIsOtherSelected(newValue === "Other");

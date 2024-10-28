@@ -1,4 +1,5 @@
-declare const LCodeSelector: ({ location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain, setPressureUlcer, lCodeServer, vluSide, vluLocation, type, }: {
+declare const LCodeSelector: ({ woundType, location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain, setPressureUlcer, lCodeServer, vluSide, vluLocation, type, }: {
+    woundType: any;
     location: any;
     setLocation: any;
     side: any;
