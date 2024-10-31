@@ -48,23 +48,19 @@ const LCodeSelector = ({
   const lCodeLocationsPressureUlcer = [
     { label: "Calf", value: "calf" },
     { label: "Ankle", value: "ankle" },
-    { label: "Heel", value: "heel_midfoot" },
+    { label: "Heel", value: "heel" },
     { label: "Other Part of Foot", value: "other_foot" },
     { label: "Other Part of Lower Leg", value: "other_lower_leg" },
     { label: "Unspecified Part of Lower Leg", value: "unspecified" },
-    { label: "Left Buttock", value: "left_buttock" },
-    { label: "Right Buttock", value: "right_buttock" },
-    { label: "Unspecified Buttock", value: "unspecified_buttock" },
+    { label: "Buttock", value: "buttock" },
     { label: "Hip", value: "hip" },
-    { label: "Unspecified Hip", value: "unspecified_hip" },
-    { label: "Contiguous Site of Back, Buttock and Hip", value: "contiguous" },
+    { label: "Sacral Region", value: "sacral_region" },
     { label: "Upper Back", value: "upper_back" },
     { label: "Lower Back", value: "lower_back" },
+    { label: "Contiguous Site of Back, Buttock and Hip", value: "contiguous" },
+    { label: "Unspecified Part of Back", value: "unspecified_back" },
     { label: "Skin of Other Sites", value: "skin" },
     { label: "Elbow", value: "elbow" },
-    { label: "Unspecified Elbow", value: "unspecified_elbow" },
-    { label: "Sacral Region", value: "sacral_region" },
-    { label: "Unspecified Part of Back", value: "skin" },
     { label: "Head", value: "head" },
     { label: "Other Site", value: "other_site" },
     { label: "Unspecified Site", value: " unspecified_site" },
@@ -625,6 +621,543 @@ const LCodeSelector = ({
       setLCodeMain(lCode);
     }
 
+    /*     { label: "Calf", value: "calf" },
+    { label: "Ankle", value: "ankle" },
+    { label: "Heel", value: "heel_midfoot" },
+    { label: "Other Part of Foot", value: "other_foot" },
+    { label: "Other Part of Lower Leg", value: "other_lower_leg" },
+    { label: "Unspecified Part of Lower Leg", value: "unspecified" },
+    { label: "Left Buttock", value: "left_buttock" },
+    { label: "Right Buttock", value: "right_buttock" },
+    { label: "Unspecified Buttock", value: "unspecified_buttock" },
+    { label: "Hip", value: "hip" },
+   
+    { label: "Contiguous Site of Back, Buttock and Hip", value: "contiguous" },
+    { label: "Upper Back", value: "upper_back" },
+    { label: "Lower Back", value: "lower_back" },
+    { label: "Unspecified Part of Back", value: "unspecified_back" },
+    { label: "Skin of Other Sites", value: "skin" },
+    { label: "Elbow", value: "elbow" },
+    { label: "Sacral Region", value: "sacral_region" },
+    { label: "Head", value: "head" },
+    { label: "Other Site", value: "other_site" },
+    { label: "Unspecified Site", value: " unspecified_site" }, */
+
+    /*               <MenuItem value="unstageable">Unstageable</MenuItem>
+              <MenuItem value="one">1</MenuItem>
+              <MenuItem value="two">2</MenuItem>
+              <MenuItem value="three">3</MenuItem>
+              <MenuItem value="four">4</MenuItem>
+              <MenuItem value="unspecified">Unspecified Stage</MenuItem> */
+
+    if (location && stage && woundType === "Pressure ulcer") {
+      setPressureUlcer((prevState) => ({
+        ...prevState,
+        location,
+        side,
+        severity,
+      }));
+      switch (true) {
+        case location === "elbow" && stage === "unstageable":
+          lCode = lCodes[120];
+          break;
+        case location === "elbow" && stage === "one":
+          lCode = lCodes[121];
+          break;
+        case location === "elbow" && stage === "two":
+          lCode = lCodes[122];
+          break;
+        case location === "elbow" && stage === "three":
+          lCode = lCodes[123];
+          break;
+        case location === "elbow" && stage === "four":
+          lCode = lCodes[124];
+          break;
+        case location === "elbow" && stage === "unspecified":
+          lCode = lCodes[125];
+          break;
+        case location === "unspecified_back" && stage === "unstageable":
+          lCode = lCodes[138];
+          break;
+        case location === "unspecified_back" && stage === "one":
+          lCode = lCodes[139];
+          break;
+        case location === "unspecified_back" && stage === "two":
+          lCode = lCodes[140];
+          break;
+        case location === "unspecified_back" && stage === "three":
+          lCode = lCodes[141];
+          break;
+        case location === "unspecified_back" && stage === "four":
+          lCode = lCodes[142];
+          break;
+        case location === "unspecified_back" && stage === "unspecified":
+          lCode = lCodes[143];
+          break;
+        case location === "sacral_region" && stage === "unstageable":
+          lCode = lCodes[168];
+          break;
+        case location === "sacral_region" && stage === "one":
+          lCode = lCodes[169];
+          break;
+        case location === "sacral_region" && stage === "two":
+          lCode = lCodes[170];
+          break;
+        case location === "sacral_region" && stage === "three":
+          lCode = lCodes[171];
+          break;
+        case location === "sacral_region" && stage === "four":
+          lCode = lCodes[172];
+          break;
+        case location === "sacral_region" && stage === "unspecified":
+          lCode = lCodes[173];
+          break;
+        case location === "hip" && stage === "unstageable":
+          lCode = lCodes[174];
+          break;
+        case location === "hip" && stage === "one":
+          lCode = lCodes[175];
+          break;
+        case location === "hip" && stage === "two":
+          lCode = lCodes[176];
+          break;
+        case location === "hip" && stage === "three":
+          lCode = lCodes[177];
+          break;
+        case location === "hip" && stage === "four":
+          lCode = lCodes[178];
+          break;
+        case location === "hip" && stage === "unspecified":
+          lCode = lCodes[179];
+          break;
+        case location === "buttock" && stage === "unstageable":
+          lCode = lCodes[192];
+          break;
+        case location === "buttock" && stage === "one":
+          lCode = lCodes[193];
+          break;
+        case location === "buttock" && stage === "two":
+          lCode = lCodes[194];
+          break;
+        case location === "buttock" && stage === "three":
+          lCode = lCodes[195];
+          break;
+        case location === "buttock" && stage === "four":
+          lCode = lCodes[196];
+          break;
+        case location === "buttock" && stage === "unspecified":
+          lCode = lCodes[197];
+          break;
+        case location === "contiguous" && stage === "unstageable":
+          lCode = lCodes[210];
+          break;
+        case location === "contiguous" && stage === "one":
+          lCode = lCodes[211];
+          break;
+        case location === "contiguous" && stage === "two":
+          lCode = lCodes[212];
+          break;
+        case location === "contiguous" && stage === "three":
+          lCode = lCodes[213];
+          break;
+        case location === "contiguous" && stage === "four":
+          lCode = lCodes[214];
+          break;
+        case location === "contiguous" && stage === "unspecified":
+          lCode = lCodes[215];
+          break;
+        case location === "ankle" && stage === "unstageable":
+          lCode = lCodes[216];
+          break;
+        case location === "ankle" && stage === "one":
+          lCode = lCodes[217];
+          break;
+        case location === "ankle" && stage === "two":
+          lCode = lCodes[218];
+          break;
+        case location === "ankle" && stage === "three":
+          lCode = lCodes[219];
+          break;
+        case location === "ankle" && stage === "four":
+          lCode = lCodes[220];
+          break;
+        case location === "ankle" && stage === "unspecified":
+          lCode = lCodes[221];
+          break;
+        case location === "heel" && stage === "unstageable":
+          lCode = lCodes[234];
+          break;
+        case location === "heel" && stage === "one":
+          lCode = lCodes[235];
+          break;
+        case location === "heel" && stage === "two":
+          lCode = lCodes[236];
+          break;
+        case location === "heel" && stage === "three":
+          lCode = lCodes[237];
+          break;
+        case location === "heel" && stage === "four":
+          lCode = lCodes[238];
+          break;
+        case location === "heel" && stage === "unspecified":
+          lCode = lCodes[239];
+          break;
+        case location === "head" && stage === "unstageable":
+          lCode = lCodes[252];
+          break;
+        case location === "head" && stage === "one":
+          lCode = lCodes[253];
+          break;
+        case location === "head" && stage === "two":
+          lCode = lCodes[254];
+          break;
+        case location === "head" && stage === "three":
+          lCode = lCodes[255];
+          break;
+        case location === "head" && stage === "four":
+          lCode = lCodes[256];
+          break;
+        case location === "head" && stage === "unspecified":
+          lCode = lCodes[257];
+          break;
+        case location === "other_site" && stage === "unstageable":
+          lCode = lCodes[258];
+          break;
+        case location === "other_site" && stage === "one":
+          lCode = lCodes[259];
+          break;
+        case location === "other_site" && stage === "two":
+          lCode = lCodes[260];
+          break;
+        case location === "other_site" && stage === "three":
+          lCode = lCodes[261];
+          break;
+        case location === "other_site" && stage === "four":
+          lCode = lCodes[262];
+          break;
+        case location === "other_site" && stage === "unspecified":
+          lCode = lCodes[263];
+          break;
+          case location === "unspecified_site" && stage === "unstageable":
+            lCode = lCodes[264];
+            break;
+          case location === "unspecified_site" && stage === "one":
+            lCode = lCodes[265];
+            break;
+          case location === "unspecified_site" && stage === "two":
+            lCode = lCodes[266];
+            break;
+          case location === "unspecified_site" && stage === "three":
+            lCode = lCodes[267];
+            break;
+          case location === "unspecified_site" && stage === "four":
+            lCode = lCodes[268];
+            break;
+          case location === "unspecified_site" && stage === "unspecified":
+            lCode = lCodes[269];
+            break;  
+      }
+      setLCode(lCode);
+      setLCodeMain(lCode);
+    }
+
+    if (location && side && stage && woundType === "Pressure ulcer") {
+      setPressureUlcer((prevState) => ({
+        ...prevState,
+        location,
+        side,
+        severity,
+      }));
+      switch (true) {
+        case location === "elbow" &&
+          side === "right" &&
+          stage === "unstageable":
+          lCode = lCodes[126];
+          break;
+        case location === "elbow" && side === "right" && stage === "one":
+          lCode = lCodes[127];
+          break;
+        case location === "elbow" && side === "right" && stage === "two":
+          lCode = lCodes[128];
+          break;
+        case location === "elbow" && side === "right" && stage === "three":
+          lCode = lCodes[129];
+          break;
+        case location === "elbow" && side === "right" && stage === "four":
+          lCode = lCodes[130];
+          break;
+        case location === "elbow" &&
+          side === "right" &&
+          stage === "unspecified":
+          lCode = lCodes[131];
+          break;
+        case location === "elbow" && side === "left" && stage === "unstageable":
+          lCode = lCodes[132];
+          break;
+        case location === "elbow" && side === "left" && stage === "one":
+          lCode = lCodes[133];
+          break;
+        case location === "elbow" && side === "left" && stage === "two":
+          lCode = lCodes[134];
+          break;
+        case location === "elbow" && side === "left" && stage === "three":
+          lCode = lCodes[135];
+          break;
+        case location === "elbow" && side === "left" && stage === "four":
+          lCode = lCodes[136];
+          break;
+        case location === "elbow" && side === "left" && stage === "unspecified":
+          lCode = lCodes[137];
+          break;
+        case location === "upper_back" &&
+          side === "right" &&
+          stage === "unstageable":
+          lCode = lCodes[144];
+          break;
+        case location === "upper_back" && side === "right" && stage === "one":
+          lCode = lCodes[145];
+          break;
+        case location === "upper_back" && side === "right" && stage === "two":
+          lCode = lCodes[146];
+          break;
+        case location === "upper_back" && side === "right" && stage === "three":
+          lCode = lCodes[147];
+          break;
+        case location === "upper_back" && side === "right" && stage === "four":
+          lCode = lCodes[148];
+          break;
+        case location === "upper_back" &&
+          side === "right" &&
+          stage === "unspecified":
+          lCode = lCodes[149];
+          break;
+        case location === "upper_back" &&
+          side === "left" &&
+          stage === "unstageable":
+          lCode = lCodes[150];
+          break;
+        case location === "upper_back" && side === "left" && stage === "one":
+          lCode = lCodes[151];
+          break;
+        case location === "upper_back" && side === "left" && stage === "two":
+          lCode = lCodes[152];
+          break;
+        case location === "upper_back" && side === "left" && stage === "three":
+          lCode = lCodes[153];
+          break;
+        case location === "upper_back" && side === "left" && stage === "four":
+          lCode = lCodes[154];
+          break;
+        case location === "upper_back" &&
+          side === "left" &&
+          stage === "unspecified":
+          lCode = lCodes[155];
+          break;
+        case location === "lower_back" &&
+          side === "right" &&
+          stage === "unstageable":
+          lCode = lCodes[156];
+          break;
+        case location === "lower_back" && side === "right" && stage === "one":
+          lCode = lCodes[157];
+          break;
+        case location === "lower_back" && side === "right" && stage === "two":
+          lCode = lCodes[158];
+          break;
+        case location === "lower_back" && side === "right" && stage === "three":
+          lCode = lCodes[159];
+          break;
+        case location === "lower_back" && side === "right" && stage === "four":
+          lCode = lCodes[160];
+          break;
+        case location === "lower_back" &&
+          side === "right" &&
+          stage === "unspecified":
+          lCode = lCodes[161];
+          break;
+        case location === "lower_back" &&
+          side === "left" &&
+          stage === "unstageable":
+          lCode = lCodes[162];
+          break;
+        case location === "lower_back" && side === "left" && stage === "one":
+          lCode = lCodes[163];
+          break;
+        case location === "lower_back" && side === "left" && stage === "two":
+          lCode = lCodes[164];
+          break;
+        case location === "lower_back" && side === "left" && stage === "three":
+          lCode = lCodes[165];
+          break;
+        case location === "lower_back" && side === "left" && stage === "four":
+          lCode = lCodes[166];
+          break;
+        case location === "lower_back" &&
+          side === "left" &&
+          stage === "unspecified":
+          lCode = lCodes[167];
+          break;
+        case location === "hip" && side === "right" && stage === "unstageable":
+          lCode = lCodes[180];
+          break;
+        case location === "hip" && side === "right" && stage === "one":
+          lCode = lCodes[181];
+          break;
+        case location === "hip" && side === "right" && stage === "two":
+          lCode = lCodes[182];
+          break;
+        case location === "hip" && side === "right" && stage === "three":
+          lCode = lCodes[183];
+          break;
+        case location === "hip" && side === "right" && stage === "four":
+          lCode = lCodes[184];
+          break;
+        case location === "hip" && side === "right" && stage === "unspecified":
+          lCode = lCodes[185];
+          break;
+        case location === "hip" && side === "left" && stage === "unstageable":
+          lCode = lCodes[186];
+          break;
+        case location === "hip" && side === "left" && stage === "one":
+          lCode = lCodes[187];
+          break;
+        case location === "hip" && side === "left" && stage === "two":
+          lCode = lCodes[188];
+          break;
+        case location === "hip" && side === "left" && stage === "three":
+          lCode = lCodes[189];
+          break;
+        case location === "hip" && side === "left" && stage === "four":
+          lCode = lCodes[190];
+          break;
+        case location === "hip" && side === "left" && stage === "unspecified":
+          lCode = lCodes[191];
+          break;
+        case location === "buttock" &&
+          side === "right" &&
+          stage === "unstageable":
+          lCode = lCodes[198];
+          break;
+        case location === "buttock" && side === "right" && stage === "one":
+          lCode = lCodes[199];
+          break;
+        case location === "buttock" && side === "right" && stage === "two":
+          lCode = lCodes[200];
+          break;
+        case location === "buttock" && side === "right" && stage === "three":
+          lCode = lCodes[201];
+          break;
+        case location === "buttock" && side === "right" && stage === "four":
+          lCode = lCodes[202];
+          break;
+        case location === "buttock" &&
+          side === "right" &&
+          stage === "unspecified":
+          lCode = lCodes[203];
+          break;
+        case location === "buttock" &&
+          side === "left" &&
+          stage === "unstageable":
+          lCode = lCodes[204];
+          break;
+        case location === "buttock" && side === "left" && stage === "one":
+          lCode = lCodes[205];
+          break;
+        case location === "buttock" && side === "left" && stage === "two":
+          lCode = lCodes[206];
+          break;
+        case location === "buttock" && side === "left" && stage === "three":
+          lCode = lCodes[207];
+          break;
+        case location === "buttock" && side === "left" && stage === "four":
+          lCode = lCodes[208];
+          break;
+        case location === "buttock" &&
+          side === "left" &&
+          stage === "unspecified":
+          lCode = lCodes[209];
+          break;
+        case location === "ankle" &&
+          side === "right" &&
+          stage === "unstageable":
+          lCode = lCodes[222];
+          break;
+        case location === "ankle" && side === "right" && stage === "one":
+          lCode = lCodes[223];
+          break;
+        case location === "ankle" && side === "right" && stage === "two":
+          lCode = lCodes[224];
+          break;
+        case location === "ankle" && side === "right" && stage === "three":
+          lCode = lCodes[225];
+          break;
+        case location === "ankle" && side === "right" && stage === "four":
+          lCode = lCodes[226];
+          break;
+        case location === "ankle" &&
+          side === "right" &&
+          stage === "unspecified":
+          lCode = lCodes[227];
+          break;
+        case location === "ankle" && side === "left" && stage === "unstageable":
+          lCode = lCodes[228];
+          break;
+        case location === "ankle" && side === "left" && stage === "one":
+          lCode = lCodes[229];
+          break;
+        case location === "ankle" && side === "left" && stage === "two":
+          lCode = lCodes[230];
+          break;
+        case location === "ankle" && side === "left" && stage === "three":
+          lCode = lCodes[231];
+          break;
+        case location === "ankle" && side === "left" && stage === "four":
+          lCode = lCodes[232];
+          break;
+        case location === "ankle" && side === "left" && stage === "unspecified":
+          lCode = lCodes[233];
+          break;
+        case location === "heel" && side === "right" && stage === "unstageable":
+          lCode = lCodes[240];
+          break;
+        case location === "heel" && side === "right" && stage === "one":
+          lCode = lCodes[241];
+          break;
+        case location === "heel" && side === "right" && stage === "two":
+          lCode = lCodes[242];
+          break;
+        case location === "heel" && side === "right" && stage === "three":
+          lCode = lCodes[243];
+          break;
+        case location === "heel" && side === "right" && stage === "four":
+          lCode = lCodes[244];
+          break;
+        case location === "heel" && side === "right" && stage === "unspecified":
+          lCode = lCodes[245];
+          break;
+        case location === "heel" && side === "left" && stage === "unstageable":
+          lCode = lCodes[246];
+          break;
+        case location === "heel" && side === "left" && stage === "one":
+          lCode = lCodes[247];
+          break;
+        case location === "heel" && side === "left" && stage === "two":
+          lCode = lCodes[248];
+          break;
+        case location === "heel" && side === "left" && stage === "three":
+          lCode = lCodes[249];
+          break;
+        case location === "heel" && side === "left" && stage === "four":
+          lCode = lCodes[250];
+          break;
+        case location === "heel" && side === "left" && stage === "unspecified":
+          lCode = lCodes[251];
+          break;
+      }
+      setLCode(lCode);
+      setLCodeMain(lCode);
+    }
+
     if (location && side && severity) {
       setPressureUlcer((prevState) => ({
         ...prevState,
@@ -1006,7 +1539,7 @@ const LCodeSelector = ({
       setSide(vluSide);
       setLocation(vluLocation);
     }
-  }, [location, side, severity, vluSide, vluLocation]);
+  }, [location, side, severity, vluSide, vluLocation, stage]);
 
   return (
     <Box mb={10}>

@@ -91,11 +91,10 @@ const CustomField = (props: CustomFieldProps) => {
     five.actionID() !== "IVR" && five.actionID() !== "Accounts";
 
   const handleDialogOpen = () => {
-    console.log("Seleted Record is logging", selectedRecord);
-    console.log("five.form from the plugin", formField);
+
     setDialogOpen(true);
 
-    console.log("Account Key", account);
+   
     const fetchData = async () => {
       if (existingPatient) {
         await five.executeFunction(
@@ -224,12 +223,15 @@ const CustomField = (props: CustomFieldProps) => {
   }
 
   const handleSubmit = async (complete) => {
+
     if (!readyToSubmit && complete) {
       setSubmissionSuccess(true);
       return 0;
     }
 
     if (!existingPatient) {
+
+
       const IVR = {
         patient: patient?.data?.___PAT,
         products,
@@ -254,6 +256,7 @@ const CustomField = (props: CustomFieldProps) => {
         payors,
         AccountKey: selectedRecord?.data?.ACT,
       };
+
       await five.executeFunction(
         "pushToIVR",
         //@ts-ignore
@@ -307,6 +310,7 @@ const CustomField = (props: CustomFieldProps) => {
     const submissionText = {
       message: complete ? "Submission Successful" : "The IVR has been saved.",
     };
+
     await five.executeFunction(
       "submissionSuccessful",
       //@ts-ignore
@@ -319,10 +323,15 @@ const CustomField = (props: CustomFieldProps) => {
         console.log("Loggin submissionSuccessful");
       }
     );
+
     handleDialogClose();
+
     if (five.internal.actionID === "IVR") {
+
       five.previousAction(true, 1);
+
     }
+
   };
 
   const handleCloseSnackbar = () => {
@@ -439,11 +448,12 @@ const CustomField = (props: CustomFieldProps) => {
   ]);
 
   const handleBack = useCallback(() => {
+
     setActiveStep((prevActiveStep) => {
       if (existingPatient && prevActiveStep === 1) {
         return 1;
       } else {
-        return Math.max(prevActiveStep - 1, 0);
+       return Math.max(prevActiveStep - 1, 0);
       }
     });
   }, []);
@@ -548,6 +558,7 @@ const CustomField = (props: CustomFieldProps) => {
             </div>
           ) : null}
           {activeStep === 0 && (
+
             <NewPatient
               data={data}
               handlePatient={handlePatient}
@@ -561,6 +572,7 @@ const CustomField = (props: CustomFieldProps) => {
               setNewPatient={setNewPatient}
               account={account}
             />
+            
           )}
 
           {activeStep === 1 &&

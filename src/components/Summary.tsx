@@ -32,12 +32,11 @@ const Summary = ({
   payors,
   setReadyToSubmit,
 }) => {
-  console.log("SNF Admissions :", payors);
-  console.log("Patient:", patient);
+  
   const [isChecked, setIsChecked] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-
+  console.log("Loggin Payors" , payors)
   // Handle checkbox change
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -170,9 +169,9 @@ const Summary = ({
             patient.document.map((item, index) => {
               // Handle both cases: if item.Base64 is a string or an object
               const base64Data =
-                typeof item.Base64 === "string"
-                  ? item.Base64
-                  : item.Base64.Base64;
+                typeof item?.Base64 === "string"
+                  ? item?.Base64
+                  : item?.Base64?.Base64;
 
               return (
                 <ListItemButton
@@ -232,23 +231,23 @@ const Summary = ({
       >
         <DialogTitle>Document Preview</DialogTitle>
         <DialogContent style={{ width: "100%", height: "100%" }}>
-          {selectedDocument && selectedDocument.Base64 ? (
-            getMimeTypeFromDataUri(selectedDocument.Base64) ===
+          {selectedDocument && selectedDocument?.Base64 ? (
+            getMimeTypeFromDataUri(selectedDocument?.Base64) ===
             "application/pdf" ? (
               // Render PDF using iframe
               <iframe
-                src={selectedDocument.Base64}
+                src={selectedDocument?.Base64}
                 title="PDF Document"
                 width="100%"
                 height="100%"
                 style={{ border: "none" }}
               />
-            ) : getMimeTypeFromDataUri(selectedDocument.Base64).startsWith(
+            ) : getMimeTypeFromDataUri(selectedDocument?.Base64).startsWith(
                 "image/"
               ) ? (
               // Render image
               <img
-                src={selectedDocument.Base64}
+                src={selectedDocument?.Base64}
                 alt="Document"
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />

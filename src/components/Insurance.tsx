@@ -32,7 +32,6 @@ const Insurance = React.memo(
       setDialogOpen(true);
     };
 
-  
     const handleDialogClose = () => {
       setDialogOpen(false);
     };
@@ -166,9 +165,20 @@ const Insurance = React.memo(
           //@ts-ignore
           (result) => {
             const payorData = JSON.parse(result.serverResponse.results);
+            console.log(
+              "Logging to see the result from UpdatePayor",
+              payorData
+            );
+            let documentFront = payorData.document[0]?.response;
+            let documentBack = payorData.document[1]?.response;
+            const newDocuments = [];
+
+            // Conditionally add documents to the array
+            if (documentFront) newDocuments.push(documentFront);
+            if (documentBack) newDocuments.push(documentBack);
             setPatient((prevPatient) => ({
-              data: payorData.response,
-              document: [...prevPatient.document],
+              data: payorData.results.response,
+              document: [...prevPatient.document, ...newDocuments],
             }));
           }
         );
@@ -187,9 +197,20 @@ const Insurance = React.memo(
           //@ts-ignore
           (result) => {
             const payorData = JSON.parse(result.serverResponse.results);
+            console.log(
+              "Logging to see the result from UpdatePayor",
+              payorData
+            );
+            let documentFront = payorData.document[0]?.response;
+            let documentBack = payorData.document[1]?.response;
+            const newDocuments = [];
+
+            // Conditionally add documents to the array
+            if (documentFront) newDocuments.push(documentFront);
+            if (documentBack) newDocuments.push(documentBack);
             setPatient((prevPatient) => ({
-              data: payorData.response,
-              document: prevPatient.document,
+              data: payorData.results.response,
+              document: [...prevPatient.document, ...newDocuments],
             }));
           }
         );

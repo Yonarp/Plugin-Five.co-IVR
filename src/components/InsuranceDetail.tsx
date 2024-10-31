@@ -98,15 +98,15 @@ const InsuranceDetail = ({
   };
 
   useEffect(() => {
-    console.log("Logging Index", index)
+
     let memberNumber
     let groupMemberNumber
     if(index === 0) {
-      console.log("condition index = 0 true")
+ 
       memberNumber = patient.data.Pay1MemberNumber
       groupMemberNumber = patient.data.Pay1Group
     } else {
-      console.log("condition index = 1 true")
+   
       memberNumber = patient.data.Pay2MemberNumber
       groupMemberNumber = patient.data.Pay2Group
       
@@ -138,7 +138,7 @@ const InsuranceDetail = ({
     }
   }, [payor]);
 
-  console.log("Logging Form State", formState)
+
 
 
 
@@ -186,6 +186,7 @@ const InsuranceDetail = ({
                 <TextField
                   {...params}
                   label="Company Name"
+                  placeholder="Search"
                   margin="normal"
                   sx={{ minWidth: 250 }}  // Adjust the width here
                 />
