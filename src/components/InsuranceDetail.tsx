@@ -25,7 +25,8 @@ const InsuranceDetail = ({
   handlePayorMain,
   isEdit,
   patient,
-  index
+  index,
+  setLoading
 }) => {
   const [formState, setFormState] = useState({
     ___PAY: "",
@@ -67,6 +68,7 @@ const InsuranceDetail = ({
 
   const handleSubmit = () => {
     console.log("Handle Submit");
+    setLoading(true)
     handleDialogCloseExternal();
     handlePayor(formState, index);
     handlePayorMain((prevPayor) => ({

@@ -145,6 +145,7 @@ const Insurance = React.memo(
     };
 
     const handlePayor = async (payorData, index) => {
+      setLoading(true);
       if (isEdit) {
         setPayors((prevPayors) =>
           prevPayors.map((p) => (p.___PAY === payorData.___PAY ? payorData : p))
@@ -156,72 +157,86 @@ const Insurance = React.memo(
           index: index,
         };
 
-        await five.executeFunction(
-          "updatePayer",
-          payorObj,
-          null,
-          null,
-          null,
-          //@ts-ignore
-          (result) => {
-            const payorData = JSON.parse(result.serverResponse.results);
-            console.log(
-              "Logging to see the result from UpdatePayor",
-              payorData
+        try {
+          const result = await new Promise((resolve, reject) => {
+            five.executeFunction(
+              "updatePayer",
+              payorObj,
+              null,
+              null,
+              null,
+              (result) => {
+                resolve(result);
+              },
+              (error) => {
+                reject(error);
+              }
             );
-            let documentFront = payorData.document[0]?.response;
-            let documentBack = payorData.document[1]?.response;
-            const newDocuments = [];
+          });
 
-            // Conditionally add documents to the array
-            if (documentFront) newDocuments.push(documentFront);
-            if (documentBack) newDocuments.push(documentBack);
-            setPatient((prevPatient) => ({
-              data: payorData.results.response,
-              document: [...prevPatient.document, ...newDocuments],
-            }));
-          }
-        );
+          const payorDataResult = JSON.parse(result.serverResponse.results);
+          let documentFront = payorDataResult.document[0]?.response;
+          let documentBack = payorDataResult.document[1]?.response;
+          const newDocuments = [];
+
+          if (documentFront) newDocuments.push(documentFront);
+          if (documentBack) newDocuments.push(documentBack);
+          setPatient((prevPatient) => ({
+            data: payorDataResult.results.response,
+            document: [...prevPatient.document, ...newDocuments],
+          }));
+        } catch (error) {
+          console.error("Error updating payor:", error);
+        } finally {
+          setLoading(false); // End the loading state
+        }
       } else {
         setPayors((prevPayor) => [...prevPayor, payorData]);
         const payorObj = {
           payor: payorData,
           patient: patient?.data,
         };
-        await five.executeFunction(
-          "pushPayer",
-          payorObj,
-          null,
-          null,
-          null,
-          //@ts-ignore
-          (result) => {
-            const payorData = JSON.parse(result.serverResponse.results);
-            console.log(
-              "Logging to see the result from UpdatePayor",
-              payorData
+        try {
+          const result = await new Promise((resolve, reject) => {
+            five.executeFunction(
+              "pushPayer",
+              payorObj,
+              null,
+              null,
+              null,
+              (result) => {
+                resolve(result);
+              },
+              (error) => {
+                reject(error);
+              }
             );
-            let documentFront = payorData.document[0]?.response;
-            let documentBack = payorData.document[1]?.response;
-            const newDocuments = [];
+          });
 
-            // Conditionally add documents to the array
-            if (documentFront) newDocuments.push(documentFront);
-            if (documentBack) newDocuments.push(documentBack);
-            setPatient((prevPatient) => ({
-              data: payorData.results.response,
-              document: [...prevPatient.document, ...newDocuments],
-            }));
-          }
-        );
+          const payorDataResult = JSON.parse(result.serverResponse.results);
+          let documentFront = payorDataResult.document[0]?.response;
+          let documentBack = payorDataResult.document[1]?.response;
+          const newDocuments = [];
+
+          if (documentFront) newDocuments.push(documentFront);
+          if (documentBack) newDocuments.push(documentBack);
+          setPatient((prevPatient) => ({
+            data: payorDataResult.results.response,
+            document: [...prevPatient.document, ...newDocuments],
+          }));
+        } catch (error) {
+          console.error("Error adding payor:", error);
+        } finally {
+          setLoading(false); // End the loading state
+        }
       }
       setSelectedPayors([]);
     };
 
     useEffect(() => {
-      console.log("Logging Patient To see documents", patient);
+      setLoading(true);
+
       const fetchData = async () => {
-        setLoading(true);
         const payorKeys = [patient?.data?.__PAY1, patient?.data?.__PAY2].filter(
           Boolean
         );
@@ -448,6 +463,7 @@ const Insurance = React.memo(
             ) : null
           }
           <InsuranceDetail
+            setLoading={setLoading}
             dialogOpenExternal={dialogOpen}
             onClose={handleDialogClose}
             payor={selectedPayor}

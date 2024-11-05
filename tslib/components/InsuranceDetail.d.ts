@@ -1,4 +1,4 @@
-declare const InsuranceDetail: ({ dialogOpenExternal, onClose, payor, handlePayor, handlePayorMain, isEdit, patient, index }: {
+declare const InsuranceDetail: ({ dialogOpenExternal, onClose, payor, handlePayor, handlePayorMain, isEdit, patient, index, setLoading }: {
     dialogOpenExternal: any;
     onClose: any;
     payor: any;
@@ -7,5 +7,6 @@ declare const InsuranceDetail: ({ dialogOpenExternal, onClose, payor, handlePayo
     isEdit: any;
     patient: any;
     index: any;
+    setLoading: any;
 }) => JSX.Element;
 export default InsuranceDetail;
