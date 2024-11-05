@@ -23,6 +23,8 @@ import Patient from "./Patient"; // Ensure this import points to your Patient co
 import { Category } from "@mui/icons-material";
 
 const NewPatient = ({
+  setMainForm,
+  mainForm, 
   data,
   handlePatient,
   five,
@@ -88,6 +90,12 @@ const NewPatient = ({
       ...prevState,
       [name]: value,
     }));
+
+    setMainForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+
   };
 
   const handleDialogOpen = () => {
@@ -210,6 +218,12 @@ const NewPatient = ({
 
   useEffect(() => {
     setPatient(null);
+
+    if(mainForm){
+      setFormState(mainForm)
+    }
+
+
   }, []);
 
   console.log(
@@ -283,6 +297,7 @@ const NewPatient = ({
                 margin="normal"
                 sx={{ minWidth: 170 }}
                 name="NameFirst"
+                value={formState.NameFirst}
                 onChange={handleInputChange}
               />
             </Box>
@@ -304,6 +319,7 @@ const NewPatient = ({
                 variant="outlined"
                 sx={{ minWidth: 170 }}
                 name="NameLast"
+                value={formState.NameLast}
                 onChange={handleInputChange}
               />
             </Box>

@@ -33,6 +33,17 @@ const CustomField = (props: CustomFieldProps) => {
   // Initialize states
   const [activeStep, setActiveStep] = useState(0);
   const [page, setPage] = useState(0); //pages for NewPatient component
+  const [formState, setFormState] = useState({
+    NameFirst: "",
+    NameLast: "",
+    Gender: "",
+    Birthdate: "",
+    AddressStreet: "",
+    AddressStreet2: "",
+    AddressCity: "",
+    AddressState: "",
+    AddressZip: "",
+  }); // form for Newpatient
   const [dialogOpen, setDialogOpen] = useState(false);
   const [admitted, setAdmitted] = useState(null);
   const [placeOfService, setPlaceOfService] = useState(null);
@@ -183,6 +194,17 @@ const CustomField = (props: CustomFieldProps) => {
     setReadyToSubmit(false);
     setHospice(null);
     setMedicare(null);
+    setFormState({
+      NameFirst: "",
+      NameLast: "",
+      Gender: "",
+      Birthdate: "",
+      AddressStreet: "",
+      AddressStreet2: "",
+      AddressCity: "",
+      AddressState: "",
+      AddressZip: "",
+    })
   };
 
   const handleDialogClose = () => {
@@ -561,6 +583,8 @@ const CustomField = (props: CustomFieldProps) => {
 
             <NewPatient
               data={data}
+              setMainForm={setFormState}
+              mainForm={formState}
               handlePatient={handlePatient}
               five={five}
               page={page}

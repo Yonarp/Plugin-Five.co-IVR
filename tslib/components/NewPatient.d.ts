@@ -1,4 +1,6 @@
-declare const NewPatient: ({ data, handlePatient, five, patient, setPatient, handleNext, setNewPatient, account, handleDialogCloseExternal, page, setPage, }: {
+declare const NewPatient: ({ setMainForm, mainForm, data, handlePatient, five, patient, setPatient, handleNext, setNewPatient, account, handleDialogCloseExternal, page, setPage, }: {
+    setMainForm: any;
+    mainForm: any;
     data: any;
     handlePatient: any;
     five: any;
