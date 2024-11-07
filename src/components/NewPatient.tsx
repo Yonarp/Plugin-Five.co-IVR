@@ -17,14 +17,14 @@ import {
   DialogActions,
   Button,
   Grid,
+  FormHelperText,
 } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Patient from "./Patient"; // Ensure this import points to your Patient component
-import { Category } from "@mui/icons-material";
 
 const NewPatient = ({
   setMainForm,
-  mainForm, 
+  mainForm,
   data,
   handlePatient,
   five,
@@ -37,7 +37,7 @@ const NewPatient = ({
   page,
   setPage,
 }) => {
-  //const [page, setPage] = useState(0);
+  // const [page, setPage] = useState(0);
   const [formState, setFormState] = useState({
     NameFirst: "",
     NameLast: "",
@@ -50,13 +50,26 @@ const NewPatient = ({
     AddressZip: "",
   });
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  // Main form state variables
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedFilesBase64, setSelectedFilesBase64] = useState([]);
   const [documentTypes, setDocumentTypes] = useState([]);
+  const [documentNames, setDocumentNames] = useState([]);
+
+  // Dialog-specific state variables
+  const [dialogSelectedFiles, setDialogSelectedFiles] = useState([]);
   const [documentType, setDocumentType] = useState("");
   const [otherDocumentType, setOtherDocumentType] = useState("");
   const [documentName, setDocumentName] = useState("");
-  const [documentNames, setDocumentNames] = useState([]);
+
+  // Error state
+  const [errors, setErrors] = useState({
+    documentName: false,
+    documentType: false,
+    otherDocumentType: false,
+    selectedFiles: false,
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -94,14 +107,20 @@ const NewPatient = ({
     setMainForm((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-
+    }));
   };
 
   const handleDialogOpen = () => {
     setDocumentName("");
     setDocumentType("");
     setOtherDocumentType("");
+    setDialogSelectedFiles([]);
+    setErrors({
+      documentName: false,
+      documentType: false,
+      otherDocumentType: false,
+      selectedFiles: false,
+    });
     setDialogOpen(true);
   };
 
@@ -110,33 +129,91 @@ const NewPatient = ({
     setDocumentName("");
     setDocumentType("");
     setOtherDocumentType("");
+    setDialogSelectedFiles([]);
+    setErrors({
+      documentName: false,
+      documentType: false,
+      otherDocumentType: false,
+      selectedFiles: false,
+    });
   };
 
+  // Modify handleFileChange to only set the dialog's selected files
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
+    setDialogSelectedFiles(files);
+    setErrors((prevErrors) => ({ ...prevErrors, selectedFiles: false }));
+  };
 
-    files.forEach((file) => {
+  const handleDialogSubmit = () => {
+    let hasError = false;
+    const newErrors = {
+      documentName: false,
+      documentType: false,
+      otherDocumentType: false,
+      selectedFiles: false,
+    };
+
+    if (documentName.trim() === "") {
+      newErrors.documentName = true;
+      hasError = true;
+    }
+
+    if (documentType.trim() === "") {
+      newErrors.documentType = true;
+      hasError = true;
+    }
+
+    if (documentType === "other" && otherDocumentType.trim() === "") {
+      newErrors.otherDocumentType = true;
+      hasError = true;
+    }
+
+    if (dialogSelectedFiles.length === 0) {
+      newErrors.selectedFiles = true;
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
+      five.message("Please fill in all required fields.");
+      return;
+    }
+
+    // Process the files and update the main form's state
+    dialogSelectedFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const fileType = file.type; // Get the file MIME type (e.g., application/pdf, image/jpeg)
+        const fileType = file.type;
 
         setSelectedFilesBase64((prev) => [
           ...prev,
-          { Base64: reader.result, ContentType: fileType }, // Store both Base64 and file type
+          { Base64: reader.result, ContentType: fileType },
         ]);
       };
 
-      reader.readAsDataURL(file); // Convert the file to Base64
+      reader.readAsDataURL(file);
     });
 
-    // Add the selected files and document types to the state
-    setSelectedFiles((prev) => [...prev, ...files]);
+    // Update the main form's selected files and document details
+    setSelectedFiles((prev) => [...prev, ...dialogSelectedFiles]);
     setDocumentTypes((prev) => [
       ...prev,
       documentType === "other" ? otherDocumentType : documentType,
     ]);
-
     setDocumentNames((prev) => [...prev, documentName]);
+
+    // Clear the dialog form fields
+    setDialogSelectedFiles([]);
+    setDocumentName("");
+    setDocumentType("");
+    setOtherDocumentType("");
+    setErrors({
+      documentName: false,
+      documentType: false,
+      otherDocumentType: false,
+      selectedFiles: false,
+    });
 
     handleDialogClose();
   };
@@ -155,6 +232,7 @@ const NewPatient = ({
     if (event.target.value !== "other") {
       setOtherDocumentType("");
     }
+    setErrors((prevErrors) => ({ ...prevErrors, documentType: false }));
   };
 
   const isFormValid = () => {
@@ -219,11 +297,9 @@ const NewPatient = ({
   useEffect(() => {
     setPatient(null);
 
-    if(mainForm){
-      setFormState(mainForm)
+    if (mainForm) {
+      setFormState(mainForm);
     }
-
-
   }, []);
 
   console.log(
@@ -456,12 +532,13 @@ const NewPatient = ({
                 <Typography variant="h6">Uploaded files:</Typography>
                 {selectedFiles.map((file, index) => (
                   <Box
+                    key={index}
                     display="flex"
                     flexDirection="row"
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <Typography key={index}>
+                    <Typography>
                       {file.name} - {documentTypes[index]}
                     </Typography>
                     <Button
@@ -518,16 +595,36 @@ const NewPatient = ({
                 label="Set Document Name"
                 value={documentName}
                 required
-                onChange={(e) => setDocumentName(e.target.value)}
+                error={errors.documentName}
+                helperText={
+                  errors.documentName ? "Document name is required" : ""
+                }
+                onChange={(e) => {
+                  setDocumentName(e.target.value);
+                  setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    documentName: false,
+                  }));
+                }}
               />
-              <FormControl fullWidth margin="normal">
+              <FormControl
+                fullWidth
+                margin="normal"
+                error={errors.documentType}
+                required
+              >
                 <InputLabel id="document-type-label">Document Type</InputLabel>
                 <Select
                   labelId="document-type-label"
                   value={documentType}
-                  onChange={handleDocumentTypeChange}
+                  onChange={(e) => {
+                    handleDocumentTypeChange(e);
+                    setErrors((prevErrors) => ({
+                      ...prevErrors,
+                      documentType: false,
+                    }));
+                  }}
                   label="Document Type"
-                  required
                 >
                   <MenuItem value="facesheet">Facesheet</MenuItem>
                   <MenuItem value="wound notes">Wound Notes</MenuItem>
@@ -537,6 +634,9 @@ const NewPatient = ({
                   </MenuItem>
                   <MenuItem value="other">Other</MenuItem>
                 </Select>
+                {errors.documentType && (
+                  <FormHelperText>Document type is required</FormHelperText>
+                )}
               </FormControl>
               {documentType === "other" && (
                 <TextField
@@ -544,7 +644,20 @@ const NewPatient = ({
                   margin="normal"
                   label="Specify Document Type"
                   value={otherDocumentType}
-                  onChange={(e) => setOtherDocumentType(e.target.value)}
+                  required
+                  error={errors.otherDocumentType}
+                  helperText={
+                    errors.otherDocumentType
+                      ? "Please specify document type"
+                      : ""
+                  }
+                  onChange={(e) => {
+                    setOtherDocumentType(e.target.value);
+                    setErrors((prevErrors) => ({
+                      ...prevErrors,
+                      otherDocumentType: false,
+                    }));
+                  }}
                 />
               )}
               <input
@@ -552,11 +665,20 @@ const NewPatient = ({
                 multiple
                 accept="image/jpeg,image/png,application/pdf"
                 onChange={handleFileChange}
+                style={errors.selectedFiles ? { border: "1px solid red" } : {}}
               />
+              {errors.selectedFiles && (
+                <Typography color="error">
+                  Please select at least one file to upload
+                </Typography>
+              )}
             </DialogContent>
             <DialogActions>
               <Button onClick={handleDialogClose} color="primary">
                 Cancel
+              </Button>
+              <Button onClick={handleDialogSubmit} color="primary">
+                Upload
               </Button>
             </DialogActions>
           </Dialog>
