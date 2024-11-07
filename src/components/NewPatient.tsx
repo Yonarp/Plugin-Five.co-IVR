@@ -517,6 +517,7 @@ const NewPatient = ({
                 margin="normal"
                 label="Set Document Name"
                 value={documentName}
+                required
                 onChange={(e) => setDocumentName(e.target.value)}
               />
               <FormControl fullWidth margin="normal">
@@ -526,6 +527,7 @@ const NewPatient = ({
                   value={documentType}
                   onChange={handleDocumentTypeChange}
                   label="Document Type"
+                  required
                 >
                   <MenuItem value="facesheet">Facesheet</MenuItem>
                   <MenuItem value="wound notes">Wound Notes</MenuItem>

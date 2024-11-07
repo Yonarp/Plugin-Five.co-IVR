@@ -48,11 +48,14 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
   }, [patientSaved]);
 
   const handleClick = async (index, patient) => {
+
     console.log("Logging Patient FROM PATIENT ", patient);
     setSelectedIndex(index);
+
     const patientKey = {
       PatientKey: patient,
     };
+
     await five.executeFunction(
       "getPatient",
       patientKey,
@@ -64,7 +67,9 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
         console.log("Patient Data ->", patientData)
         handlePatient(patientData.patient, index, patientData.document);
       }
+
     );
+
     handleNext()
   };
 
@@ -172,7 +177,6 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
             Cancel
           </Button>
         </Box>
-
     </Container>
   );
 };

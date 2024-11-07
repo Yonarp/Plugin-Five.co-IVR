@@ -104,8 +104,7 @@ const CustomField = (props: CustomFieldProps) => {
   const handleDialogOpen = () => {
 
     setDialogOpen(true);
-
-   
+    
     const fetchData = async () => {
       if (existingPatient) {
         await five.executeFunction(
