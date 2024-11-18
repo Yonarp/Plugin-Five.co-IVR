@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Box, List, ListItemText } from "../FivePluginApi";
 
 const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleNext, handleDialogClose }) => {
+
   const [selectedIndex, setSelectedIndex] = useState(
     patientSaved ? patientSaved.index : null
   );
@@ -141,10 +142,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
             </Box>
           </ListItemButton>
         ))}
-      </List>
-       
- 
-      
+      </List>   
       <Box
         style={{
           width: "100%",

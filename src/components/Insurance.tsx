@@ -267,6 +267,7 @@ const Insurance = React.memo(
         setSelectedPayors(payorArray);
         setPayorsMain(payorArray);
         setLoading(false);
+        
       };
 
       fetchData();

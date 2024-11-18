@@ -49,7 +49,7 @@ const NewPatient = ({
     AddressState: "",
     AddressZip: "",
   });
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(true);
 
   // Main form state variables
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -587,8 +587,15 @@ const NewPatient = ({
 
           <Dialog open={dialogOpen} onClose={handleDialogClose}>
             <DialogTitle>Upload Document</DialogTitle>
-            <DialogContent style={{ width: "400px" }}>
+            <DialogContent style={{ width: "500px" }}>
               {/* Fixed width for dialog content */}
+              <Typography variant="body1" style={{fontSize:"0.8rem", textAlign:'center', margin:"10px 5px"}}>
+                For IVR requests, please upload a face sheet along with wound
+                care notes covering the last four weeks. We will attempt to
+                extract relevant patient information from your uploaded files.
+                However, please review the extracted data to confirm it is
+                correct and complete.
+              </Typography>
               <TextField
                 fullWidth
                 margin="normal"
