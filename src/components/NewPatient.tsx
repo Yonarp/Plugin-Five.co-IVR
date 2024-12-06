@@ -176,7 +176,6 @@ const NewPatient = ({
 
     if (hasError) {
       setErrors(newErrors);
-      five.message("Please fill in all required fields.");
       return;
     }
 
