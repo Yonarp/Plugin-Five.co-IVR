@@ -176,7 +176,6 @@ const NewPatient = ({
 
     if (hasError) {
       setErrors(newErrors);
-      five.message("Please fill in all required fields.");
       return;
     }
 
@@ -669,14 +668,13 @@ const NewPatient = ({
               )}
               <input
                 type="file"
-                multiple
                 accept="image/jpeg,image/png,application/pdf"
                 onChange={handleFileChange}
                 style={errors.selectedFiles ? { border: "1px solid red" } : {}}
               />
               {errors.selectedFiles && (
                 <Typography color="error">
-                  Please select at least one file to upload
+                  Please select a file to upload
                 </Typography>
               )}
             </DialogContent>
