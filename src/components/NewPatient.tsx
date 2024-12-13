@@ -121,6 +121,11 @@ const NewPatient = ({
       otherDocumentType: false,
       selectedFiles: false,
     });
+    
+    if (selectedFiles.length >= 5) {
+      return five.message("Cannot upload more than " + selectedFiles.length.toString() + " files.");
+    }
+
     setDialogOpen(true);
   };
 
