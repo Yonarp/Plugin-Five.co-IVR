@@ -16,6 +16,8 @@ import {
   FiveInitialize,
 } from "./FivePluginApi";
 
+import Lottie from 'lottie-react';
+import animationData from "./lottieComplete.json";
 import { CustomFieldProps } from "../../../common";
 import { Alert, Container, DialogContentText, Snackbar, Zoom } from "@mui/material";
 import Insurance from "./components/Insurance";
@@ -662,7 +664,7 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
           {activeStep === 4 && (
-            <Products setProducts={setProducts} productsSaved={products} />
+            <Products five={five} setProducts={setProducts} productsSaved={products} account={account} />
           )}
           {activeStep === 5 && (
             <ICDCode
@@ -844,7 +846,9 @@ const CustomField = (props: CustomFieldProps) => {
       <Dialog open={customDialogOpen} onClose={handleCustomDialogClose} TransitionComponent={Zoom}>
         <DialogTitle>Submission</DialogTitle>
         <CustomDialogContent>
-          <DialogContentText>{submissionText}</DialogContentText>
+          <DialogContentText>
+            <Lottie animationData={animationData} style={{ height: 200, width: 200 }} loop={false}/>
+          </DialogContentText>
         </CustomDialogContent>
         <DialogActions>
           <Button onClick={handleCustomDialogClose} color="primary">

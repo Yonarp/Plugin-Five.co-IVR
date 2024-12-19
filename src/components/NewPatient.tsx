@@ -70,12 +70,6 @@ const NewPatient = ({
     otherDocumentType: false,
     selectedFiles: false,
   });
-
-  // Get file extension
-  const getFileExtension = (filename) => {
-    const parts = filename.split('.');
-    return parts[parts.length - 1];
-  };
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;

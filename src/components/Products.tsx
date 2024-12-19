@@ -7,15 +7,18 @@ import {
   Select,
   // TextField,
   Typography,
+  CircularProgress,
 } from "../FivePluginApi";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const Products = ({setProducts, productsSaved}) => {
+const Products = ({five, setProducts, productsSaved, account}) => {
   const [selectedProducts, setSelectedProducts] = useState(productsSaved ? productsSaved : [
     { name: "", qty: "", key: "" },
   ]);
-
+  const [loading, setLoading] = React.useState(false);
+  const [products, setProductList] = React.useState(null);
+/*
 const products = [
   { Description: "Biovance - Q4154", QCode: "Q4154", Brand: "Biovance", PRD: 'F9EAC457-DE79-4C08-B2A2-05417C3E2217' },
   { Description: "Biovance_3L - Q4283", QCode: "Q4283", Brand: "Biovance_3L", PRD: 'C92CFA9A-C13C-4459-A758-ED5EAE98656E' },
@@ -26,6 +29,28 @@ const products = [
   { Description: "Surgraft - Q4268", QCode: "Q4268", Brand: "Surgraft", PRD: '0E067184-4777-49A7-9E8B-A9CAA959485A' },
   { Description: "Zenith - Q4523", QCode: "Q4523", Brand: "Zenith", PRD: '016876A9-65E1-4303-AF66-B438D7E30885' }
 ];
+*/
+
+ useEffect(() => {
+  if (products === null) {
+    const fetchData = async () => {
+      setLoading(true);
+      five.executeFunction(
+        "getAccountProducts",
+        account,
+        null,
+        null,
+        null,
+        (result) => {
+          setProductList(JSON.parse(result.serverResponse.results));
+          setLoading(false);
+        }
+      );
+    };
+
+    fetchData();
+  }
+}, []);
 
   //@ts-ignore
   const handleProductChange = (index, event) => {
@@ -55,7 +80,6 @@ const products = [
   };
 
   useEffect(() => {
-    console.log("Use Effect From Products");
     if (productsSaved.length === 0) {
       setSelectedProducts([
         { name: "", qty: "",key: "" },
@@ -64,6 +88,22 @@ const products = [
       setSelectedProducts(productsSaved);
     }
   }, [productsSaved]);
+
+  if (loading) {
+    return (
+      <Container
+        style={{
+          display: "flex",
+          width: "100%",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    );
+  }
 
   return (
     <Container
@@ -98,11 +138,14 @@ const products = [
             <MenuItem value="" disabled>
               Select a product
             </MenuItem>
-            {products.map((product, idx) => (
+            {products ? (
+              products.map((product, idx) => (
               <MenuItem key={idx} value={product.Description}>
-                {product.Description}
+                {product.Brand} - {product.QCode}
               </MenuItem>
-            ))}
+            ))) : (
+              <CircularProgress />
+            )}
           </Select>
 
           <DeleteIcon
@@ -129,7 +172,7 @@ const products = [
           +
         </Button>
       </Box>) : null}
-      
+
     </Container>
   );
 };
