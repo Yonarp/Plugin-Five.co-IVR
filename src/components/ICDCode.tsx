@@ -435,6 +435,7 @@ const ICDCode = ({
   const [lLocation, setLLocation] = useState("");
   const [lSide, setLSide] = useState("");
   const [lSeverity, setLSeverity] = useState("");
+  const [lStage, setLStage] = useState("");
   const [lCode, setLCode] = useState("");
   const [cdCode, setCDCode] = useState("");
   const [iCode, setICode] = useState("");
@@ -546,6 +547,11 @@ const ICDCode = ({
   const handleInflammation = (event) => {
     const value = event.target.value === "true";
     setInflammation(value);
+    setVLU((prevState) => ({
+      ...prevState,
+      inflammation: value,
+    }));
+
     console.log(inflammation);
   };
 
@@ -980,7 +986,7 @@ const ICDCode = ({
     if (woundType === "" && codes?.cptWound !== null) {
       const wound = codes?.cptWound;
       setWoundType(wound);
-
+      
       switch (wound) {
         case "Diabetic foot ulcer":
           if (!eCodes.includes(codes?.eCode)) {
@@ -988,6 +994,10 @@ const ICDCode = ({
           }
           setECode(codes?.eCode);
           setLCode(codes?.lCode);
+          setDiabetesType(codes?.diabeticFU);
+          setLLocation(codes?.pressureUlcer?.location);
+          setLSide(codes?.pressureUlcer?.side);
+          setLSeverity(codes?.pressureUlcer?.severity);
           break;
         case "Venous leg ulcer":
           if (!iCodes.includes(codes?.iCode)) {
@@ -995,15 +1005,25 @@ const ICDCode = ({
           }
           setICode(codes?.iCode);
           setLCode(codes?.lCode);
+          setVluCondition(codes?.vlu?.condition);
+          setVluLocation(codes?.vlu?.location);
+          setVluSide(codes?.vlu?.side);
+          setInflammation(codes?.vlu?.inflammation );
+          setLSeverity(codes?.pressureUlcer?.severity);
           break;
         case "Pressure ulcer":
+          setLLocation(codes?.pressureUlcer?.location);
+          setLSide(codes?.pressureUlcer?.side);
+          setLSeverity(codes?.pressureUlcer?.severity);
+          setLStage(codes?.pressureUlcer?.stage);
           setLCode(codes?.lCode);
           break;
         case "Mohs":
           if (!mohsCodes.includes(codes.cdCode)) {
             setMohsCodes((prevCDCodes) => [...prevCDCodes, codes.cdCode]);
           }
-          setCDCode(codes.cdCode);
+          setMohs(codes?.mohs);
+          setCDCode(codes?.cdCode);
           break;
       }
     }
@@ -1147,6 +1167,8 @@ const ICDCode = ({
             lCode={lCode}
             setLCodeMain={setLCodeMain}
             setPressureUlcer={setPressureUlcer}
+            stage={lStage}
+            setStage={setLStage}
           />
         </Box>
       )}
@@ -1363,6 +1385,8 @@ const ICDCode = ({
             lCode={lCode}
             setLCodeMain={setLCodeMain}
             setPressureUlcer={setPressureUlcer}
+            stage={lStage}
+            setStage={setLStage}
           />
         </Box>
       )}
@@ -1445,6 +1469,8 @@ const ICDCode = ({
           lCode={lCode}
           setLCodeMain={setLCodeMain}
           setPressureUlcer={setPressureUlcer}
+          stage={lStage}
+          setStage={setLStage}
         />
       )}
       {woundType === "Other" && (

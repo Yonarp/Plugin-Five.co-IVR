@@ -19,6 +19,8 @@ const LCodeSelector = ({
   vluSide,
   vluLocation,
   type,
+  stage,
+  setStage
 }) => {
   const lCodeLocations = [
     { label: "Thigh", value: "thigh" },
@@ -100,7 +102,7 @@ const LCodeSelector = ({
     },
   ];
 
-  const [stage, setStage] = useState("");
+  //const [stage, setStage] = useState("");
   console.log("Loggin Stage", stage);
 
   const [lCodes, setLCodes] = useState([
@@ -388,6 +390,7 @@ const LCodeSelector = ({
     setLocation("");
     setSide("");
     setSeverity("");
+    setStage("");
     setError(false);
   };
   const handleLcodeOther = (event) => {
@@ -511,6 +514,7 @@ const LCodeSelector = ({
         location,
         side,
         severity,
+        stage,
       }));
       switch (true) {
         case location === "thigh" && severity === "breakdown_skin":
@@ -665,6 +669,7 @@ const LCodeSelector = ({
         location,
         side,
         severity,
+        stage,
       }));
       switch (true) {
         case location === "elbow" && stage === "unstageable":
@@ -880,6 +885,7 @@ const LCodeSelector = ({
         location,
         side,
         severity,
+        stage,
       }));
       switch (true) {
         case location === "elbow" &&
@@ -1181,6 +1187,7 @@ const LCodeSelector = ({
         location,
         side,
         severity,
+        stage,
       }));
       switch (true) {
         case location === "thigh" &&

@@ -1,4 +1,4 @@
-declare const LCodeSelector: ({ woundType, location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain, setPressureUlcer, lCodeServer, vluSide, vluLocation, type, }: {
+declare const LCodeSelector: ({ woundType, location, setLocation, side, setSide, severity, setSeverity, setLCode, lCode, setLCodeMain, setPressureUlcer, lCodeServer, vluSide, vluLocation, type, stage, setStage }: {
     woundType: any;
     location: any;
     setLocation: any;
@@ -14,5 +14,7 @@ declare const LCodeSelector: ({ woundType, location, setLocation, side, setSide,
     vluSide: any;
     vluLocation: any;
     type: any;
+    stage: any;
+    setStage: any;
 }) => JSX.Element;
 export default LCodeSelector;

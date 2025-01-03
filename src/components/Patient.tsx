@@ -169,7 +169,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
         >
           <Button onClick={handleDialogClose} style={{
                   padding: "10px 35px",
-                  background: "#780000",
+                  background: "#14706A",
                   color: "white",
                 }}>
             Cancel

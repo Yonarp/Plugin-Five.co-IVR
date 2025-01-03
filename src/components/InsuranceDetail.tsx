@@ -288,7 +288,7 @@ const InsuranceDetail = ({
               variant="contained"
               color="primary"
               onClick={() => handleDialogOpen("front")}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "10px", background: "#14706A", color: "white" }}
             >
               Upload Front Image
             </Button>
@@ -303,6 +303,7 @@ const InsuranceDetail = ({
               variant="contained"
               color="primary"
               onClick={() => handleDialogOpen("back")}
+              style={{background: "#14706A", color: "white"}}
             >
               Upload Back Image
             </Button>
@@ -319,7 +320,7 @@ const InsuranceDetail = ({
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginTop: "20px" }}
+            style={{ marginTop: "20px", background: "#14706A", color: "white" }}
             onClick={handleSubmit}
           >
             Submit

@@ -561,8 +561,8 @@ const NewPatient = ({
                 variant="contained"
                 style={{
                   padding: "10px 20px",
-                  background: "#780000",
-                  color: "white",
+                  background: "#D8EEDA",
+                  color: "#157069",
                 }}
                 onClick={handleDialogCloseExternal}
               >
@@ -573,7 +573,7 @@ const NewPatient = ({
                 variant="contained"
                 style={{
                   padding: "10px 20px",
-                  background: "#266787",
+                  background: "#14706A",
                   color: "white",
                 }}
                 onClick={handleSubmit}

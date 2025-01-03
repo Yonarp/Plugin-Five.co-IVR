@@ -14,8 +14,15 @@ const CPTCode = ({
   setCPTCodeMain,
   cptCodeMain,
   setCPTWoundSize,
+  cptWoundSizeMain,
   setCPTCode2Main,
+  cptCode2Main,
   setCPTWoundSize2,
+  cptWoundSize2Main,
+  setCPTWoundLocation,
+  cptWoundLocationMain,
+  setCPTTotalWoundSize,
+  cptTotalWoundSizeMain
 }) => {
   const woundLocations = [
     { label: "Trunk, Arm, Leg", value: 1 },
@@ -47,25 +54,36 @@ const CPTCode = ({
 
   useEffect(() => {
     calculateCPTCode();
-
-    console.log("CPT Code Use Effect");
-    console.log(cptCodeMain);
+    
     if (cptCodeMain) {
-      console.log("Reached Condition");
       if (!cptCodes.includes(cptCodeMain)) {
         cptCodes.push(cptCodeMain);
       }
       setCptCode(cptCodeMain);
+      setWoundSize(cptWoundSizeMain);
     }
+    if (cptCode2Main) {
+      if (!cptCodes.includes(cptCode2Main)) {
+        cptCodes.push(cptCode2Main);
+      }
+      setCptCode2(cptCode2Main);
+      setWoundSize2(cptWoundSize2Main);
+    }
+
+    setWoundLocation(cptWoundLocationMain);
+    setTotalWoundSize(parseFloat(cptTotalWoundSizeMain));
+
   }, [woundLocation, woundSize, totalWoundSize]);
 
   const handleWoundLocationChange = (event) => {
     setWoundLocation(event.target.value);
+    setCPTWoundLocation(event.target.value);
   };
 
   const handleTotalWoundSize = (event) => {
     const totalSize = event.target.value;
     setTotalWoundSize(totalSize);
+    setCPTTotalWoundSize(totalSize);
   };
 
   const handleWoundSizeChange = (event) => {
@@ -130,8 +148,6 @@ const CPTCode = ({
       setCptCode("");
     }
   };
-
-  console.log("Logging both all codes respectively", woundSize, woundSize2,cptCode, cptCode2);
 
   return (
     <Container

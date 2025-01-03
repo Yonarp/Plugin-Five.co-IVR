@@ -86,12 +86,15 @@ const CustomField = (props: CustomFieldProps) => {
   const [cptWound, setCPTWound] = useState(null);
   const [cptWoundSize, setCPTWoundSize] = useState(null);
   const [cptWoundSize2, setCPTWoundSize2] = useState(null);
+  const [cptWoundLocation, setCPTWoundLocation] = useState(null);
+  const [cptTotalWoundSize, setCPTTotalWoundSize] = useState(null);
   const [snf, setSNF] = useState();
   const [diabeticFU, setDiabeticFU] = useState();
   const [pressureUlcer, setPressureUlcer] = useState({
     location: "",
     side: "",
     severity: "",
+    stage: "",
   });
   //@ts-ignore
   const [patient, setPatient] = useState(null);
@@ -119,7 +122,7 @@ const CustomField = (props: CustomFieldProps) => {
   const totalSteps = 8;
   const existingPatient =
     //@ts-ignore
-    five.actionID() !== "IVR" && five.actionID() !== "Accounts";
+    five.actionID() !== "IVR" && five.actionID() !== "Accounts" && five.actionID() !== "AccountsDis";
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -201,9 +204,13 @@ const CustomField = (props: CustomFieldProps) => {
     setMohs("");
     setCPTWound(null);
     setCPTWoundSize(null);
+    setCPTCode2(null);
+    setCPTWoundSize2(null);
+    setCPTWoundLocation(null);
+    setCPTTotalWoundSize(null);
     setSNF(undefined);
     setDiabeticFU(undefined);
-    setPressureUlcer({ location: "", side: "", severity: "" });
+    setPressureUlcer({ location: "", side: "", severity: "", stage: "" });
     setPatient(null);
     setData(null);
     setMembers(null);
@@ -513,14 +520,6 @@ const CustomField = (props: CustomFieldProps) => {
     );
   }
 
-  console.log(
-    "Logging CPT Wounds and Codes from Main",
-    cptWoundSize,
-    cptWoundSize2,
-    cptCode,
-    cptCode2
-  );
-
   return (
     <Box>
       <Button
@@ -529,7 +528,7 @@ const CustomField = (props: CustomFieldProps) => {
         value={value}
         onClick={handleDialogOpen}
         style={{
-          background: "#266787",
+          background: "#14706A",
           color: "white",
         }} // Open the dialog on button click
       >
@@ -547,7 +546,7 @@ const CustomField = (props: CustomFieldProps) => {
           },
         }}
       >
-        <DialogTitle style={{ backgroundColor: "#225D7A", color: "white" }}>
+        <DialogTitle style={{ backgroundColor: "#15706A", color: "white" }}>
           {"Insurance Verification Request"}
         </DialogTitle>
         <DialogContent style={{ maxWidth: "100%", overflowX: "hidden" }}>
@@ -696,8 +695,15 @@ const CustomField = (props: CustomFieldProps) => {
               setCPTCodeMain={setCPTCode}
               cptCodeMain={cptCode}
               setCPTWoundSize={setCPTWoundSize}
+              cptWoundSizeMain={cptWoundSize}
               setCPTCode2Main={setCPTCode2}
+              cptCode2Main={cptCode2}
               setCPTWoundSize2={setCPTWoundSize2}
+              cptWoundSize2Main={cptWoundSize2}
+              setCPTWoundLocation={setCPTWoundLocation}
+              cptWoundLocationMain={cptWoundLocation}
+              setCPTTotalWoundSize={setCPTTotalWoundSize}
+              cptTotalWoundSizeMain={cptTotalWoundSize}
             />
           )}
           {activeStep === 7 && (
@@ -742,8 +748,8 @@ const CustomField = (props: CustomFieldProps) => {
                   width: "100px",
                   height: "50px",
                   borderRadius: "0px",
-                  background: "#285C79",
-                  color: "white",
+                  background: "#D8EEDA",
+                  color: "#157069",
                   marginRight: "20px",
                 }}
               >
@@ -764,7 +770,7 @@ const CustomField = (props: CustomFieldProps) => {
                     width: "100px",
                     height: "50px",
                     borderRadius: "0px",
-                    background: "#285C79",
+                    background: "#14706A",
                     color: "white",
                     marginRight: "40px",
                   }}
@@ -777,7 +783,7 @@ const CustomField = (props: CustomFieldProps) => {
                     width: "100px",
                     height: "50px",
                     borderRadius: "0px",
-                    background: "#285C79",
+                    background: "#14706A",
                     color: "white",
                     marginRight: "20px",
                   }}
@@ -794,7 +800,7 @@ const CustomField = (props: CustomFieldProps) => {
                   width: "100px",
                   height: "50px",
                   borderRadius: "0px",
-                  background: "#285C79",
+                  background: "#14706A",
                   color: "white",
                   margin: "20px",
                 }}
@@ -808,7 +814,7 @@ const CustomField = (props: CustomFieldProps) => {
                   width: "100px",
                   height: "50px",
                   borderRadius: "0px",
-                  background: "#285C79",
+                  background: "#14706A",
                   color: "white",
                   margin: "20px",
                 }}
