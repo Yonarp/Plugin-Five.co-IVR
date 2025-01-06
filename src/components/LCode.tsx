@@ -19,6 +19,8 @@ const LCodeSelector = ({
   vluSide,
   vluLocation,
   type,
+  stage,
+  setStage
 }) => {
   const lCodeLocations = [
     { label: "Thigh", value: "thigh" },
@@ -100,7 +102,7 @@ const LCodeSelector = ({
     },
   ];
 
-  const [stage, setStage] = useState("");
+  //const [stage, setStage] = useState("");
   console.log("Loggin Stage", stage);
 
   const [lCodes, setLCodes] = useState([
@@ -388,12 +390,17 @@ const LCodeSelector = ({
     setLocation("");
     setSide("");
     setSeverity("");
+    setStage("");
+    setError(false);
   };
   const handleLcodeOther = (event) => {
     const selectedLcode = event.target.value;
     setLCodeMain(selectedLcode);
   };
 
+  // Error state
+  const [error, setError] = useState(false);
+  
   /* case location === "ankle" &&
           side === "right" &&
           severity === "breakdown_skin":
@@ -499,6 +506,7 @@ const LCodeSelector = ({
 
   useEffect(() => {
     let lCode = "";
+    setError(false);
 
     if (location && severity) {
       setPressureUlcer((prevState) => ({
@@ -506,6 +514,7 @@ const LCodeSelector = ({
         location,
         side,
         severity,
+        stage,
       }));
       switch (true) {
         case location === "thigh" && severity === "breakdown_skin":
@@ -619,6 +628,10 @@ const LCodeSelector = ({
       }
       setLCode(lCode);
       setLCodeMain(lCode);
+      if (lCode === "") {
+        setError(true);
+        return;
+      }
     }
 
     /*     { label: "Calf", value: "calf" },
@@ -656,6 +669,7 @@ const LCodeSelector = ({
         location,
         side,
         severity,
+        stage,
       }));
       switch (true) {
         case location === "elbow" && stage === "unstageable":
@@ -859,6 +873,10 @@ const LCodeSelector = ({
       }
       setLCode(lCode);
       setLCodeMain(lCode);
+      if (lCode === "") {
+        setError(true);
+        return;
+      }
     }
 
     if (location && side && stage && woundType === "Pressure ulcer") {
@@ -867,6 +885,7 @@ const LCodeSelector = ({
         location,
         side,
         severity,
+        stage,
       }));
       switch (true) {
         case location === "elbow" &&
@@ -1156,6 +1175,10 @@ const LCodeSelector = ({
       }
       setLCode(lCode);
       setLCodeMain(lCode);
+      if (lCode === "") {
+        setError(true);
+        return;
+      }
     }
 
     if (location && side && severity) {
@@ -1164,6 +1187,7 @@ const LCodeSelector = ({
         location,
         side,
         severity,
+        stage,
       }));
       switch (true) {
         case location === "thigh" &&
@@ -1526,6 +1550,10 @@ const LCodeSelector = ({
       }
       setLCode(lCode);
       setLCodeMain(lCode);
+      if (lCode === "") {
+        setError(true);
+        return;
+      }
     }
 
     if (lCode === "" && lCodeServer) {
@@ -1781,6 +1809,29 @@ const LCodeSelector = ({
           ) : null}
         </Box>
       </FormControl>
+      {error && (
+        <FormControl fullWidth variant="outlined">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "left",
+              width: "100%",
+              marginBottom: "10px",
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{ marginRight: "10px", minWidth: "150px" }}
+            >&nbsp;
+            </Typography>
+              <Typography color="error" sx={{ flex: 1 }}>
+                The selected options do not result in a valid L Code
+              </Typography>
+          </Box>
+        </FormControl>
+       )}
     </Box>
   );
 };

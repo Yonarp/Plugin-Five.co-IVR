@@ -67,7 +67,6 @@ const InsuranceDetail = ({
 
 
   const handleSubmit = () => {
-    console.log("Handle Submit");
     setLoading(true)
     handleDialogCloseExternal();
     handlePayor(formState, index);
@@ -98,20 +97,36 @@ const InsuranceDetail = ({
     };
     reader.readAsDataURL(file);
   };
+  
+  const getDocument = (val, docType) => patient.document.filter(obj => {
+    return obj.__PAY === val && obj.Category === 'Insurance' && obj.Name.includes(docType)
+  });
 
   useEffect(() => {
 
     let memberNumber
     let groupMemberNumber
+    let frontImgPreview
+    let backImgPreview
+
     if(index === 0) {
- 
+
       memberNumber = patient.data.Pay1MemberNumber
       groupMemberNumber = patient.data.Pay1Group
+      
+      const paydocFront = getDocument(patient.data.__PAY1, 'Front');
+      frontImgPreview = paydocFront[paydocFront.length - 1]?.Base64;
+      const paydocBack = getDocument(patient.data.__PAY1, 'Back');
+      backImgPreview = paydocBack[paydocBack.length - 1]?.Base64;
     } else {
-   
+
       memberNumber = patient.data.Pay2MemberNumber
       groupMemberNumber = patient.data.Pay2Group
-      
+
+      const paydocFront = getDocument(patient.data.__PAY2, 'Front');
+      frontImgPreview = paydocFront[paydocFront.length - 1]?.Base64;
+      const paydocBack = getDocument(patient.data.__PAY2, 'Back');
+      backImgPreview = paydocBack[paydocBack.length - 1]?.Base64;
     }
 
     if(!isEdit){
@@ -134,8 +149,8 @@ const InsuranceDetail = ({
         CompanyName: payor.CompanyName || "",
         frontImage: null,
         backImage: null,
-        frontImagePreview: "",
-        backImagePreview: "",
+        frontImagePreview: frontImgPreview,
+        backImagePreview: backImgPreview,
       });
     }
   }, [payor]);
@@ -273,7 +288,7 @@ const InsuranceDetail = ({
               variant="contained"
               color="primary"
               onClick={() => handleDialogOpen("front")}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "10px", background: "#14706A", color: "white" }}
             >
               Upload Front Image
             </Button>
@@ -288,6 +303,7 @@ const InsuranceDetail = ({
               variant="contained"
               color="primary"
               onClick={() => handleDialogOpen("back")}
+              style={{background: "#14706A", color: "white"}}
             >
               Upload Back Image
             </Button>
@@ -304,7 +320,7 @@ const InsuranceDetail = ({
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginTop: "20px" }}
+            style={{ marginTop: "20px", background: "#14706A", color: "white" }}
             onClick={handleSubmit}
           >
             Submit
@@ -314,7 +330,7 @@ const InsuranceDetail = ({
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <DialogTitle>Upload Image</DialogTitle>
         <DialogContent>
-          <input type="file" onChange={handleFileChange} />
+          <input type="file" onChange={handleFileChange} accept="image/jpeg,image/png,application/pdf" />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose} color="primary">

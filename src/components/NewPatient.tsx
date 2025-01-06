@@ -70,7 +70,7 @@ const NewPatient = ({
     otherDocumentType: false,
     selectedFiles: false,
   });
-
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -121,6 +121,11 @@ const NewPatient = ({
       otherDocumentType: false,
       selectedFiles: false,
     });
+    
+    if (selectedFiles.length >= 5) {
+      return five.message("Cannot upload more than " + selectedFiles.length.toString() + " files.");
+    }
+
     setDialogOpen(true);
   };
 
@@ -278,7 +283,7 @@ const NewPatient = ({
       (result) => {
         const payorData = JSON.parse(result.serverResponse.results);
         const patientData = payorData.response;
-        console.log("Logging from push to patients", payorData);
+        
         setPatient({
           data: patientData,
           document: selectedFilesBase64.map((base64, index) => ({
@@ -300,12 +305,6 @@ const NewPatient = ({
       setFormState(mainForm);
     }
   }, []);
-
-  console.log(
-    "Logging documents Names and Document Name",
-    documentNames,
-    documentName
-  );
 
   return (
     <>
@@ -562,8 +561,8 @@ const NewPatient = ({
                 variant="contained"
                 style={{
                   padding: "10px 20px",
-                  background: "#780000",
-                  color: "white",
+                  background: "#D8EEDA",
+                  color: "#157069",
                 }}
                 onClick={handleDialogCloseExternal}
               >
@@ -574,7 +573,7 @@ const NewPatient = ({
                 variant="contained"
                 style={{
                   padding: "10px 20px",
-                  background: "#266787",
+                  background: "#14706A",
                   color: "white",
                 }}
                 onClick={handleSubmit}
@@ -587,7 +586,7 @@ const NewPatient = ({
           <Dialog open={dialogOpen} onClose={handleDialogClose}>
             <DialogTitle>Upload Document</DialogTitle>
             <DialogContent style={{ width: "500px" }}>
-              {/* Fixed width for dialog content */}
+              {/* Fixed width for dialog content
               <Typography variant="body1" style={{fontSize:"0.8rem", textAlign:'center', margin:"10px 5px"}}>
                 For IVR requests, please upload a face sheet along with wound
                 care notes covering the last four weeks. We will attempt to
@@ -595,6 +594,7 @@ const NewPatient = ({
                 However, please review the extracted data to confirm it is
                 correct and complete.
               </Typography>
+              */}
               <TextField
                 fullWidth
                 margin="normal"
