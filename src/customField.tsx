@@ -122,7 +122,7 @@ const CustomField = (props: CustomFieldProps) => {
   const totalSteps = 8;
   const existingPatient =
     //@ts-ignore
-    five.actionID() !== "IVR" && five.actionID() !== "Accounts" && five.actionID() !== "AccountsDis";
+    five.actionID() !== "IVR" && five.actionID() !== "Accounts" && five.actionID() !== "AccountsDis" && five.actionID() !== "AccountsSalesRep";
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
