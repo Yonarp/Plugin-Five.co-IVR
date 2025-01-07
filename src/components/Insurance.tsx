@@ -433,6 +433,12 @@ const Insurance = React.memo(
                         setInsuranceIndex(index);
                         handleDialogOpen(payor, true);
                       }}
+                      style={{
+                        borderRadius: "0px",
+                        background: "#D8EEDA",
+                        color: "#157069",
+                        borderColor: "#F1FAF3"
+                      }}
                     >
                       Edit
                     </Button>
@@ -457,6 +463,12 @@ const Insurance = React.memo(
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDialogOpen(null, false);
+                }}
+                style={{
+                  borderRadius: "0px",
+                  background: "#D8EEDA",
+                  color: "#157069",
+                  borderColor: "#F1FAF3"
                 }}
               >
                 Add

@@ -167,7 +167,7 @@ const products = [
           variant="contained"
           color="primary"
           onClick={handleAddProduct}
-          style={{ marginTop: "20px", borderRadius: '50px', background: "#14706A", color: "white" }}
+          style={{ marginTop: "20px", borderRadius: '50px', background: "#D8EEDA", color: "#157069" }}
         >
           +
         </Button>
