@@ -333,7 +333,7 @@ const InsuranceDetail = ({
           <input type="file" onChange={handleFileChange} accept="image/jpeg,image/png,application/pdf" />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
+          <Button onClick={handleDialogClose} style={{ color: "#14706A" }}>
             Cancel
           </Button>
         </DialogActions>

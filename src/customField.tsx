@@ -857,7 +857,7 @@ const CustomField = (props: CustomFieldProps) => {
           </DialogContentText>
         </CustomDialogContent>
         <DialogActions>
-          <Button onClick={handleCustomDialogClose} color="primary">
+          <Button onClick={handleCustomDialogClose} style={{ color: "#14706A" }}>
             OK
           </Button>
         </DialogActions>
