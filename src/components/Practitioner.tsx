@@ -79,7 +79,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
           alignItems: "center",
         }}
       >
-        <CircularProgress />
+        <CircularProgress sx={{color:"#14706A"}} />
       </Container>
     );
   }
@@ -124,7 +124,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
             ) : null;
           })
         ) : (
-          <CircularProgress />
+          <CircularProgress sx={{color:"#14706A"}} />
         )}
       </List>
     </Container>

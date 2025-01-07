@@ -515,7 +515,7 @@ const CustomField = (props: CustomFieldProps) => {
           alignItems: "center",
         }}
       >
-        <CircularProgress />
+        <CircularProgress sx={{color:"#14706A"}} />
       </Container>
     );
   }
@@ -637,10 +637,10 @@ const CustomField = (props: CustomFieldProps) => {
                   width: "100%",
                   height: "100%",
                   justifyContent: "center",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
               >
-                <CircularProgress />
+                <CircularProgress sx={{color:"#14706A"}} />
               </Container>
             ))}
           {activeStep === 2 && (

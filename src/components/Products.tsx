@@ -100,7 +100,7 @@ const products = [
           alignItems: "center",
         }}
       >
-        <CircularProgress />
+        <CircularProgress sx={{color:"#14706A"}} />
       </Container>
     );
   }
@@ -144,7 +144,7 @@ const products = [
                 {product.Brand} - {product.QCode}
               </MenuItem>
             ))) : (
-              <CircularProgress />
+              <CircularProgress sx={{color:"#14706A"}} />
             )}
           </Select>
 

@@ -285,7 +285,7 @@ const Insurance = React.memo(
             alignItems: "center",
           }}
         >
-          <CircularProgress />
+          <CircularProgress sx={{color:"#14706A"}} />
         </Container>
       );
     }
