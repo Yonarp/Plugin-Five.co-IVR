@@ -679,10 +679,10 @@ const NewPatient = ({
               )}
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleDialogClose} color="#14706A">
+              <Button onClick={handleDialogClose} style={{ color: "#14706A" }}>
                 Cancel
               </Button>
-              <Button onClick={handleDialogSubmit} color="#14706A">
+              <Button onClick={handleDialogSubmit} style={{ color: "#14706A" }}>
                 Upload
               </Button>
             </DialogActions>

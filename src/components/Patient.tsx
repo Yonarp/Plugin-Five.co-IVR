@@ -156,7 +156,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
         <Typography style={{ color: "black" }} mt={5}>
           IVR for a new patient?
         </Typography>
-        <Button color="#14706A" onClick={() => setPage(0)}>Create a new patient</Button>
+        <Button style={{ color: "#14706A" }} onClick={() => setPage(0)}>Create a new patient</Button>
       </Box>
       <Box
           style={{
