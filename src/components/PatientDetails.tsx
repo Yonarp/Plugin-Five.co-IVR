@@ -44,7 +44,7 @@ const PatientDetails = ({
           alignItems: "center",
         }}
       >
-        <CircularProgress />
+        <CircularProgress sx={{color:"#14706A"}} />
       </Container>
     );
   }

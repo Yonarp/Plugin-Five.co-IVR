@@ -201,7 +201,7 @@ const CPTCode = ({
             label="Total Wound Size"
             type="number"
             variant="outlined"
-            sx={{ width: "48%", marginBottom: "20px" }}
+            sx={{ width: "40%", marginBottom: "20px" }}
             value={totalWoundSize}
             onChange={handleTotalWoundSize}
             
@@ -211,25 +211,25 @@ const CPTCode = ({
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            marginBottom: "20px",
+            marginBottom: "10px",
           }}
         >
           <TextField
             label="Size of wound (sq. cm)"
             type="number"
             variant="outlined"
-            sx={{ width: "48%" }}
+            sx={{ width: "40%" }}
             value={woundSize}
             onChange={handleWoundSizeChange}
           />
 
           <Typography variant="subtitle1" ml={3}>
-            CPT Code<span style={{ color: "red" }}>*</span>{" "}
+            CPT Code<span style={{ textAlign: "left", color: "red" }}>*</span>{" "}
           </Typography>
           <Select
             type="text"
             variant="outlined"
-            sx={{ width: "48%" }}
+            sx={{ width: "40%" }}
             value={cptCode}
             displayEmpty
             onChange={handleCPTCode}
@@ -249,25 +249,25 @@ const CPTCode = ({
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              marginBottom: "20px",
+              marginBottom: "10px",
             }}
           >
             <TextField
               label="Size of wound (sq. cm)"
               type="number"
               variant="outlined"
-              sx={{ width: "48%" }}
+              sx={{ width: "40%" }}
               value={woundSize2}
               onChange={handleWoundSizeChange2}
             />
 
             <Typography variant="subtitle1" ml={3}>
-              Second CPT Code<span style={{ color: "red" }}>*</span>{" "}
+              Second CPT Code<span style={{ textAlign: "left", color: "red" }}>*</span>{" "}
             </Typography>
             <Select
               type="text"
               variant="outlined"
-              sx={{ width: "48%" }}
+              sx={{ width: "40%" }}
               value={cptCode2}
               displayEmpty
               onChange={handleCPTCode2}

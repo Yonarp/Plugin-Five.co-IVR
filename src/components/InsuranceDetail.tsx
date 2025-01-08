@@ -288,7 +288,7 @@ const InsuranceDetail = ({
               variant="contained"
               color="primary"
               onClick={() => handleDialogOpen("front")}
-              style={{ marginBottom: "10px", background: "#14706A", color: "white" }}
+              style={{ marginBottom: "10px", background: "#D8EEDA", color: "#157069" }}
             >
               Upload Front Image
             </Button>
@@ -303,7 +303,7 @@ const InsuranceDetail = ({
               variant="contained"
               color="primary"
               onClick={() => handleDialogOpen("back")}
-              style={{background: "#14706A", color: "white"}}
+              style={{background: "#D8EEDA", color: "#157069"}}
             >
               Upload Back Image
             </Button>
@@ -333,7 +333,7 @@ const InsuranceDetail = ({
           <input type="file" onChange={handleFileChange} accept="image/jpeg,image/png,application/pdf" />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
+          <Button onClick={handleDialogClose} style={{ color: "#14706A" }}>
             Cancel
           </Button>
         </DialogActions>

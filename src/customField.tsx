@@ -122,7 +122,7 @@ const CustomField = (props: CustomFieldProps) => {
   const totalSteps = 8;
   const existingPatient =
     //@ts-ignore
-    five.actionID() !== "IVR" && five.actionID() !== "Accounts" && five.actionID() !== "AccountsDis";
+    five.actionID() !== "IVR" && five.actionID() !== "Accounts" && five.actionID() !== "AccountsDis" && five.actionID() !== "AccountsSalesRep";
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -515,7 +515,7 @@ const CustomField = (props: CustomFieldProps) => {
           alignItems: "center",
         }}
       >
-        <CircularProgress />
+        <CircularProgress sx={{color:"#14706A"}} />
       </Container>
     );
   }
@@ -637,10 +637,10 @@ const CustomField = (props: CustomFieldProps) => {
                   width: "100%",
                   height: "100%",
                   justifyContent: "center",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
               >
-                <CircularProgress />
+                <CircularProgress sx={{color:"#14706A"}} />
               </Container>
             ))}
           {activeStep === 2 && (
@@ -857,7 +857,7 @@ const CustomField = (props: CustomFieldProps) => {
           </DialogContentText>
         </CustomDialogContent>
         <DialogActions>
-          <Button onClick={handleCustomDialogClose} color="primary">
+          <Button onClick={handleCustomDialogClose} style={{ color: "#14706A" }}>
             OK
           </Button>
         </DialogActions>

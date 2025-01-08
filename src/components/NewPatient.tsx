@@ -679,10 +679,10 @@ const NewPatient = ({
               )}
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleDialogClose} color="primary">
+              <Button onClick={handleDialogClose} style={{ color: "#14706A" }}>
                 Cancel
               </Button>
-              <Button onClick={handleDialogSubmit} color="primary">
+              <Button onClick={handleDialogSubmit} style={{ color: "#14706A" }}>
                 Upload
               </Button>
             </DialogActions>
@@ -690,7 +690,7 @@ const NewPatient = ({
           <Typography style={{ color: "black" }} mt={5}>
             IVR for an existing patient?
           </Typography>
-          <Button style={{ color: "black" }} onClick={() => setPage(1)}>
+          <Button style={{ color: "#14706A" }} onClick={() => setPage(1)}>
             Select an existing patient
           </Button>
         </Container>

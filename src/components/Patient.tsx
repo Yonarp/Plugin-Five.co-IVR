@@ -113,10 +113,10 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
             sx={{
               borderBottom: "1px solid #00000033",
               "&.Mui-selected": {
-                backgroundColor: "#F4F8D0",
+                backgroundColor: "#F1FAF3",
                 color: "black",
                 "&:hover": {
-                  backgroundColor: "lightblue",
+                  backgroundColor: "#FFF9E7",
                 },
               },
             }}
@@ -156,7 +156,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
         <Typography style={{ color: "black" }} mt={5}>
           IVR for a new patient?
         </Typography>
-        <Button onClick={() => setPage(0)}>Create a new patient</Button>
+        <Button style={{ color: "#14706A" }} onClick={() => setPage(0)}>Create a new patient</Button>
       </Box>
       <Box
           style={{
