@@ -36,7 +36,7 @@ const Summary = ({
   const [isChecked, setIsChecked] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  console.log("Loggin Payors" , payors)
+  console.log("Loggin products" , products)
   // Handle checkbox change
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);

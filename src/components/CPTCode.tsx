@@ -215,12 +215,13 @@ const CPTCode = ({
           }}
         >
           <TextField
-            label="Size of wound (sq. cm)"
+            label="Size Of Wound (sq. cm)"
             type="number"
             variant="outlined"
             sx={{ width: "40%" }}
             value={woundSize}
             onChange={handleWoundSizeChange}
+            disabled
           />
 
           <Typography variant="subtitle1" ml={3}>
@@ -233,6 +234,7 @@ const CPTCode = ({
             value={cptCode}
             displayEmpty
             onChange={handleCPTCode}
+            
           >
             <MenuItem value="" disabled>
               <em>Select</em>
@@ -259,6 +261,9 @@ const CPTCode = ({
               sx={{ width: "40%" }}
               value={woundSize2}
               onChange={handleWoundSizeChange2}
+              InputProps={{
+                readOnly: true,
+              }}
             />
 
             <Typography variant="subtitle1" ml={3}>
