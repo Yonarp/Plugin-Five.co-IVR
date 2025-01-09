@@ -14,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const Products = ({five, setProducts, productsSaved, account}) => {
   const [selectedProducts, setSelectedProducts] = useState(productsSaved ? productsSaved : [
-    { name: "", qty: "", key: "" },
+    { name: "", qty: "", key: "", brandname: "", qcode: "" },
   ]);
   const [loading, setLoading] = React.useState(false);
   const [products, setProductList] = React.useState(null);
@@ -59,8 +59,13 @@ const products = [
     const matchingProduct = products.find(product => product.Description === newProducts[index].name);
     if (matchingProduct) {
       newProducts[index].key = matchingProduct.PRD;
+      newProducts[index].qcode = matchingProduct.QCode;
+      newProducts[index].brandname = matchingProduct.Brand;
+      
     } else {
       newProducts[index].key = ""; // Clear the key if no matching product is found
+      newProducts[index].qcode = "";
+      newProducts[index].brandname = "";
     }
     setSelectedProducts(newProducts);
     setProducts(newProducts)
@@ -69,7 +74,7 @@ const products = [
 
   const handleAddProduct = () => {
     if(selectedProducts.length < 2){
-    setSelectedProducts([...selectedProducts, { name: "", qty: "", key: "" }]);
+    setSelectedProducts([...selectedProducts, { name: "", qty: "", key: "", brandname: "", qcode: "" }]);
     }
   };
 
@@ -82,7 +87,7 @@ const products = [
   useEffect(() => {
     if (productsSaved.length === 0) {
       setSelectedProducts([
-        { name: "", qty: "",key: "" },
+        { name: "", qty: "",key: "", brandname: "", qcode: "" },
       ]);
     } else {
       setSelectedProducts(productsSaved);

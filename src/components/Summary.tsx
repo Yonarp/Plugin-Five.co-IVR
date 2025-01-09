@@ -124,14 +124,14 @@ const Summary = ({
           {products && products.length > 0 && products[0]?.name ? (
             <Grid item xs={6}>
               <Typography variant="body1">Product 1</Typography>
-              <Typography variant="body2">{products[0].name}</Typography>
+              <Typography variant="body2">{products[0].brandname} - {products[0].qcode}</Typography>
             </Grid>
           ) : null}
 
           {products && products.length > 1 && products[1]?.name ? (
             <Grid item xs={6}>
               <Typography variant="body1">Product 2</Typography>
-              <Typography variant="body2">{products[1].name}</Typography>
+              <Typography variant="body2">{products[1].brandname} - {products[1].qcode}</Typography>
             </Grid>
           ) : null}
         </Grid>
