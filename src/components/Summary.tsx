@@ -80,6 +80,7 @@ const Summary = ({
         <Typography variant="h6" gutterBottom>
           Insurance Verification Request
         </Typography>
+        
         <TextField
           label="Practitioner"
           fullWidth
@@ -90,7 +91,8 @@ const Summary = ({
           value={practitioner ? practitioner.data.NameFull : ""}
           size="small"
         />
-        <TextField
+
+        <TextField                                                                      
           label="NPI"
           value={npi}
           fullWidth
@@ -100,6 +102,7 @@ const Summary = ({
           }}
           size="small"
         />
+
         <TextField
           label="Primary Payor"
           fullWidth
@@ -110,6 +113,7 @@ const Summary = ({
           }}
           size="small"
         />
+
         <TextField
           label="Secondary Payor"
           fullWidth
@@ -120,6 +124,7 @@ const Summary = ({
           }}
           size="small"
         />
+
         <Grid container spacing={1} marginTop={1}>
           {products && products.length > 0 && products[0]?.name ? (
             <Grid item xs={6}>
@@ -205,7 +210,7 @@ const Summary = ({
             />
           }
           label={
-            <Typography variant="body2" style={{ fontSize: "11px" }}>
+            <Typography variant="body2" style={{ fontSize: "13px" }}>
               I certify I have obtained a valid authorization under applicable
               law from the patient listed on this form (a) permitting me to
               release the patient’s protected health information to Legacy
