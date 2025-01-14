@@ -49,7 +49,7 @@ const NewPatient = ({
     AddressState: "",
     AddressZip: "",
   });
-  const [dialogOpen, setDialogOpen] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // Main form state variables
   const [selectedFiles, setSelectedFiles] = useState([]);
