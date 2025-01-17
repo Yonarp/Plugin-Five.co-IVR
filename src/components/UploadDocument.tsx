@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  TextField,
   FormControl,
   InputLabel,
   Select,
@@ -36,7 +35,6 @@ const UploadDocument = ({ patient, five, setPatient }) => {
 
   // Error states
   const [errors, setErrors] = useState({
-    documentName: false,
     documentType: false,
     otherDocumentType: false,
     selectedFiles: false,
@@ -47,7 +45,11 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setCurrentFile(file);
-    setErrors((prevErrors) => ({ ...prevErrors, selectedFiles: false }));
+    setDocumentName(file.name);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      selectedFiles: false,
+    }));
   };
 
   const getMimeTypeFromDataUri = (dataUri) => {
@@ -65,35 +67,53 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   };
 
   const pushDocument = async (base64String) => {
-
     const documentObj = {
       PatientKey: patient.data.___PAT,
       Category: documentType,
       Name: documentName,
-      Base64: base64String
-    }
-    
+      Base64: base64String,
+    };
+
     await five.executeFunction(
       "pushDocument",
-      //@ts-ignore
       documentObj,
       null,
       null,
       null,
-      //@ts-ignore
       (result) => {
         const payorData = JSON.parse(result.serverResponse.results);
         const documentData = payorData.response;
         const newDocument = {
+          ___DOC: documentData?.___DOC,
           Base64: documentData?.Base64,
           Category: documentData?.Category,
           Name: documentData?.Name,
-        }
+        };
         setPatient((prevPatient) => ({
           ...prevPatient,
-          document: [...prevPatient.document, newDocument]
-        }))
+          document: [...prevPatient.document, newDocument],
+        }));
+      }
+    );
+  };
 
+  const handleDelete = async (docKey) => {
+    const documentObj = {
+      ___DOC: docKey,
+    };
+    console.log("document Object FRom Delete", documentObj)
+
+    await five.executeFunction(
+      "DeleteDocument",
+      documentObj,
+      null,
+      null,
+      null,
+      (result) => {
+        setPatient((prevPatient) => ({
+          ...prevPatient,
+          document: prevPatient.document.filter((doc) => doc.___DOC !== docKey),
+        }));
       }
     );
   };
@@ -101,16 +121,10 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   const handleUpload = () => {
     let hasError = false;
     const newErrors = {
-      documentName: false,
       documentType: false,
       otherDocumentType: false,
       selectedFiles: false,
     };
-
-    if (documentName.trim() === "") {
-      newErrors.documentName = true;
-      hasError = true;
-    }
 
     if (documentType.trim() === "") {
       newErrors.documentType = true;
@@ -140,15 +154,13 @@ const UploadDocument = ({ patient, five, setPatient }) => {
     // Process the file and update state
     const reader = new FileReader();
     reader.onloadend = () => {
-      pushDocument(reader.result)
+      pushDocument(reader.result);
       setSelectedFilesBase64((prev) => [
         ...prev,
         { Base64: reader.result, ContentType: currentFile.type },
       ]);
     };
     reader.readAsDataURL(currentFile);
-
-    //pushDocument();
 
     // Update the main form's selected files and document details
     setSelectedFiles((prev) => [...prev, currentFile]);
@@ -164,7 +176,6 @@ const UploadDocument = ({ patient, five, setPatient }) => {
     setDocumentType("");
     setOtherDocumentType("");
     setErrors({
-      documentName: false,
       documentType: false,
       otherDocumentType: false,
       selectedFiles: false,
@@ -194,12 +205,6 @@ const UploadDocument = ({ patient, five, setPatient }) => {
     setDocumentNames((prevFiles) => prevFiles.filter((item, i) => i !== index));
     setSelectedFiles((prevFiles) => prevFiles.filter((item, i) => i !== index));
   };
-
-  console.log("Document Type:", documentType);
-  console.log("Document Name:", documentName);
-  console.log("Selected Files:", currentFile);
-  console.log("Base 64 :", selectedFilesBase64);
-  console.log("patient :", patient);
 
   return (
     <Box
@@ -231,23 +236,6 @@ const UploadDocument = ({ patient, five, setPatient }) => {
       </Typography>
 
       <Box sx={{ mt: 3 }}>
-        <TextField
-          fullWidth
-          margin="normal"
-          label="Set Document Name"
-          value={documentName}
-          required
-          error={errors.documentName}
-          helperText={errors.documentName ? "Document name is required" : ""}
-          onChange={(e) => {
-            setDocumentName(e.target.value);
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              documentName: false,
-            }));
-          }}
-        />
-
         <FormControl
           fullWidth
           margin="normal"
@@ -317,81 +305,64 @@ const UploadDocument = ({ patient, five, setPatient }) => {
         </Button>
       </Box>
 
-      {/* 
-      
-      This code is to preview documents locally stored, we are replacing it with Documents uploaded on the Database
-      
-      selectedFiles.length > 0 && (
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h6">Uploaded files:</Typography>
-          {selectedFiles.map((file, index) => (
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '10px',
-                border: '1px solid #e0e0e0',
-                borderRadius: '4px',
-                mt: 1,
-              }}
-            >
-              <Typography>
-                {file.name} - {documentTypes[index]}
-              </Typography>
-              <Button
-                onClick={() => handleDocumentDelete(index)}
-                sx={{ color: 'red' }}
-              >
-                Delete
-              </Button>
-            </Box>
-          ))}
-        </Box>
-      ) */}
-
       {patient.document.length > 0 && (
         <Box sx={{ mt: 4 }}>
           <Typography variant="h6">Uploaded files:</Typography>
           <List>
-            {
-              //@ts-ignore
-              patient.document.map((item, index) => {
-                // Handle both cases: if item.Base64 is a string or an object
-                const base64Data =
-                  typeof item?.Base64 === "string"
-                    ? item?.Base64
-                    : item?.Base64?.Base64;
+            {patient.document.map((item, index) => {
+              const base64Data =
+                typeof item?.Base64 === "string"
+                  ? item?.Base64
+                  : item?.Base64?.Base64;
 
-                return (
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    borderBottom: "1px solid #00000033",
+                  }}
+                >
                   <ListItemButton
-                    key={index}
                     onClick={() =>
                       handleDialogOpen({ ...item, Base64: base64Data })
-                    } // Pass corrected Base64
+                    }
                     sx={{
-                      borderBottom: "1px solid #00000033",
                       color: "black",
                       "&:hover": {
                         backgroundColor: "lightblue",
                       },
+                      flexGrow: 1,
                     }}
                   >
                     <Typography variant="body1">{item?.Name}</Typography>
                   </ListItemButton>
-                );
-              })
-            }
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(item.___DOC);
+                    }}
+                    sx={{
+                      color: "red",
+                      minWidth: "auto",
+                      mr: 1,
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              );
+            })}
           </List>
-
           <Dialog
             open={dialogOpen}
             onClose={handleDialogClose}
             PaperProps={{
               style: {
                 minWidth: "70vw",
-                height: "90%", // Dialog height
+                height: "90%",
               },
             }}
           >
@@ -400,7 +371,6 @@ const UploadDocument = ({ patient, five, setPatient }) => {
               {selectedDocument && selectedDocument?.Base64 ? (
                 getMimeTypeFromDataUri(selectedDocument?.Base64) ===
                 "application/pdf" ? (
-                  // Render PDF using iframe
                   <iframe
                     src={selectedDocument?.Base64}
                     title="PDF Document"
@@ -411,7 +381,6 @@ const UploadDocument = ({ patient, five, setPatient }) => {
                 ) : getMimeTypeFromDataUri(selectedDocument?.Base64).startsWith(
                     "image/"
                   ) ? (
-                  // Render image
                   <img
                     src={selectedDocument?.Base64}
                     alt="Document"
