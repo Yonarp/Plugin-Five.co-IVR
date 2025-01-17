@@ -620,7 +620,7 @@ const CustomField = (props: CustomFieldProps) => {
 
           {activeStep === 1 &&
             (patient ? (
-              <UploadDocument patient={patient} five={five}/>
+              <UploadDocument patient={patient} five={five} setPatient = {setPatient}/>
               /* <PatientDetails
                 patient={patient}
                 admitted={admitted}

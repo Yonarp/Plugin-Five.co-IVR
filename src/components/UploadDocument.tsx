@@ -18,7 +18,7 @@ import {
   ListItemButton,
 } from "@mui/material";
 
-const UploadDocument = ({ patient, five }) => {
+const UploadDocument = ({ patient, five, setPatient }) => {
   // Main form state variables
   const [selectedDocument, setSelectedDocument] = useState();
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -73,7 +73,6 @@ const UploadDocument = ({ patient, five }) => {
       Base64: base64String
     }
     
-    console.log("Logging Document Object from Push Docuement", documentObj)
     await five.executeFunction(
       "pushDocument",
       //@ts-ignore
@@ -84,7 +83,17 @@ const UploadDocument = ({ patient, five }) => {
       //@ts-ignore
       (result) => {
         const payorData = JSON.parse(result.serverResponse.results);
-        const patientData = payorData.response;
+        const documentData = payorData.response;
+        const newDocument = {
+          Base64: documentData?.Base64,
+          Category: documentData?.Category,
+          Name: documentData?.Name,
+        }
+        setPatient((prevPatient) => ({
+          ...prevPatient,
+          document: [...prevPatient.document, newDocument]
+        }))
+
       }
     );
   };
