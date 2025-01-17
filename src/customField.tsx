@@ -30,6 +30,7 @@ import Summary from "./components/Summary";
 import NewPatient from "./components/NewPatient";
 import PatientDetails from "./components/PatientDetails";
 import { Padding } from "@mui/icons-material";
+import UploadDocument from "./components/UploadDocument";
 
 FiveInitialize();
 const CustomField = (props: CustomFieldProps) => {
@@ -619,7 +620,8 @@ const CustomField = (props: CustomFieldProps) => {
 
           {activeStep === 1 &&
             (patient ? (
-              <PatientDetails
+              <UploadDocument patient={patient} five={five}/>
+              /* <PatientDetails
                 patient={patient}
                 admitted={admitted}
                 handleRadioChange={handleRadioChange}
@@ -629,7 +631,7 @@ const CustomField = (props: CustomFieldProps) => {
                 setHospiceMain={setHospice}
                 medicare={medicare}
                 setMedicare={setMedicare}
-              />
+              /> */
             ) : (
               <Container
                 style={{
