@@ -1,4 +1,3 @@
-/// <reference types="react" />
 declare const MedicareForm: ({ placeOfServiceExternal, setPlaceOfServiceExternal, medicare, setMedicare }: {
     placeOfServiceExternal: any;
     setPlaceOfServiceExternal: any;

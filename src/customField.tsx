@@ -120,7 +120,7 @@ const CustomField = (props: CustomFieldProps) => {
 
   const AccountDetails = selectedRecord?.data;
 
-  const totalSteps = 8;
+  const totalSteps = 9;
   const existingPatient =
     //@ts-ignore
     five.actionID() !== "IVR" && five.actionID() !== "Accounts" && five.actionID() !== "AccountsDis" && five.actionID() !== "AccountsSalesRep";
@@ -400,20 +400,20 @@ const CustomField = (props: CustomFieldProps) => {
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
     if (
-      activeStep === 1 &&
+      activeStep === 2 &&
       (hospice === null || admitted === null || placeOfService === null)
     ) {
       five.message("Please fill in the required fields.");
       return 0;
     }
 
-    if (activeStep === 2 && practitioner === null) {
+    if (activeStep === 3 && practitioner === null) {
       five.message("Please select a practitioner.");
       return 0;
     }
 
     if (
-      activeStep === 3 &&
+      activeStep === 4 &&
       (patient.data.Pay1MemberNumber === null ||
         patient.data.Pay1MemberNumber === undefined ||
         patient.data.Pay1MemberNumber === "")
@@ -424,12 +424,12 @@ const CustomField = (props: CustomFieldProps) => {
       return 0;
     }
 
-    if (activeStep === 4 && products.length < 1) {
+    if (activeStep === 5 && products.length < 1) {
       five.message("Please select atleast one product.");
       return 0;
     }
 
-    if (activeStep === 5) {
+    if (activeStep === 6) {
       console.log(
         "logging the details required",
         cptWound,
@@ -470,7 +470,7 @@ const CustomField = (props: CustomFieldProps) => {
       }
     }
 
-    if (activeStep === 6 && (cptCode === null || cptCode === "")) {
+    if (activeStep === 7 && (cptCode === null || cptCode === "")) {
       five.message("Please select a CPT Code.");
       return 0;
     }
@@ -618,10 +618,23 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
 
-          {activeStep === 1 &&
+          {activeStep === 1 &&  (patient ? ( <UploadDocument patient={patient} five={five} setPatient = {setPatient}/>) : (
+              <Container
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <CircularProgress sx={{color:"#14706A"}} />
+              </Container>) )}
+
+          {activeStep === 2 &&
             (patient ? (
-              <UploadDocument patient={patient} five={five} setPatient = {setPatient}/>
-              /* <PatientDetails
+            
+             <PatientDetails
                 patient={patient}
                 admitted={admitted}
                 handleRadioChange={handleRadioChange}
@@ -631,7 +644,7 @@ const CustomField = (props: CustomFieldProps) => {
                 setHospiceMain={setHospice}
                 medicare={medicare}
                 setMedicare={setMedicare}
-              /> */
+              /> 
             ) : (
               <Container
                 style={{
@@ -645,7 +658,7 @@ const CustomField = (props: CustomFieldProps) => {
                 <CircularProgress sx={{color:"#14706A"}} />
               </Container>
             ))}
-          {activeStep === 2 && (
+          {activeStep === 3 && (
             <Practitioner
               five={five}
               setPractitioner={handlePractitioner}
@@ -654,7 +667,7 @@ const CustomField = (props: CustomFieldProps) => {
               account={account}
             />
           )}
-          {activeStep === 3 && patient && (
+          {activeStep === 4 && patient && (
             <Insurance
               patient={patient}
               setPatient={setPatient}
@@ -664,10 +677,10 @@ const CustomField = (props: CustomFieldProps) => {
               payorExternal={payors}
             />
           )}
-          {activeStep === 4 && (
+          {activeStep === 5 && (
             <Products five={five} setProducts={setProducts} productsSaved={products} account={account} />
           )}
-          {activeStep === 5 && (
+          {activeStep === 6 && (
             <ICDCode
               setLCodeMain={setLCode}
               setICodeMain={setICode}
@@ -692,7 +705,7 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
 
-          {activeStep === 6 && (
+          {activeStep === 7 && (
             <CPTCode
               setCPTCodeMain={setCPTCode}
               cptCodeMain={cptCode}
@@ -708,7 +721,7 @@ const CustomField = (props: CustomFieldProps) => {
               cptTotalWoundSizeMain={cptTotalWoundSize}
             />
           )}
-          {activeStep === 7 && (
+          {activeStep === 8 && (
             <Summary
               patient={patient}
               products={products}
@@ -795,7 +808,7 @@ const CustomField = (props: CustomFieldProps) => {
               </Box>
             )}
 
-            {activeStep === 7 ? (
+            {activeStep === 8 ? (
               <Button
                 onClick={() => handleSubmit(true)}
                 style={{

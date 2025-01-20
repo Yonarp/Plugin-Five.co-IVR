@@ -1,4 +1,3 @@
-/// <reference types="react" />
 declare const PatientDetails: ({ admitted, handleRadioChange, placeOfService, setPlaceOfService, hospiceMain, setHospiceMain, medicare, setMedicare, patient, }: {
     admitted: any;
     handleRadioChange: any;

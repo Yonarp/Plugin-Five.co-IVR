@@ -44,8 +44,9 @@ const UploadDocument = ({ patient, five, setPatient }) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setCurrentFile(file);
+    console.log("Original file name:", file.name);
     setDocumentName(file.name);
+    setCurrentFile(file);
     setErrors((prevErrors) => ({
       ...prevErrors,
       selectedFiles: false,
@@ -74,6 +75,8 @@ const UploadDocument = ({ patient, five, setPatient }) => {
       Base64: base64String,
     };
 
+    console.log("Document being pushed:", documentObj);
+
     await five.executeFunction(
       "pushDocument",
       documentObj,
@@ -101,7 +104,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
     const documentObj = {
       ___DOC: docKey,
     };
-    console.log("document Object FRom Delete", documentObj)
+    console.log("document Object FRom Delete", documentObj);
 
     await five.executeFunction(
       "DeleteDocument",
@@ -337,7 +340,19 @@ const UploadDocument = ({ patient, five, setPatient }) => {
                       flexGrow: 1,
                     }}
                   >
-                    <Typography variant="body1">{item?.Name}</Typography>
+                    <Typography variant="body1">
+                      {item?.Name} {/* Show full name including type */}
+                      <Typography
+                        component="span"
+                        sx={{
+                          color: "gray",
+                          ml: 1,
+                          fontSize: "0.9em",
+                        }}
+                      >
+                        ({item?.Category}) {/* Show document category */}
+                      </Typography>
+                    </Typography>
                   </ListItemButton>
                   <Button
                     onClick={(e) => {
