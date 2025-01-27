@@ -246,7 +246,7 @@ const CPTCode = ({
             ))}
           </Select>
         </Box>
-        {woundSize >= 100 ? (
+        {totalWoundSize > 100 ? (
           <Box
             sx={{
               display: "flex",
@@ -261,9 +261,7 @@ const CPTCode = ({
               sx={{ width: "40%" }}
               value={woundSize2}
               onChange={handleWoundSizeChange2}
-              InputProps={{
-                readOnly: true,
-              }}
+              disabled
             />
 
             <Typography variant="subtitle1" ml={3}>
