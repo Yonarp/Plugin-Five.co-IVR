@@ -234,8 +234,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
           margin: "20px 0",
         }}
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
+        Upload all relevant documents. Please be sure to include either a facesheet which includes a pay or policy number or a photo of a Medicare card.
       </Typography>
 
       <Box sx={{ mt: 3 }}>
