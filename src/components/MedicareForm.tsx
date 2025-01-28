@@ -3,13 +3,17 @@ import { FormControl, FormControlLabel } from "../FivePluginApi";
 import { Radio, RadioGroup } from "@mui/material";
 import PlaceAndDatePicker from "./PlaceAndDatePicker";
 
-const MedicareForm = ({placeOfServiceExternal, setPlaceOfServiceExternal, medicare, setMedicare}) => {
+const MedicareForm = ({placeOfServiceExternal, setPlaceOfServiceExternal, medicare, setMedicare, setPreventNext }) => {
   
 
   const handleChange = (value) => {
     if (value === "A") {
       setMedicare(false);
-    } else setMedicare(true);
+      setPreventNext(true)
+    } else {
+      setMedicare(true)
+      setPreventNext(false)
+    };
   };
   
   return (

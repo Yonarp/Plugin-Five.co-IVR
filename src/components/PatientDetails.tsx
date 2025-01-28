@@ -20,6 +20,7 @@ const PatientDetails = ({
   medicare,
   setMedicare,
   patient,
+  setPreventNext
 }) => {
   console.log("Comes from patient Detail", patient);
   // const [hospice, setHospice] = React.useState("");
@@ -98,6 +99,7 @@ const PatientDetails = ({
             setPlaceOfServiceExternal={setPlaceOfService}
             medicare={medicare}
             setMedicare={setMedicare}
+            setPreventNext={setPreventNext}
           />
         ) : (
           <PlaceAndDatePicker

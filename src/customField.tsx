@@ -107,6 +107,8 @@ const CustomField = (props: CustomFieldProps) => {
   const [readyToSubmit, setReadyToSubmit] = useState(false);
   const [hospice, setHospice] = useState(null);
   const [medicare, setMedicare] = useState(null);
+  // A state to check if the next button should be displayed or not based on the answer on the medicare Form
+  const [preventNext, setPreventNext] = useState(false)
   //@ts-ignore
   const { theme, value, variant, five, formField, selectedRecord } = props;
 
@@ -643,6 +645,7 @@ const CustomField = (props: CustomFieldProps) => {
                 hospiceMain={hospice}
                 setHospiceMain={setHospice}
                 medicare={medicare}
+                setPreventNext = {setPreventNext}
                 setMedicare={setMedicare}
               /> 
             ) : (
@@ -822,7 +825,7 @@ const CustomField = (props: CustomFieldProps) => {
               >
                 Submit
               </Button>
-            ) : activeStep !== 0 ? (
+            ) : activeStep !== 0 ? ( (activeStep === 2 && preventNext === true) ? <></> : (
               <Button
                 onClick={handleNext}
                 style={{
@@ -835,7 +838,7 @@ const CustomField = (props: CustomFieldProps) => {
                 }}
               >
                 Next
-              </Button>
+              </Button>)
             ) : null}
           </Box>
         </DialogContent>
