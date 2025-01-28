@@ -276,45 +276,7 @@ const InsuranceDetail = ({
             />
           </Box>
 
-          <Box
-            mb={2}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleDialogOpen("front")}
-              style={{ marginBottom: "10px", background: "#D8EEDA", color: "#157069" }}
-            >
-              Upload Front Image
-            </Button>
-            {formState.frontImagePreview && (
-              <img
-                src={formState.frontImagePreview}
-                alt="Front Preview"
-                style={{ width: "200px", marginBottom: "10px" }}
-              />
-            )}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleDialogOpen("back")}
-              style={{background: "#D8EEDA", color: "#157069"}}
-            >
-              Upload Back Image
-            </Button>
-            {formState.backImagePreview && (
-              <img
-                src={formState.backImagePreview}
-                alt="Back Preview"
-                style={{ width: "200px", marginTop: "10px" }}
-              />
-            )}
-          </Box>
+        
 
           <Button
             type="submit"

@@ -340,19 +340,6 @@ const NewPatient = ({
             component="form"
             onSubmit={handleSubmit}
           >
-            <IconButton
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-              }}
-              onClick={handleDialogOpen}
-            >
-              <UploadFileIcon />
-              <Typography variant="body1" mt={1}>
-                Add Document
-              </Typography>
-            </IconButton>
             <Typography variant="h5" mb={5}>
               Enter patient details
             </Typography>
@@ -585,115 +572,7 @@ const NewPatient = ({
             </Box>
           </Box>
 
-          <Dialog open={dialogOpen} onClose={handleDialogClose}>
-            <DialogTitle>Upload Document</DialogTitle>
-            <DialogContent style={{ width: "500px" }}>
-              {/* Fixed width for dialog content */}
-              <Typography
-                variant="body1"
-                style={{
-                  fontSize: "0.8rem",
-                  textAlign: "center",
-                  margin: "10px 5px",
-                }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco
-              </Typography>
-
-              <TextField
-                fullWidth
-                margin="normal"
-                label="Set Document Name"
-                value={documentName}
-                required
-                error={errors.documentName}
-                helperText={
-                  errors.documentName ? "Document name is required" : ""
-                }
-                onChange={(e) => {
-                  setDocumentName(e.target.value);
-                  setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    documentName: false,
-                  }));
-                }}
-              />
-              <FormControl
-                fullWidth
-                margin="normal"
-                error={errors.documentType}
-                required
-              >
-                <InputLabel id="document-type-label">Document Type</InputLabel>
-                <Select
-                  labelId="document-type-label"
-                  value={documentType}
-                  onChange={(e) => {
-                    handleDocumentTypeChange(e);
-                    setErrors((prevErrors) => ({
-                      ...prevErrors,
-                      documentType: false,
-                    }));
-                  }}
-                  label="Document Type"
-                >
-                  <MenuItem value="facesheet">Facesheet</MenuItem>
-                  <MenuItem value="wound notes">Wound Notes</MenuItem>
-                  <MenuItem value="identification">Identification</MenuItem>
-                  <MenuItem value="priorAuthorization">
-                    Prior Authorization
-                  </MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </Select>
-                {errors.documentType && (
-                  <FormHelperText>Document type is required</FormHelperText>
-                )}
-              </FormControl>
-              {documentType === "other" && (
-                <TextField
-                  fullWidth
-                  margin="normal"
-                  label="Specify Document Type"
-                  value={otherDocumentType}
-                  required
-                  error={errors.otherDocumentType}
-                  helperText={
-                    errors.otherDocumentType
-                      ? "Please specify document type"
-                      : ""
-                  }
-                  onChange={(e) => {
-                    setOtherDocumentType(e.target.value);
-                    setErrors((prevErrors) => ({
-                      ...prevErrors,
-                      otherDocumentType: false,
-                    }));
-                  }}
-                />
-              )}
-              <input
-                type="file"
-                accept="image/jpeg,image/png,application/pdf"
-                onChange={handleFileChange}
-                style={errors.selectedFiles ? { border: "1px solid red" } : {}}
-              />
-              {errors.selectedFiles && (
-                <Typography color="error">
-                  Please select a file to upload
-                </Typography>
-              )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDialogClose} style={{ color: "#14706A" }}>
-                Cancel
-              </Button>
-              <Button onClick={handleDialogSubmit} style={{ color: "#14706A" }}>
-                Upload
-              </Button>
-            </DialogActions>
-          </Dialog>
+         
           <Typography style={{ color: "black" }} mt={5}>
             IVR for an existing patient?
           </Typography>
