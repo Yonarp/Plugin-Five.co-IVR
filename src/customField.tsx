@@ -391,16 +391,36 @@ const CustomField = (props: CustomFieldProps) => {
   // Revised useEffect
   useEffect(() => {
     //@ts-ignore
+    console.log("Patient Updated from use effect", patient)
     if (five.internal.actionID === "IVR") {
       handleDialogOpen();
     }
     if (existingPatient && activeStep === 0) {
       setActiveStep(1);
     }
-  }, [dialogOpen, existingPatient, activeStep, ivr, hospice]);
+  }, [dialogOpen, existingPatient, activeStep, ivr, hospice, patient]);
 
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
+
+
+    if(activeStep === 1 ) {
+      let flag = 0;
+      for(let item of patient.document) {
+        console.log("logging Item from handleNext: ", patient)
+        if(item.Category === 'facesheet' || item.Category ==='Insurance Front' ) {
+          
+          flag = 1;
+          break;
+        } 
+      }
+
+      if(flag !== 1){
+        five.message("Please be sure to include either a facesheet which includes a pay or policy number or a photo of a Medicare card.");
+        return 0
+      }
+    }
+
     if (
       activeStep === 2 &&
       (hospice === null || admitted === null || placeOfService === null)
@@ -488,6 +508,7 @@ const CustomField = (props: CustomFieldProps) => {
     placeOfService,
     practitioner,
     patient?.data?.Pay1MemberNumber,
+    patient?.document,
     products,
     cptWound,
     eCode,

@@ -466,6 +466,7 @@ const NewPatient = ({
                   sx={{ flex: 3, marginRight: "8px" }}
                   name="AddressStreet"
                 />
+
                 <TextField
                   label="Apt"
                   margin="normal"
@@ -475,6 +476,7 @@ const NewPatient = ({
                   sx={{ flex: 1 }}
                   name="AddressStreet2"
                 />
+                
               </Box>
               <Box
                 style={{

@@ -22,7 +22,7 @@ const CPTCode = ({
   setCPTWoundLocation,
   cptWoundLocationMain,
   setCPTTotalWoundSize,
-  cptTotalWoundSizeMain
+  cptTotalWoundSizeMain,
 }) => {
   const woundLocations = [
     { label: "Trunk, Arm, Leg", value: 1 },
@@ -54,7 +54,7 @@ const CPTCode = ({
 
   useEffect(() => {
     calculateCPTCode();
-    
+
     if (cptCodeMain) {
       if (!cptCodes.includes(cptCodeMain)) {
         cptCodes.push(cptCodeMain);
@@ -72,7 +72,6 @@ const CPTCode = ({
 
     setWoundLocation(cptWoundLocationMain);
     setTotalWoundSize(parseFloat(cptTotalWoundSizeMain));
-
   }, [woundLocation, woundSize, totalWoundSize]);
 
   const handleWoundLocationChange = (event) => {
@@ -107,8 +106,8 @@ const CPTCode = ({
   ];
 
   const cptCodeLookup = {
-    1: { small: "15271", large: "15272" },
-    2: { small: "15273", large: "15274" },
+    1: { small: "15271", large: "15272", larger: "15273", largest: "15274" },
+    2: { small: "15275", large: "15276", larger: "15277", largest: "15278" },
   };
 
   const calculateCPTCode = () => {
@@ -122,25 +121,56 @@ const CPTCode = ({
       setCptCode("");
       return;
     }
+
     const cptCode = cptCodeLookup[area]?.["small"] || "";
-    if (totalWoundSize > 100) {
-      setWoundSize("100");
-      setCPTWoundSize("100");
-      const remainder = totalWoundSize - 100;
-      setWoundSize2(remainder.toString());
-      setCPTWoundSize2(remainder.toString());
-      setCptCode(cptCode);
-      setCPTCodeMain(cptCode);
-      const secondCptCode = cptCodeLookup[area]?.["large"] || "";
-      setCptCode2(secondCptCode);
-      setCPTCode2Main(secondCptCode);
-    } else {
-      setWoundSize(totalWoundSize.toString());
-      setCPTWoundSize(totalWoundSize.toString())
-      setCptCode(cptCode);
-      setCPTCodeMain(cptCode);
-      setWoundSize2(0);
-      setCptCode2("");
+
+    if (totalWoundSize > 25 && totalWoundSize <= 100) {
+        setWoundSize("25");
+        setCPTWoundSize("25");
+        const remainder = totalWoundSize - 25;
+        console.log("Part 2 triggered", remainder);
+        setWoundSize2(remainder.toString());
+        setCPTWoundSize2(remainder.toString());
+        setCptCode(cptCode);
+        setCPTCodeMain(cptCode);
+        const secondCptCode = cptCodeLookup[area]?.["large"] || "";
+        setCptCode2(secondCptCode);
+        setCPTCode2Main(secondCptCode);
+    } else if (totalWoundSize > 200) {
+          console.log("Part 4 triggered");
+          setWoundSize("200");
+          setCPTWoundSize("200");
+          const remainder = totalWoundSize - 200;
+          setWoundSize2(remainder.toString());
+          setCPTWoundSize2(remainder.toString());
+          const firstCPTCode = cptCodeLookup[area]?.["larger"] || "";
+          setCptCode(firstCPTCode);
+          setCPTCodeMain(firstCPTCode);
+          const secondCptCode = cptCodeLookup[area]?.["largest"] || "";
+          setCptCode2(secondCptCode);
+          setCPTCode2Main(secondCptCode);
+    } else if (totalWoundSize > 100 && totalWoundSize <= 200) {
+        console.log("Part 3 triggered");
+        setWoundSize(totalWoundSize.toString());
+        setCPTWoundSize(totalWoundSize.toString());
+        const selectedCode = cptCodeLookup[area]?.["larger"] || "";
+        setCptCode(selectedCode);
+        setCPTCodeMain(selectedCode);
+        setCptCode2("");
+        setCPTCode2Main("");
+        setWoundSize2(0);
+        setCPTCode2Main("")
+        setCPTWoundSize2(0);
+    } else if (totalWoundSize <= 25) {
+        console.log("Part 1 triggered");
+        setWoundSize(totalWoundSize.toString());
+        setCPTWoundSize(totalWoundSize.toString());
+        setCptCode(cptCode);
+        setCPTCodeMain(cptCode);
+        setWoundSize2(0);
+        setCptCode2("");
+        setCPTCode2Main("")
+        setCPTWoundSize2(0);
     }
 
     if (totalWoundSize <= 0) {
@@ -196,7 +226,10 @@ const CPTCode = ({
           </FormControl>
         </Box>
         <Box>
-          <Typography variant="body1" mb={2}> Total Wound Size: </Typography>
+          <Typography variant="body1" mb={2}>
+            {" "}
+            Total Wound Size:{" "}
+          </Typography>
           <TextField
             label="Total Wound Size"
             type="number"
@@ -204,7 +237,6 @@ const CPTCode = ({
             sx={{ width: "40%", marginBottom: "20px" }}
             value={totalWoundSize}
             onChange={handleTotalWoundSize}
-            
           />
         </Box>
         <Box
@@ -234,7 +266,6 @@ const CPTCode = ({
             value={cptCode}
             displayEmpty
             onChange={handleCPTCode}
-            
           >
             <MenuItem value="" disabled>
               <em>Select</em>
@@ -246,7 +277,7 @@ const CPTCode = ({
             ))}
           </Select>
         </Box>
-        {totalWoundSize > 100 ? (
+        {woundSize2 !== 0 ? (
           <Box
             sx={{
               display: "flex",
@@ -265,7 +296,8 @@ const CPTCode = ({
             />
 
             <Typography variant="subtitle1" ml={3}>
-              Second CPT Code<span style={{ textAlign: "left", color: "red" }}>*</span>{" "}
+              Second CPT Code
+              <span style={{ textAlign: "left", color: "red" }}>*</span>{" "}
             </Typography>
             <Select
               type="text"

@@ -104,7 +104,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
     const documentObj = {
       ___DOC: docKey,
     };
-    console.log("document Object FRom Delete", documentObj);
+
 
     await five.executeFunction(
       "DeleteDocument",
@@ -189,6 +189,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
     if (fileInput) {
       fileInput.value = "";
     }
+    
   };
 
   const handleDialogOpen = (document) => {
@@ -208,6 +209,9 @@ const UploadDocument = ({ patient, five, setPatient }) => {
     setDocumentNames((prevFiles) => prevFiles.filter((item, i) => i !== index));
     setSelectedFiles((prevFiles) => prevFiles.filter((item, i) => i !== index));
   };
+
+
+  console.log("Patient Obj from Upload Documents ", patient)
 
   return (
     <Box
@@ -254,7 +258,9 @@ const UploadDocument = ({ patient, five, setPatient }) => {
             <MenuItem value="facesheet">Facesheet</MenuItem>
             <MenuItem value="wound notes">Wound Notes</MenuItem>
             <MenuItem value="identification">Identification</MenuItem>
-            <MenuItem value="priorAuthorization">Prior Authorization</MenuItem>
+            <MenuItem value="Prior Authorization">Prior Authorization</MenuItem>
+            <MenuItem value="Insurance Front">Insurance Card - Front</MenuItem>
+            <MenuItem value="insurance Back">Insurance Card - Back</MenuItem>
             <MenuItem value="other">Other</MenuItem>
           </Select>
           {errors.documentType && (

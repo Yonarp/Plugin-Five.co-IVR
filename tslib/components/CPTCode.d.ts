@@ -1,4 +1,4 @@
-declare const CPTCode: ({ setCPTCodeMain, cptCodeMain, setCPTWoundSize, cptWoundSizeMain, setCPTCode2Main, cptCode2Main, setCPTWoundSize2, cptWoundSize2Main, setCPTWoundLocation, cptWoundLocationMain, setCPTTotalWoundSize, cptTotalWoundSizeMain }: {
+declare const CPTCode: ({ setCPTCodeMain, cptCodeMain, setCPTWoundSize, cptWoundSizeMain, setCPTCode2Main, cptCode2Main, setCPTWoundSize2, cptWoundSize2Main, setCPTWoundLocation, cptWoundLocationMain, setCPTTotalWoundSize, cptTotalWoundSizeMain, }: {
     setCPTCodeMain: any;
     cptCodeMain: any;
     setCPTWoundSize: any;
