@@ -278,6 +278,11 @@ const CustomField = (props: CustomFieldProps) => {
       return 0;
     }
 
+    if(practitioner === null) {
+      five.showMessage("Please select a valid practitoner for this IVR")
+      return 0;
+    }
+
     if (!existingPatient) {
       const IVR = {
         patient: patient?.data?.___PAT,
@@ -316,7 +321,7 @@ const CustomField = (props: CustomFieldProps) => {
         }
       );
     } else {
-      console.log("This should execute on Update");
+     
 
       const IVR = {
         link: selectedRecord.data.editLink,
@@ -351,7 +356,7 @@ const CustomField = (props: CustomFieldProps) => {
       );
     }
 
-    console.log(IVR);
+
 
     const submissionText = {
       message: complete ? "Submission Successful" : "The IVR has been saved.",
@@ -422,14 +427,14 @@ const CustomField = (props: CustomFieldProps) => {
     }
 
     if (
-      activeStep === 2 &&
+      activeStep === 3 &&
       (hospice === null || admitted === null || placeOfService === null)
     ) {
       five.message("Please fill in the required fields.");
       return 0;
     }
 
-    if (activeStep === 3 && practitioner === null) {
+    if (activeStep === 2 && practitioner === null) {
       five.message("Please select a practitioner.");
       return 0;
     }
@@ -654,7 +659,7 @@ const CustomField = (props: CustomFieldProps) => {
                 <CircularProgress sx={{color:"#14706A"}} />
               </Container>) )}
 
-          {activeStep === 2 &&
+          {activeStep === 3 &&
             (patient ? (
             
              <PatientDetails
@@ -682,7 +687,7 @@ const CustomField = (props: CustomFieldProps) => {
                 <CircularProgress sx={{color:"#14706A"}} />
               </Container>
             ))}
-          {activeStep === 3 && (
+          {activeStep === 2 && (
             <Practitioner
               five={five}
               setPractitioner={handlePractitioner}
