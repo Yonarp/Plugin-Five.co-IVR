@@ -1,4 +1,4 @@
-declare const PatientDetails: ({ admitted, handleRadioChange, placeOfService, setPlaceOfService, hospiceMain, setHospiceMain, medicare, setMedicare, patient, setPreventNext }: {
+declare const PatientDetails: ({ admitted, handleRadioChange, placeOfService, setPlaceOfService, hospiceMain, setHospiceMain, medicare, setMedicare, patient, setPreventNext, }: {
     admitted: any;
     handleRadioChange: any;
     placeOfService: any;

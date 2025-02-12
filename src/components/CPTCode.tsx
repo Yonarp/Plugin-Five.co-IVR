@@ -128,7 +128,7 @@ const CPTCode = ({
         setWoundSize("25");
         setCPTWoundSize("25");
         const remainder = totalWoundSize - 25;
-        console.log("Part 2 triggered", remainder);
+      
         setWoundSize2(remainder.toString());
         setCPTWoundSize2(remainder.toString());
         setCptCode(cptCode);
@@ -137,7 +137,7 @@ const CPTCode = ({
         setCptCode2(secondCptCode);
         setCPTCode2Main(secondCptCode);
     } else if (totalWoundSize > 200) {
-          console.log("Part 4 triggered");
+         
           setWoundSize("200");
           setCPTWoundSize("200");
           const remainder = totalWoundSize - 200;
@@ -150,7 +150,7 @@ const CPTCode = ({
           setCptCode2(secondCptCode);
           setCPTCode2Main(secondCptCode);
     } else if (totalWoundSize > 100 && totalWoundSize <= 200) {
-        console.log("Part 3 triggered");
+
         setWoundSize(totalWoundSize.toString());
         setCPTWoundSize(totalWoundSize.toString());
         const selectedCode = cptCodeLookup[area]?.["larger"] || "";
@@ -162,7 +162,7 @@ const CPTCode = ({
         setCPTCode2Main("")
         setCPTWoundSize2(0);
     } else if (totalWoundSize <= 25) {
-        console.log("Part 1 triggered");
+      
         setWoundSize(totalWoundSize.toString());
         setCPTWoundSize(totalWoundSize.toString());
         setCptCode(cptCode);
@@ -181,6 +181,7 @@ const CPTCode = ({
 
   return (
     <Container
+      id="cpt-code-container"
       style={{
         width: "100%",
         height: "100%",
@@ -190,6 +191,7 @@ const CPTCode = ({
       }}
     >
       <Box
+        id="cpt-code-form"
         style={{
           width: "100%",
           height: "100%",
@@ -210,15 +212,20 @@ const CPTCode = ({
             sx={{ marginBottom: "20px" }}
           >
             <Select
+              id="wound-location-select"
               value={woundLocation}
               onChange={handleWoundLocationChange}
               displayEmpty
             >
-              <MenuItem value="" disabled>
+              <MenuItem id="wound-location-default" value="" disabled>
                 <em>Select</em>
               </MenuItem>
               {woundLocations.map((location) => (
-                <MenuItem key={location.value} value={location.value}>
+                <MenuItem 
+                  id={`wound-location-${location.value}`}
+                  key={location.value} 
+                  value={location.value}
+                >
                   {location.label}
                 </MenuItem>
               ))}
@@ -227,10 +234,10 @@ const CPTCode = ({
         </Box>
         <Box>
           <Typography variant="body1" mb={2}>
-            {" "}
             Total Wound Size:{" "}
           </Typography>
           <TextField
+            id="total-wound-size"
             label="Total Wound Size"
             type="number"
             variant="outlined"
@@ -247,6 +254,7 @@ const CPTCode = ({
           }}
         >
           <TextField
+            id="wound-size-primary"
             label="Size Of Wound (sq. cm)"
             type="number"
             variant="outlined"
@@ -260,6 +268,7 @@ const CPTCode = ({
             CPT Code<span style={{ textAlign: "left", color: "red" }}>*</span>{" "}
           </Typography>
           <Select
+            id="cpt-code-primary"
             type="text"
             variant="outlined"
             sx={{ width: "40%" }}
@@ -267,11 +276,11 @@ const CPTCode = ({
             displayEmpty
             onChange={handleCPTCode}
           >
-            <MenuItem value="" disabled>
+            <MenuItem id="cpt-code-default" value="" disabled>
               <em>Select</em>
             </MenuItem>
             {cptCodes.map((code) => (
-              <MenuItem key={code} value={code}>
+              <MenuItem id={`cpt-code-${code}`} key={code} value={code}>
                 {code}
               </MenuItem>
             ))}
@@ -286,6 +295,7 @@ const CPTCode = ({
             }}
           >
             <TextField
+              id="wound-size-secondary"
               label="Size of wound (sq. cm)"
               type="number"
               variant="outlined"
@@ -300,6 +310,7 @@ const CPTCode = ({
               <span style={{ textAlign: "left", color: "red" }}>*</span>{" "}
             </Typography>
             <Select
+              id="cpt-code-secondary"
               type="text"
               variant="outlined"
               sx={{ width: "40%" }}
@@ -307,11 +318,11 @@ const CPTCode = ({
               displayEmpty
               onChange={handleCPTCode2}
             >
-              <MenuItem value="" disabled>
+              <MenuItem id="second-cpt-code-default" value="" disabled>
                 <em>Select</em>
               </MenuItem>
               {cptCodes.map((code) => (
-                <MenuItem key={code} value={code}>
+                <MenuItem id={`second-cpt-code-${code}`} key={code} value={code}>
                   {code}
                 </MenuItem>
               ))}

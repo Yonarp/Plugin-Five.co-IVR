@@ -36,7 +36,7 @@ const Summary = ({
   const [isChecked, setIsChecked] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  console.log("Loggin products" , products)
+
   // Handle checkbox change
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -68,11 +68,12 @@ const Summary = ({
     return mimeType ? mimeType[1] : null;
   };
 
-  console.log("Logging Patients to see the document Type: ", patient);
+
 
   return (
-    <Container style={{ width: "100%" }}>
+    <Container id="summary-container" style={{ width: "100%" }}>
       <Box
+        id="summary-box"
         sx={{ p: 2, maxWidth: 600, mx: "auto", boxShadow: 3, borderRadius: 2 }}
         mt={10}
         mb={20}
@@ -82,6 +83,7 @@ const Summary = ({
         </Typography>
         
         <TextField
+          id="practitioner-field"
           label="Practitioner"
           fullWidth
           margin="dense"
@@ -93,6 +95,7 @@ const Summary = ({
         />
 
         <TextField                                                                      
+          id="npi-field"
           label="NPI"
           value={npi}
           fullWidth
@@ -104,6 +107,7 @@ const Summary = ({
         />
 
         <TextField
+          id="primary-payor-field"
           label="Primary Payor"
           fullWidth
           value={payors[0]?.CompanyName}
@@ -115,6 +119,7 @@ const Summary = ({
         />
 
         <TextField
+          id="secondary-payor-field"
           label="Secondary Payor"
           fullWidth
           value={payors[1]?.CompanyName}
@@ -127,14 +132,14 @@ const Summary = ({
 
         <Grid container spacing={1} marginTop={1}>
           {products && products.length > 0 && products[0]?.name ? (
-            <Grid item xs={6}>
+            <Grid id="product-1-grid" item xs={6}>
               <Typography variant="body1">Product 1</Typography>
               <Typography variant="body2">{products[0].brandname} - {products[0].qcode}</Typography>
             </Grid>
           ) : null}
 
           {products && products.length > 1 && products[1]?.name ? (
-            <Grid item xs={6}>
+            <Grid id="product-2-grid" item xs={6}>
               <Typography variant="body1">Product 2</Typography>
               <Typography variant="body2">{products[1].brandname} - {products[1].qcode}</Typography>
             </Grid>
@@ -144,7 +149,7 @@ const Summary = ({
           Codes:
         </Typography>
         <Grid container spacing={2} marginTop={1} xs="auto">
-          <Grid item xs={3}>
+          <Grid id="primary-code-grid" item xs={3}>
             <Typography variant="body1">
               {eCode
                 ? `E Code: ${eCode}`
@@ -153,12 +158,12 @@ const Summary = ({
                 : `CD Code: ${cdCode}`}
             </Typography>
           </Grid>
-          <Grid item xs={3}>
+          <Grid id="l-code-grid" item xs={3}>
             <Typography variant="body1">
               {lCode && `L Code: ${lCode}`}
             </Typography>
           </Grid>
-          <Grid item xs={3}>
+          <Grid id="cpt-code-grid" item xs={3}>
             <Typography variant="body1">
               {cptCode && `CPT Code: ${cptCode}`}
             </Typography>
@@ -168,7 +173,7 @@ const Summary = ({
         <Typography variant="h6" mt={3}>
           Documents:
         </Typography>
-        <List>
+        <List id="documents-list">
           {
             //@ts-ignore
             patient.document.map((item, index) => {
@@ -180,10 +185,11 @@ const Summary = ({
 
               return (
                 <ListItemButton
+                  id={`document-item-${index}`}
                   key={index}
                   onClick={() =>
                     handleDialogOpen({ ...item, Base64: base64Data })
-                  } // Pass corrected Base64
+                  }
                   sx={{
                     borderBottom: "1px solid #00000033",
                     color: "black",
@@ -203,6 +209,7 @@ const Summary = ({
           style={{ display: "flex", alignItems: "flex-start" }}
           control={
             <Checkbox
+              id="certification-checkbox"
               size="small"
               style={{ marginBottom: "10px" }}
               checked={isChecked}
@@ -213,7 +220,7 @@ const Summary = ({
             <Typography variant="body2" style={{ fontSize: "13px" }}>
               I certify I have obtained a valid authorization under applicable
               law from the patient listed on this form (a) permitting me to
-              release the patient’s protected health information to Legacy
+              release the patient's protected health information to Legacy
               Medical and its contractors to research insurance coverage
               regarding Legacy Medical products, and to provide me with
               reimbursement assistance services regarding such products; and (b)
@@ -225,12 +232,13 @@ const Summary = ({
         />
       </Box>
       <Dialog
+        id="document-preview-dialog"
         open={dialogOpen}
         onClose={handleDialogClose}
         PaperProps={{
           style: {
             minWidth: "70vw",
-            height: "90%", // Dialog height
+            height: "90%",
           },
         }}
       >
@@ -239,8 +247,8 @@ const Summary = ({
           {selectedDocument && selectedDocument?.Base64 ? (
             getMimeTypeFromDataUri(selectedDocument?.Base64) ===
             "application/pdf" ? (
-              // Render PDF using iframe
               <iframe
+                id="document-preview-pdf"
                 src={selectedDocument?.Base64}
                 title="PDF Document"
                 width="100%"
@@ -250,8 +258,8 @@ const Summary = ({
             ) : getMimeTypeFromDataUri(selectedDocument?.Base64).startsWith(
                 "image/"
               ) ? (
-              // Render image
               <img
+                id="document-preview-image"
                 src={selectedDocument?.Base64}
                 alt="Document"
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
@@ -265,7 +273,11 @@ const Summary = ({
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
+          <Button 
+            id="close-preview-btn"
+            onClick={handleDialogClose} 
+            color="primary"
+          >
             Close
           </Button>
         </DialogActions>

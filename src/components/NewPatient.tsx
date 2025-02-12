@@ -312,6 +312,7 @@ const NewPatient = ({
     <>
       {page === 0 && (
         <Container
+          id="new-patient-container"
           style={{
             width: "100%",
             display: "flex",
@@ -323,6 +324,7 @@ const NewPatient = ({
           }}
         >
           <Box
+            id="patient-form"
             style={{
               maxWidth: "800px",
               display: "flex",
@@ -356,6 +358,7 @@ const NewPatient = ({
                 First Name<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <TextField
+                id="patient-first-name"
                 label="First Name"
                 margin="normal"
                 sx={{ minWidth: 170 }}
@@ -377,6 +380,7 @@ const NewPatient = ({
                 Last Name<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <TextField
+                id="patient-last-name"
                 label="Last Name"
                 margin="normal"
                 variant="outlined"
@@ -405,14 +409,15 @@ const NewPatient = ({
               >
                 <InputLabel id="gender-select-label">Gender</InputLabel>
                 <Select
+                  id="patient-gender"
                   labelId="gender-select-label"
                   value={formState.Gender}
                   onChange={handleInputChange}
                   label="Gender"
                   name="Gender"
                 >
-                  <MenuItem value="M">M</MenuItem>
-                  <MenuItem value="F">F</MenuItem>
+                  <MenuItem id="gender-male" value="M">M</MenuItem>
+                  <MenuItem id="gender-female" value="F">F</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -429,6 +434,7 @@ const NewPatient = ({
                 Birthdate<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <TextField
+                id="patient-birthdate"
                 label="Birthdate"
                 type="date"
                 fullWidth
@@ -458,6 +464,7 @@ const NewPatient = ({
                 }}
               >
                 <TextField
+                  id="patient-street"
                   label="Street"
                   margin="normal"
                   variant="outlined"
@@ -466,8 +473,8 @@ const NewPatient = ({
                   sx={{ flex: 3, marginRight: "8px" }}
                   name="AddressStreet"
                 />
-
                 <TextField
+                  id="patient-apt"
                   label="Apt"
                   margin="normal"
                   variant="outlined"
@@ -476,7 +483,6 @@ const NewPatient = ({
                   sx={{ flex: 1 }}
                   name="AddressStreet2"
                 />
-                
               </Box>
               <Box
                 style={{
@@ -487,6 +493,7 @@ const NewPatient = ({
                 }}
               >
                 <TextField
+                  id="patient-city"
                   label="City"
                   margin="normal"
                   variant="outlined"
@@ -496,6 +503,7 @@ const NewPatient = ({
                   name="AddressCity"
                 />
                 <TextField
+                  id="patient-state"
                   label="State"
                   margin="normal"
                   variant="outlined"
@@ -505,6 +513,7 @@ const NewPatient = ({
                   name="AddressState"
                 />
                 <TextField
+                  id="patient-zip"
                   label="Zip Code"
                   margin="normal"
                   variant="outlined"
@@ -517,7 +526,7 @@ const NewPatient = ({
             </Grid>
 
             {selectedFiles.length > 0 && (
-              <Box mt={2}>
+              <Box id="uploaded-files-section" mt={2}>
                 <Typography variant="h6">Uploaded files:</Typography>
                 {selectedFiles.map((file, index) => (
                   <Box
@@ -531,6 +540,7 @@ const NewPatient = ({
                       {file.name} - {documentTypes[index]}
                     </Typography>
                     <Button
+                      id={`delete-file-${index}`}
                       onClick={() => handleDocumentDelete(index)}
                       sx={{ marginLeft: "10px", color: "red" }}
                     >
@@ -548,6 +558,7 @@ const NewPatient = ({
               alignItems="center"
             >
               <Button
+                id="close-form-btn"
                 type="button"
                 variant="contained"
                 style={{
@@ -560,6 +571,7 @@ const NewPatient = ({
                 Close
               </Button>
               <Button
+                id="submit-form-btn"
                 type="submit"
                 variant="contained"
                 style={{
@@ -574,17 +586,20 @@ const NewPatient = ({
             </Box>
           </Box>
 
-         
           <Typography style={{ color: "black" }} mt={5}>
             IVR for an existing patient?
           </Typography>
-          <Button style={{ color: "#14706A" }} onClick={() => setPage(1)}>
+          <Button 
+            id="existing-patient-btn"
+            style={{ color: "#14706A" }} 
+            onClick={() => setPage(1)}
+          >
             Select an existing patient
           </Button>
         </Container>
       )}
       {page === 1 && (
-        <div className="container" style={{ width: "100%" }}>
+        <div id="existing-patient-container" className="container" style={{ width: "100%" }}>
           <Patient
             patients={data.response.value}
             handlePatient={handlePatient}

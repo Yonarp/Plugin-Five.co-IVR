@@ -140,10 +140,10 @@ const CustomField = (props: CustomFieldProps) => {
           null,
           null,
           (result) => {
-            console.log("Loggin IVR");
+    
             const data = JSON.parse(result.serverResponse.results);
             const ivr = data.ivr;
-            console.log(data);
+  
             /* setData(JSON.parse(result.serverResponse.results)); */
             setIVR(data);
             handlePatient(data?.patient);
@@ -351,7 +351,7 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         null,
         (result) => {
-          console.log(result);
+         
         }
       );
     }
@@ -396,7 +396,7 @@ const CustomField = (props: CustomFieldProps) => {
   // Revised useEffect
   useEffect(() => {
     //@ts-ignore
-    console.log("Patient Updated from use effect", patient)
+ 
     if (five.internal.actionID === "IVR") {
       handleDialogOpen();
     }
@@ -412,7 +412,7 @@ const CustomField = (props: CustomFieldProps) => {
     if(activeStep === 1 ) {
       let flag = 0;
       for(let item of patient.document) {
-        console.log("logging Item from handleNext: ", patient)
+  
         if(item.Category === 'facesheet' || item.Category ==='Insurance Front' ) {
           
           flag = 1;
@@ -457,12 +457,7 @@ const CustomField = (props: CustomFieldProps) => {
     }
 
     if (activeStep === 6) {
-      console.log(
-        "logging the details required",
-        cptWound,
-        typeof eCode,
-        lCode
-      );
+    
 
       if (cptWound === null || cptWound === "") {
         five.message("Please specify the wound type");

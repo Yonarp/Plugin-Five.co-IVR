@@ -38,19 +38,16 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
 
 
   useEffect(() => {
-    console.log(patientSaved);
+   
     if (patientSaved) {
-      console.log(
-        "Setting selectedIndex from patientSaved:",
-        patientSaved.index
-      );
+    
       setSelectedIndex(patientSaved.index);
     }
   }, [patientSaved]);
 
   const handleClick = async (index, patient) => {
 
-    console.log("Logging Patient FROM PATIENT ", patient);
+    
     setSelectedIndex(index);
 
     const patientKey = {
@@ -65,7 +62,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
       null,
       (result) => {
         const patientData = JSON.parse(result.serverResponse.results);
-        console.log("Patient Data ->", patientData)
+
         handlePatient(patientData.patient, index, patientData.document);
       }
 
@@ -76,7 +73,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
 
   
   return (
-    <Container style={{ maxWidth: "100%", marginBottom: "10px" }}>
+    <Container id="patient-selector" style={{ maxWidth: "100%", marginBottom: "10px" }}>
       <Typography
         mt={6}
         variant="h5"
@@ -104,9 +101,10 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
           <strong> DOB</strong>
         </Typography>
       </Box>
-      <List>
+      <List id="patient-list">
         {patients.map((patient, index) =>  (
           <ListItemButton
+            id={`patient-item-${index}`}
             key={index}
             selected={selectedIndex === index}
             onClick={() => handleClick(index, patient.___PAT)}
@@ -130,13 +128,13 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
                 alignItems: "center",
               }}
             >
-              <Typography variant="body1" style={{ width: "150px" }}>
+              <Typography id={`patient-name-${index}`} variant="body1" style={{ width: "150px" }}>
                 {patient.NameFirst + " " + patient.NameLast}
               </Typography>
-              <Typography variant="body1" style={{ width: "100px" }}>
+              <Typography id={`patient-gender-${index}`} variant="body1" style={{ width: "100px" }}>
                 {patient.Gender}
               </Typography>
-              <Typography variant="body1" style={{ width: "100px" }}>
+              <Typography id={`patient-dob-${index}`} variant="body1" style={{ width: "100px" }}>
                 {convertToAmericanFormat(patient.Birthdate)}
               </Typography>
             </Box>
@@ -156,7 +154,13 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
         <Typography style={{ color: "black" }} mt={5}>
           IVR for a new patient?
         </Typography>
-        <Button style={{ color: "#14706A" }} onClick={() => setPage(0)}>Create a new patient</Button>
+        <Button 
+          id="create-new-patient-btn"
+          style={{ color: "#14706A" }} 
+          onClick={() => setPage(0)}
+        >
+          Create a new patient
+        </Button>
       </Box>
       <Box
           style={{
@@ -167,11 +171,15 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
             marginTop: "20px",
           }}
         >
-          <Button onClick={handleDialogClose} style={{
-                  padding: "10px 35px",
-                  background: "#14706A",
-                  color: "white",
-                }}>
+          <Button 
+            id="cancel-selection-btn"
+            onClick={handleDialogClose} 
+            style={{
+              padding: "10px 35px",
+              background: "#14706A",
+              color: "white",
+            }}
+          >
             Cancel
           </Button>
         </Box>

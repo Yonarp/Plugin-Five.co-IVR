@@ -36,8 +36,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
           null,
           null,
           (result) => {
-            console.log("Loggin From Practitioners");
-            console.log(result.serverResponse.results);
+
             const data = JSON.parse(result.serverResponse.results)
             const sortedData = data.sort((a, b) => {
               if (a.NameFirst < b.NameFirst) {

@@ -112,6 +112,7 @@ const products = [
 
   return (
     <Container
+      id="products-container"
       style={{
         width: "100%",
         display: "flex",
@@ -125,6 +126,7 @@ const products = [
       </Typography>
       {selectedProducts.map((product, index) => (
         <Box
+          id={`product-row-${index}`}
           style={{
             display: "flex",
             flexDirection: "row",
@@ -134,18 +136,23 @@ const products = [
           }}
         >
           <Select
+            id={`product-select-${index}`}
             fullWidth
             sx={{ margin: "10px 5px" }}
             value={product.name}
             onChange={(event) => handleProductChange(index, event)}
             displayEmpty
           >
-            <MenuItem value="" disabled>
+            <MenuItem id={`product-default-${index}`} value="" disabled>
               Select a product
             </MenuItem>
             {products ? (
               products.map((product, idx) => (
-              <MenuItem key={idx} value={product.Description}>
+              <MenuItem 
+                id={`product-option-${index}-${idx}`} 
+                key={idx} 
+                value={product.Description}
+              >
                 {product.Brand} - {product.QCode}
               </MenuItem>
             ))) : (
@@ -154,6 +161,7 @@ const products = [
           </Select>
 
           <DeleteIcon
+            id={`delete-product-${index}`}
             htmlColor="red"
             onClick={() => handleRemoveProduct(index)}
             sx={{
@@ -169,6 +177,7 @@ const products = [
       ))}
       {selectedProducts.length < 2 ? (<Box style={{ width: "50%" }}>
         <Button
+          id="add-product-btn"
           variant="contained"
           color="primary"
           onClick={handleAddProduct}

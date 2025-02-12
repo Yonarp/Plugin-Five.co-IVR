@@ -211,10 +211,10 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   };
 
 
-  console.log("Patient Obj from Upload Documents ", patient)
 
   return (
     <Box
+      id="upload-document-container"
       sx={{
         maxWidth: "800px",
         margin: "0 auto",
@@ -250,18 +250,19 @@ const UploadDocument = ({ patient, five, setPatient }) => {
         >
           <InputLabel id="document-type-label">Document Type</InputLabel>
           <Select
+            id="document-type-select"
             labelId="document-type-label"
             value={documentType}
             onChange={handleDocumentTypeChange}
             label="Document Type"
           >
-            <MenuItem value="facesheet">Facesheet</MenuItem>
-            <MenuItem value="wound notes">Wound Notes</MenuItem>
-            <MenuItem value="identification">Identification</MenuItem>
-            <MenuItem value="Prior Authorization">Prior Authorization</MenuItem>
-            <MenuItem value="Insurance Front">Insurance Card - Front</MenuItem>
-            <MenuItem value="insurance Back">Insurance Card - Back</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
+            <MenuItem id="doc-type-facesheet" value="facesheet">Facesheet</MenuItem>
+            <MenuItem id="doc-type-wound" value="wound notes">Wound Notes</MenuItem>
+            <MenuItem id="doc-type-id" value="identification">Identification</MenuItem>
+            <MenuItem id="doc-type-auth" value="Prior Authorization">Prior Authorization</MenuItem>
+            <MenuItem id="doc-type-insurance-front" value="Insurance Front">Insurance Card - Front</MenuItem>
+            <MenuItem id="doc-type-insurance-back" value="insurance Back">Insurance Card - Back</MenuItem>
+            <MenuItem id="doc-type-other" value="other">Other</MenuItem>
           </Select>
           {errors.documentType && (
             <FormHelperText>Document type is required</FormHelperText>
@@ -270,6 +271,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
 
         {documentType === "other" && (
           <TextField
+            id="other-document-type-input"
             fullWidth
             margin="normal"
             label="Specify Document Type"
@@ -291,6 +293,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
 
         <Box sx={{ mt: 2, mb: 2 }}>
           <input
+            id="file-upload-input"
             type="file"
             accept="image/jpeg,image/png,application/pdf"
             onChange={handleFileChange}
@@ -304,6 +307,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
         </Box>
 
         <Button
+          id="upload-document-btn"
           variant="contained"
           onClick={handleUpload}
           fullWidth
@@ -314,9 +318,9 @@ const UploadDocument = ({ patient, five, setPatient }) => {
       </Box>
 
       {patient.document.length > 0 && (
-        <Box sx={{ mt: 4 }}>
+        <Box id="uploaded-files-section" sx={{ mt: 4 }}>
           <Typography variant="h6">Uploaded files:</Typography>
-          <List>
+          <List id="uploaded-files-list">
             {patient.document.map((item, index) => {
               const base64Data =
                 typeof item?.Base64 === "string"
@@ -325,6 +329,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
 
               return (
                 <Box
+                  id={`document-item-${index}`}
                   key={index}
                   sx={{
                     display: "flex",
@@ -334,6 +339,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
                   }}
                 >
                   <ListItemButton
+                    id={`document-preview-btn-${index}`}
                     onClick={() =>
                       handleDialogOpen({ ...item, Base64: base64Data })
                     }
@@ -346,7 +352,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
                     }}
                   >
                     <Typography variant="body1">
-                      {item?.Name} {/* Show full name including type */}
+                      {item?.Name}
                       <Typography
                         component="span"
                         sx={{
@@ -355,11 +361,12 @@ const UploadDocument = ({ patient, five, setPatient }) => {
                           fontSize: "0.9em",
                         }}
                       >
-                        ({item?.Category}) {/* Show document category */}
+                        ({item?.Category})
                       </Typography>
                     </Typography>
                   </ListItemButton>
                   <Button
+                    id={`delete-document-${index}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDelete(item.___DOC);
@@ -377,6 +384,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
             })}
           </List>
           <Dialog
+            id="document-preview-dialog"
             open={dialogOpen}
             onClose={handleDialogClose}
             PaperProps={{
@@ -392,6 +400,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
                 getMimeTypeFromDataUri(selectedDocument?.Base64) ===
                 "application/pdf" ? (
                   <iframe
+                    id="preview-pdf-frame"
                     src={selectedDocument?.Base64}
                     title="PDF Document"
                     width="100%"
@@ -402,6 +411,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
                     "image/"
                   ) ? (
                   <img
+                    id="preview-image"
                     src={selectedDocument?.Base64}
                     alt="Document"
                     style={{
@@ -419,7 +429,11 @@ const UploadDocument = ({ patient, five, setPatient }) => {
             </DialogContent>
 
             <DialogActions>
-              <Button onClick={handleDialogClose} color="primary">
+              <Button 
+                id="close-preview-btn"
+                onClick={handleDialogClose} 
+                color="primary"
+              >
                 Close
               </Button>
             </DialogActions>

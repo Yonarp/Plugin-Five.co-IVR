@@ -31,24 +31,29 @@ const PlaceAndDatePicker = ({placeOfServiceExternal , setPlaceOfServiceExternal}
     },[])
 
     return (
-        <div style={{display: 'flex', width: '40vw', flexDirection: 'column', margin: '10px 0px' }}>
+        <div id="place-service-container" style={{display: 'flex', width: '40vw', flexDirection: 'column', margin: '10px 0px' }}>
             {/* Place of Service Dropdown */}
             <FormControl fullWidth>
                 <InputLabel>Place of Service</InputLabel>
                 <Select
+                    id="place-service-select"
                     value={placeOfService}
                     label="Place of Service"
                     onChange={(event) => handlePlaceChange(event.target.value)}
                 >
                     {placesOfService.map((option) => (
-                        <MenuItem key={option.code} value={option.label}>
-                         {option.code} - {option.label}
+                        <MenuItem 
+                            id={`place-service-${option.code}`}
+                            key={option.code} 
+                            value={option.label}
+                        >
+                            {option.code} - {option.label}
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            </div>
-    )
+        </div>
+    );
 }
 
 

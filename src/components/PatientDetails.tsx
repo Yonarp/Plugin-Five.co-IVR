@@ -20,14 +20,12 @@ const PatientDetails = ({
   medicare,
   setMedicare,
   patient,
-  setPreventNext
+  setPreventNext,
 }) => {
-  console.log("Comes from patient Detail", patient);
   // const [hospice, setHospice] = React.useState("");
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    console.log("Check Patient", patient)
     setLoading(true);
 
     if (patient) {
@@ -45,14 +43,15 @@ const PatientDetails = ({
           alignItems: "center",
         }}
       >
-        <CircularProgress sx={{color:"#14706A"}} />
+        <CircularProgress sx={{ color: "#14706A" }} />
       </Container>
     );
   }
 
   return (
-    <Box>
+    <Box id="patient-details-container">
       <div
+        id="admission-section"
         className="IVR-page-1"
         style={{
           display: "flex",
@@ -67,6 +66,7 @@ const PatientDetails = ({
         </p>
         <FormControl component="fieldset">
           <RadioGroup
+            id="admission-radio-group"
             name="exclusive-options"
             style={{
               width: "auto",
@@ -78,13 +78,24 @@ const PatientDetails = ({
             onChange={(event) => handleRadioChange(event.target.value)}
             value={admitted === null ? "" : admitted ? "Yes" : "No"}
           >
-            <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-            <FormControlLabel value="No" control={<Radio />} label="No" />
+            <FormControlLabel
+              id="admission-yes"
+              value="Yes"
+              control={<Radio />}
+              label="Yes"
+            />
+            <FormControlLabel
+              id="admission-no"
+              value="No"
+              control={<Radio />}
+              label="No"
+            />
           </RadioGroup>
         </FormControl>
       </div>
 
       <div
+        id="medicare-section"
         className="medicare-form"
         style={{
           display: "flex",
@@ -109,6 +120,7 @@ const PatientDetails = ({
         )}
       </div>
       <div
+        id="hospice-section"
         className="medicare-form"
         style={{
           display: "flex",
@@ -122,6 +134,7 @@ const PatientDetails = ({
         </p>
         <FormControl component="fieldset">
           <RadioGroup
+            id="hospice-radio-group"
             name="exclusive-options"
             style={{
               width: "auto",
@@ -133,8 +146,18 @@ const PatientDetails = ({
             onChange={(event) => setHospiceMain(event.target.value)}
             value={hospiceMain === null ? "" : hospiceMain}
           >
-            <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-            <FormControlLabel value="No" control={<Radio />} label="No" />
+            <FormControlLabel
+              id="hospice-yes"
+              value="Yes"
+              control={<Radio />}
+              label="Yes"
+            />
+            <FormControlLabel
+              id="hospice-no"
+              value="No"
+              control={<Radio />}
+              label="No"
+            />
           </RadioGroup>
         </FormControl>
       </div>

@@ -103,7 +103,7 @@ const LCodeSelector = ({
   ];
 
   //const [stage, setStage] = useState("");
-  console.log("Loggin Stage", stage);
+
 
   const [lCodes, setLCodes] = useState([
     "L97.101", // 0
@@ -1570,7 +1570,7 @@ const LCodeSelector = ({
   }, [location, side, severity, vluSide, vluLocation, stage]);
 
   return (
-    <Box mb={10}>
+    <Box id="l-code-selector" mb={10}>
       <Box
         sx={{
           display: "flex",
@@ -1610,6 +1610,7 @@ const LCodeSelector = ({
             </Typography>
 
             <Select
+              id="l-code-location"
               value={type === "VLU" ? vluLocation : location}
               onChange={(e) => setLocation(e.target.value)}
               displayEmpty
@@ -1620,11 +1621,11 @@ const LCodeSelector = ({
                 }),
               }}
             >
-              <MenuItem value="" disabled>
+              <MenuItem id="location-default" value="" disabled>
                 <em>Select</em>
               </MenuItem>
               {selectedLcodeList.map((item) => (
-                <MenuItem key={item.value} value={item.value}>
+                <MenuItem id={`location-${item.value}`} key={item.value} value={item.value}>
                   {item.label}
                 </MenuItem>
               ))}
@@ -1660,6 +1661,7 @@ const LCodeSelector = ({
               Side{"  "}
             </Typography>
             <Select
+              id="l-code-side"
               value={type === "VLU" ? vluSide : side}
               onChange={(e) => setSide(e.target.value)}
               displayEmpty
@@ -1670,11 +1672,11 @@ const LCodeSelector = ({
                 }),
               }}
             >
-              <MenuItem value="" disabled>
+              <MenuItem id="side-default" value="" disabled>
                 <em>Select</em>
               </MenuItem>
               {lCodeSides.map((item) => (
-                <MenuItem key={item.value} value={item.value}>
+                <MenuItem id={`side-${item.value}`} key={item.value} value={item.value}>
                   {item.label}
                 </MenuItem>
               ))}
@@ -1709,16 +1711,17 @@ const LCodeSelector = ({
               Severity{"  "}
             </Typography>
             <Select
+              id="l-code-severity"
               value={severity}
               onChange={(e) => setSeverity(e.target.value)}
               displayEmpty
               sx={{ flex: 1 }}
             >
-              <MenuItem value="" disabled>
+              <MenuItem id="severity-default" value="" disabled>
                 <em>Select</em>
               </MenuItem>
               {lCodeSeverity.map((item) => (
-                <MenuItem key={item.value} value={item.value}>
+                <MenuItem id={`severity-${item.value}`} key={item.value} value={item.value}>
                   {item.label}
                 </MenuItem>
               ))}
@@ -1754,20 +1757,21 @@ const LCodeSelector = ({
             </Typography>
             {/* @ts-ignore */}
             <Select
+              id="l-code-stage"
               sx={{ flex: 1 }}
               onChange={(e) => setStage(e.target.value)}
               displayEmpty
               value={stage}
             >
-              <MenuItem value="">
+              <MenuItem id="stage-default" value="">
                 <em>Select</em>
               </MenuItem>
-              <MenuItem value="unstageable">Unstageable</MenuItem>
-              <MenuItem value="one">1</MenuItem>
-              <MenuItem value="two">2</MenuItem>
-              <MenuItem value="three">3</MenuItem>
-              <MenuItem value="four">4</MenuItem>
-              <MenuItem value="unspecified">Unspecified Stage</MenuItem>
+              <MenuItem id="stage-unstageable" value="unstageable">Unstageable</MenuItem>
+              <MenuItem id="stage-one" value="one">1</MenuItem>
+              <MenuItem id="stage-two" value="two">2</MenuItem>
+              <MenuItem id="stage-three" value="three">3</MenuItem>
+              <MenuItem id="stage-four" value="four">4</MenuItem>
+              <MenuItem id="stage-unspecified" value="unspecified">Unspecified Stage</MenuItem>
             </Select>
           </Box>
         </FormControl>
@@ -1790,22 +1794,27 @@ const LCodeSelector = ({
             L Code<span style={{ color: "red" }}>*</span>
           </Typography>
           <Select
+            id="l-code-select"
             value={lCode}
             onChange={handleLcode}
             displayEmpty
             sx={{ flex: 1 }}
           >
-            <MenuItem value="" disabled>
+            <MenuItem id="l-code-default" value="" disabled>
               <em>Select</em>
             </MenuItem>
             {lCodes.map((lcode) => (
-              <MenuItem key={lcode} value={lcode}>
+              <MenuItem id={`l-code-${lcode}`} key={lcode} value={lcode}>
                 {lcode}
               </MenuItem>
             ))}
           </Select>
           {lCode === "Other" ? (
-            <TextField placeholder="Input Ecode" onChange={handleLcodeOther} />
+            <TextField 
+              id="l-code-other-input"
+              placeholder="Input Ecode" 
+              onChange={handleLcodeOther} 
+            />
           ) : null}
         </Box>
       </FormControl>

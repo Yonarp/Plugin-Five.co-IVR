@@ -552,7 +552,6 @@ const ICDCode = ({
       inflammation: value,
     }));
 
-    console.log(inflammation);
   };
 
   /*   { label: "Diabetic foot ulcer", value: "diabetic_foot_ulcer" },
@@ -1030,7 +1029,7 @@ const ICDCode = ({
   }, [vluCondition, vluLocation, vluSide, inflammation]);
   /* TODO: Makes Labels consistent with  */
   return (
-    <Container>
+    <Container id="icd-code-container">
       <Typography
         variant="h5"
         sx={{ margin: "10px , 0", textAlign: "center" }}
@@ -1058,12 +1057,12 @@ const ICDCode = ({
           variant="outlined"
           sx={{ marginBottom: "20px", width: "50%" }}
         >
-          <Select value={woundType} displayEmpty onChange={handleWoundType}>
-            <MenuItem value="" >
+          <Select id="wound-type-select" value={woundType} displayEmpty onChange={handleWoundType}>
+            <MenuItem id="wound-type-default" value="" disabled>
               <em>Select</em>
             </MenuItem>
             {woundTypes.map((location) => (
-              <MenuItem key={location.value} value={location.value}>
+              <MenuItem id={`wound-type-${location.value}`} key={location.value} value={location.value}>
                 {location.label}
               </MenuItem>
             ))}
@@ -1091,16 +1090,17 @@ const ICDCode = ({
                 Type{"  "}
               </Typography>
               <Select
+                id="diabetes-type-select"
                 value={diabetesType}
                 displayEmpty
                 onChange={handleDiabetesType}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" >
+                <MenuItem id="diabetes-type-default" value="" disabled>
                   <em>Select</em>
                 </MenuItem>
                 {diabetesTypes.map((location) => (
-                  <MenuItem key={location.value} value={location.value}>
+                  <MenuItem id={`diabetes-type-${location.value}`} key={location.value} value={location.value}>
                     {location.label}
                   </MenuItem>
                 ))}
@@ -1126,17 +1126,18 @@ const ICDCode = ({
                 E Code<span style={{ color: "red" }}>*</span>{" "}
               </Typography>
               <Select
+                id="e-code-select"
                 value={eCode}
                 variant="outlined"
                 onChange={handleECode}
                 displayEmpty
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" >
+                <MenuItem id="e-code-default" value="" disabled>
                   <em>Select</em>
                 </MenuItem>
                 {eCodes.map((eCode) => (
-                  <MenuItem key={eCode} value={eCode}>
+                  <MenuItem id={`e-code-${eCode}`} key={eCode} value={eCode}>
                     {eCode}
                   </MenuItem>
                 ))}
@@ -1144,13 +1145,13 @@ const ICDCode = ({
 
               {eCode === "Other" ? (
                 <TextField
+                  id="e-code-other-input"
                   placeholder="Input Ecode"
                   onChange={handleECodeOther}
                 />
               ) : null}
             </Box>
           </FormControl>
-          {/* //@ts-ignore */}
           <LCode
             woundType = {woundType}
             location={lLocation}
@@ -1197,16 +1198,17 @@ const ICDCode = ({
                 Condition{" "}
               </Typography>
               <Select
+                id="vlu-condition-select"
                 value={vluCondition}
                 displayEmpty
                 onChange={handleVluCondition}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="">
+                <MenuItem id="vlu-condition-default" value="">
                   <em>Select</em>
                 </MenuItem>
                 {vluAdditional.map((location) => (
-                  <MenuItem key={location.value} value={location.value}>
+                  <MenuItem id={`vlu-condition-${location.value}`} key={location.value} value={location.value}>
                     {location.label}
                   </MenuItem>
                 ))}
@@ -1229,16 +1231,17 @@ const ICDCode = ({
                 Location{" "}
               </Typography>
               <Select
+                id="vlu-location-select"
                 value={vluLocation}
                 displayEmpty
                 onChange={handleVluLocation}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="">
+                <MenuItem id="vlu-location-default" value="">
                   <em>Select</em>
                 </MenuItem>
                 {vluPart1Selected.map((location) => (
-                  <MenuItem key={location.value} value={location.value}>
+                  <MenuItem id={`vlu-location-${location.value}`} key={location.value} value={location.value}>
                     {location.label}
                   </MenuItem>
                 ))}
@@ -1254,45 +1257,25 @@ const ICDCode = ({
                 Inflammation
               </Typography>
               <RadioGroup
+                id="inflammation-group"
                 row
                 value={String(inflammation)}
                 onChange={handleInflammation}
               >
                 <FormControlLabel
+                  id="inflammation-yes"
                   value="true"
                   control={<Radio />}
                   label="Yes"
                 />
                 <FormControlLabel
+                  id="inflammation-no"
                   value="false"
                   control={<Radio />}
                   label="No"
                 />
               </RadioGroup>
             </Box>
-
-            {/*  <FormControl>
-                <FormLabel id="inflamation-label">Inflammation</FormLabel>
-                <RadioGroup
-                  aria-labelledby="inflamation-label-radios"
-                  defaultValue="No"
-                  name="radio-buttons-group"
-                >
-                  <FormControlLabel
-                    value="No"
-                    control={<Radio />}
-                    label="No"
-                    onSelect={() => setInflamation(false)}
-                  />
-                  <FormControlLabel
-                    value="Yes"
-                    control={<Radio />}
-                    label="Yes"
-                    onSelect={() => setInflamation(true)}
-                  />
-           
-                </RadioGroup>
-              </FormControl> */}
 
             <Box
               sx={{
@@ -1310,16 +1293,17 @@ const ICDCode = ({
                 Side{" "}
               </Typography>
               <Select
+                id="vlu-side-select"
                 value={vluSide}
                 displayEmpty
                 onChange={handleVluSide}
                 sx={{ flex: 1 }}
               >
-                <MenuItem value="" >
+                <MenuItem id="vlu-side-default" value="" disabled>
                   <em>Select</em>
                 </MenuItem>
                 {vluPart2Selected.map((location) => (
-                  <MenuItem key={location.value} value={location.value}>
+                  <MenuItem id={`vlu-side-${location.value}`} key={location.value} value={location.value}>
                     {location.label}
                   </MenuItem>
                 ))}
@@ -1344,6 +1328,7 @@ const ICDCode = ({
                   I Code<span style={{ color: "red" }}>*</span>
                 </Typography>
                 <Select
+                  id="i-code-select"
                   value={iCode}
                   variant="outlined"
                   fullWidth
@@ -1351,17 +1336,18 @@ const ICDCode = ({
                   onChange={handleICode}
                   placeholder="Select"
                 >
-                  <MenuItem value="" >
+                  <MenuItem id="i-code-default" value="" disabled>
                     <em>Select</em>
                   </MenuItem>
                   {iCodes.map((iCode) => (
-                    <MenuItem key={iCode} value={iCode}>
+                    <MenuItem id={`i-code-${iCode}`} key={iCode} value={iCode}>
                       {iCode}
                     </MenuItem>
                   ))}
                 </Select>
                 {iCode === "Other" ? (
                   <TextField
+                    id="i-code-other-input"
                     placeholder="Input Icode"
                     onChange={handleICodeOther}
                   />
@@ -1370,7 +1356,7 @@ const ICDCode = ({
             </FormControl>
           </FormControl>
           <LCode
-          woundType = {woundType}
+            woundType = {woundType}
             location={lLocation}
             setLocation={setLLocation}
             side={lSide}
@@ -1410,21 +1396,23 @@ const ICDCode = ({
               Select C/D Code<span style={{ color: "red" }}>*</span>{" "}
             </Typography>
             <Select
+              id="mohs-condition-select"
               value={mohs}
               displayEmpty
               onChange={handleMohsType}
               sx={{ width: "50%" }}
             >
-              <MenuItem value="" >
+              <MenuItem id="mohs-condition-default" value="" disabled>
                 <em>Select</em>
               </MenuItem>
               {mohsConditions.map((location) => (
-                <MenuItem key={location.value} value={location.value}>
+                <MenuItem id={`mohs-condition-${location.value}`} key={location.value} value={location.value}>
                   {location.label}
                 </MenuItem>
               ))}
             </Select>
             <Select
+              id="cd-code-select"
               value={cdCode}
               variant="outlined"
               onChange={handleMohsCode}
@@ -1434,18 +1422,19 @@ const ICDCode = ({
                 marginLeft: "5px",
               }}
             >
-              <MenuItem value="" >
+              <MenuItem id="cd-code-default" value="" disabled>
                 <em>Select</em>
               </MenuItem>
-              {mohsCodes.map((mohs) => (
-                <MenuItem key={mohs} value={mohs}>
-                  {mohs}
+              {mohsCodes.map((code) => (
+                <MenuItem id={`cd-code-${code}`} key={code} value={code}>
+                  {code}
                 </MenuItem>
               ))}
             </Select>
             {cdCode === "Other" ? (
               <TextField
-                placeholder="Input Icode"
+                id="cd-code-other-input"
+                placeholder="Input CD code"
                 onChange={handleMohsCodeOther}
               />
             ) : null}
@@ -1454,7 +1443,7 @@ const ICDCode = ({
       )}
       {woundType === "Pressure ulcer" && (
         <LCode
-        woundType = {woundType}
+          woundType = {woundType}
           location={lLocation}
           setLocation={setLLocation}
           side={lSide}
@@ -1483,9 +1472,14 @@ const ICDCode = ({
             flexDirection: "column",
           }}
         >
-          <TextField placeholder="Input ICD-10 Code" sx={{ width: "60%" }} />
+          <TextField 
+            id="other-icd-code"
+            placeholder="Input ICD-10 Code" 
+            sx={{ width: "60%" }} 
+          />
           <Typography variant="h6">Comments:</Typography>
           <TextField
+            id="other-comments"
             sx={{
               width: "60%",
               "& .MuiInputBase-root": {

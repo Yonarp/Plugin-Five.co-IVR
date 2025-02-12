@@ -17,10 +17,11 @@ const MedicareForm = ({placeOfServiceExternal, setPlaceOfServiceExternal, medica
   };
   
   return (
-    <div className="medicare">
+    <div id="medicare-form" className="medicare">
       <p>Do you know if the patient had Medicare Part A or Medicare Part B</p>
       <FormControl component="fieldset">
         <RadioGroup
+          id="medicare-type-group"
           name="exclusive-options"
           style={{
             width: "auto",
@@ -31,18 +32,29 @@ const MedicareForm = ({placeOfServiceExternal, setPlaceOfServiceExternal, medica
           }}
           onChange={(event) => handleChange(event.target.value)}
         >
-          <FormControlLabel value="A" control={<Radio />} label="Part A" />
-          <FormControlLabel value="B" control={<Radio />} label="Part B" />
+          <FormControlLabel 
+            id="medicare-part-a"
+            value="A" 
+            control={<Radio />} 
+            label="Part A" 
+          />
+          <FormControlLabel 
+            id="medicare-part-b"
+            value="B" 
+            control={<Radio />} 
+            label="Part B" 
+          />
         </RadioGroup>
       </FormControl>
       {medicare === null ? null : medicare ? (
-        <PlaceAndDatePicker placeOfServiceExternal={placeOfServiceExternal} setPlaceOfServiceExternal={setPlaceOfServiceExternal}/>
+        <PlaceAndDatePicker 
+          placeOfServiceExternal={placeOfServiceExternal} 
+          setPlaceOfServiceExternal={setPlaceOfServiceExternal}
+        />
       ) : (
-        <p style = {{color: 'red'}}>
-
+        <p id="ineligible-message" style={{ color: 'red' }}>
           This treatment will not be eligible for coverage, Please do not
           continue with verification request
-
         </p>
       )} 
     </div>

@@ -93,7 +93,7 @@ const Insurance = React.memo(
     };
 
     const returnMemberNumber = (index) => {
-      console.log("From return Member number we get this  -->", index);
+     
       return index === 0
         ? patient.data?.Pay1MemberNumber
         : patient.data?.Pay2MemberNumber;
@@ -271,10 +271,10 @@ const Insurance = React.memo(
       };
 
       fetchData();
-      console.log("Patient from Insurance", patient);
+      
     }, [patient]);
 
-    console.log("From Insurance Component", payors);
+  
     if (loading) {
       return (
         <Container
@@ -289,9 +289,8 @@ const Insurance = React.memo(
         </Container>
       );
     }
-
     return (
-      <Container style={{ height: "100%", width: "100%", color: "black" }}>
+      <Container id="insurance-container" style={{ height: "100%", width: "100%", color: "black" }}>
         <Box
           style={{
             display: "flex",
@@ -313,10 +312,11 @@ const Insurance = React.memo(
           >
             Each payor must contain a member number.
           </Typography>
-          <List>
+          <List id="insurance-list">
             {payors
               ? payors.map((payor, index) => (
                   <Box
+                    id={`insurance-item-${index}`}
                     key={payor?.PayorID || index}
                     style={{
                       display: "flex",
@@ -362,6 +362,7 @@ const Insurance = React.memo(
                                 Member Number:
                               </Typography>
                               <TextField
+                                id={`member-number-${index}`}
                                 InputProps={{
                                   disableUnderline: true,
                                   readOnly: true,
@@ -401,6 +402,7 @@ const Insurance = React.memo(
                                 Group Number:
                               </Typography>
                               <TextField
+                                id={`group-number-${index}`}
                                 InputProps={{
                                   disableUnderline: true,
                                   readOnly: true,
@@ -427,6 +429,7 @@ const Insurance = React.memo(
                       />
                     </ListItem>
                     <Button
+                      id={`edit-insurance-${index}`}
                       variant="outlined"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -443,6 +446,7 @@ const Insurance = React.memo(
                       Edit
                     </Button>
                     <Delete
+                      id={`delete-insurance-${index}`}
                       style={{
                         fill: "#EC5750",
                         color: "#EC5750",
@@ -459,6 +463,7 @@ const Insurance = React.memo(
             //@ts-ignore
             payors === null || payors?.length <= 1 ? (
               <Button
+                id="add-insurance-btn"
                 variant="outlined"
                 onClick={(e) => {
                   e.stopPropagation();

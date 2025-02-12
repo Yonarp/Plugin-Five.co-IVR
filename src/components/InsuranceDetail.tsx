@@ -157,60 +157,22 @@ const InsuranceDetail = ({
 
 
 
-
-
-  return (
-    <Dialog open={dialogOpenExternal} onClose={onClose}>
-      <DialogContent>
-        <Container
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            fontSize: ".5rem",
-          }}
-        >
-          <Typography variant="h5" mb={5}>
-            Upload Insurance Details
-          </Typography>
-          <Box
-            mb={2}
+    return (
+      <Dialog id="insurance-detail-dialog" open={dialogOpenExternal} onClose={onClose}>
+        <DialogContent>
+          <Container
             style={{
               display: "flex",
-              flexDirection: "row",
+              width: "100%",
               justifyContent: "center",
               alignItems: "center",
+              flexDirection: "column",
+              fontSize: ".5rem",
             }}
           >
-            <Typography mr={3} sx={{ minWidth: 120 }}>
-              Company Name:
+            <Typography variant="h5" mb={5}>
+              Upload Insurance Details
             </Typography>
-            <Autocomplete
-              options={[...CompanyNames, "Other"]}
-              getOptionLabel={(option) => option}
-              placeholder="Search"
-              value={formState.CompanyName}
-              onChange={(event, newValue) => {
-                setIsOtherSelected(newValue === "Other");
-                setFormState((prevState) => ({
-                  ...prevState,
-                  CompanyName: newValue || "",
-                }));
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Company Name"
-                  placeholder="Search"
-                  margin="normal"
-                  sx={{ minWidth: 250 }}  // Adjust the width here
-                />
-              )}
-            />
-          </Box>
-          {isOtherSelected && (
             <Box
               mb={2}
               style={{
@@ -221,87 +183,136 @@ const InsuranceDetail = ({
               }}
             >
               <Typography mr={3} sx={{ minWidth: 120 }}>
-                Enter Company Name:
+                Company Name:
+              </Typography>
+              <Autocomplete
+                id="company-name-autocomplete"
+                options={[...CompanyNames, "Other"]}
+                getOptionLabel={(option) => option}
+                placeholder="Search"
+                value={formState.CompanyName}
+                onChange={(event, newValue) => {
+                  setIsOtherSelected(newValue === "Other");
+                  setFormState((prevState) => ({
+                    ...prevState,
+                    CompanyName: newValue || "",
+                  }));
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    id="company-name-input"
+                    label="Company Name"
+                    placeholder="Search"
+                    margin="normal"
+                    sx={{ minWidth: 250 }}
+                  />
+                )}
+              />
+            </Box>
+            {isOtherSelected && (
+              <Box
+                mb={2}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography mr={3} sx={{ minWidth: 120 }}>
+                  Enter Company Name:
+                </Typography>
+                <TextField
+                  id="company-name-other"
+                  label="Company Name"
+                  margin="normal"
+                  sx={{ minWidth: 300 }}
+                  name="CompanyName"
+                  value={formState.CompanyName}
+                  onChange={handleInputChange}
+                />
+              </Box>
+            )}
+            <Box
+              mb={2}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography mr={3} sx={{ minWidth: 120 }}>
+                Member Number:
               </Typography>
               <TextField
-                label="Company Name"
+                id="member-number-input"
+                label="Member Number"
                 margin="normal"
-                sx={{ minWidth: 300 }}
-                name="CompanyName"
-                value={formState.CompanyName}
+                sx={{ minWidth: 170 }}
+                name="PayorID"
+                value={formState.PayorID}
                 onChange={handleInputChange}
               />
             </Box>
-          )}
-          <Box
-            mb={2}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography mr={3} sx={{ minWidth: 120 }}>
-              Member Number:
-            </Typography>
-            <TextField
-              label="Member Number"
-              margin="normal"
-              sx={{ minWidth: 170 }}
-              name="PayorID"
-              value={formState.PayorID}
-              onChange={handleInputChange}
-            />
-          </Box>
-          <Box
-            mb={2}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography mr={3} sx={{ minWidth: 120 }}>
-              Group Number:
-            </Typography>
-            <TextField
-              label="Group Number"
-              margin="normal"
-              sx={{ minWidth: 170 }}
-              name="groupNumber"
-              value={formState.groupNumber}
-              onChange={handleInputChange}
-            />
-          </Box>
-
-        
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            style={{ marginTop: "20px", background: "#14706A", color: "white" }}
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-        </Container>
-      </DialogContent>
-      <Dialog open={dialogOpen} onClose={handleDialogClose}>
-        <DialogTitle>Upload Image</DialogTitle>
-        <DialogContent>
-          <input type="file" onChange={handleFileChange} accept="image/jpeg,image/png,application/pdf" />
+            <Box
+              mb={2}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography mr={3} sx={{ minWidth: 120 }}>
+                Group Number:
+              </Typography>
+              <TextField
+                id="group-number-input"
+                label="Group Number"
+                margin="normal"
+                sx={{ minWidth: 170 }}
+                name="groupNumber"
+                value={formState.groupNumber}
+                onChange={handleInputChange}
+              />
+            </Box>
+  
+            <Button
+              id="insurance-submit-btn"
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{ marginTop: "20px", background: "#14706A", color: "white" }}
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
+          </Container>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} style={{ color: "#14706A" }}>
-            Cancel
-          </Button>
-        </DialogActions>
+        <Dialog id="upload-dialog" open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>Upload Image</DialogTitle>
+          <DialogContent>
+            <input 
+              id="insurance-file-input"
+              type="file" 
+              onChange={handleFileChange} 
+              accept="image/jpeg,image/png,application/pdf" 
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button 
+              id="upload-cancel-btn"
+              onClick={handleDialogClose} 
+              style={{ color: "#14706A" }}
+            >
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Dialog>
-    </Dialog>
-  );
+    );
 };
 
 export default InsuranceDetail;
