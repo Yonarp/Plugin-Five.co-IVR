@@ -1,6 +1,5 @@
 //@ts-nocheck
 
-//TODO: Remember to update FDF functions: pushPayer, getall
 
 //import { ThemeProvider } from "@mui/system";
 import React, { useCallback, useEffect, useState } from "react";
@@ -16,10 +15,16 @@ import {
   FiveInitialize,
 } from "./FivePluginApi";
 
-import Lottie from 'lottie-react';
+import Lottie from "lottie-react";
 import animationData from "./lottieComplete.json";
 import { CustomFieldProps } from "../../../common";
-import { Alert, Container, DialogContentText, Snackbar, Zoom } from "@mui/material";
+import {
+  Alert,
+  Container,
+  DialogContentText,
+  Snackbar,
+  Zoom,
+} from "@mui/material";
 import Insurance from "./components/Insurance";
 import Products from "./components/Products";
 import CPTCode from "./components/CPTCode";
@@ -34,20 +39,11 @@ import UploadDocument from "./components/UploadDocument";
 
 FiveInitialize();
 const CustomField = (props: CustomFieldProps) => {
-
   // Styles for the custom Dialog box that triggers after handle Submit
-  const CustomDialogContent = styled(DialogContent)(({theme}) => ({
-    padding: '5px',
-    fontWeight: 'bold'
-
-  }))
-
-
-
-
-
-
-
+  const CustomDialogContent = styled(DialogContent)(({ theme }) => ({
+    padding: "5px",
+    fontWeight: "bold",
+  }));
 
   // Initialize states
   const [activeStep, setActiveStep] = useState(0);
@@ -108,7 +104,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [hospice, setHospice] = useState(null);
   const [medicare, setMedicare] = useState(null);
   // A state to check if the next button should be displayed or not based on the answer on the medicare Form
-  const [preventNext, setPreventNext] = useState(false)
+  const [preventNext, setPreventNext] = useState(false);
   //@ts-ignore
   const { theme, value, variant, five, formField, selectedRecord } = props;
 
@@ -122,10 +118,14 @@ const CustomField = (props: CustomFieldProps) => {
 
   const AccountDetails = selectedRecord?.data;
 
+
   const totalSteps = 9;
   const existingPatient =
     //@ts-ignore
-    five.actionID() !== "IVR" && five.actionID() !== "Accounts" && five.actionID() !== "AccountsDis" && five.actionID() !== "AccountsSalesRep";
+    five.actionID() !== "IVR" &&
+    five.actionID() !== "Accounts" &&
+    five.actionID() !== "AccountsDis" &&
+    five.actionID() !== "AccountsSalesRep";
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -140,10 +140,9 @@ const CustomField = (props: CustomFieldProps) => {
           null,
           null,
           (result) => {
-    
             const data = JSON.parse(result.serverResponse.results);
             const ivr = data.ivr;
-  
+
             /* setData(JSON.parse(result.serverResponse.results)); */
             setIVR(data);
             handlePatient(data?.patient);
@@ -278,8 +277,8 @@ const CustomField = (props: CustomFieldProps) => {
       return 0;
     }
 
-    if(practitioner === null) {
-      five.showMessage("Please select a valid practitoner for this IVR")
+    if (practitioner === null) {
+      five.showMessage("Please select a valid practitoner for this IVR");
       return 0;
     }
 
@@ -321,8 +320,6 @@ const CustomField = (props: CustomFieldProps) => {
         }
       );
     } else {
-     
-
       const IVR = {
         link: selectedRecord.data.editLink,
         products,
@@ -350,13 +347,9 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         null,
         null,
-        (result) => {
-         
-        }
+        (result) => {}
       );
     }
-
-
 
     const submissionText = {
       message: complete ? "Submission Successful" : "The IVR has been saved.",
@@ -396,7 +389,7 @@ const CustomField = (props: CustomFieldProps) => {
   // Revised useEffect
   useEffect(() => {
     //@ts-ignore
- 
+
     if (five.internal.actionID === "IVR") {
       handleDialogOpen();
     }
@@ -407,23 +400,29 @@ const CustomField = (props: CustomFieldProps) => {
 
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
-
-
-    if(activeStep === 1 ) {
+    if (activeStep === 1) {
       let flag = 0;
-      for(let item of patient.document) {
-  
-        if(item.Category === 'facesheet' || item.Category ==='Insurance Front' ) {
-          
+      for (let item of patient.document) {
+        if (
+          item.Category === "facesheet" ||
+          item.Category === "Insurance Front"
+        ) {
           flag = 1;
           break;
-        } 
+        }
       }
 
-      if(flag !== 1){
-        five.message("Please be sure to include either a facesheet which includes a pay or policy number or a photo of a Medicare card.");
-        return 0
+      if (flag !== 1) {
+        five.message(
+          "Please be sure to include either a facesheet which includes a pay or policy number or a photo of a Medicare card."
+        );
+        return 0;
       }
+    }
+
+    if (activeStep === 2 && practitioner === null) {
+      five.message("Please select a practitioner.");
+      return 0;
     }
 
     if (
@@ -431,11 +430,6 @@ const CustomField = (props: CustomFieldProps) => {
       (hospice === null || admitted === null || placeOfService === null)
     ) {
       five.message("Please fill in the required fields.");
-      return 0;
-    }
-
-    if (activeStep === 2 && practitioner === null) {
-      five.message("Please select a practitioner.");
       return 0;
     }
 
@@ -457,8 +451,6 @@ const CustomField = (props: CustomFieldProps) => {
     }
 
     if (activeStep === 6) {
-    
-
       if (cptWound === null || cptWound === "") {
         five.message("Please specify the wound type");
         return 0;
@@ -539,7 +531,7 @@ const CustomField = (props: CustomFieldProps) => {
           alignItems: "center",
         }}
       >
-        <CircularProgress sx={{color:"#14706A"}} />
+        <CircularProgress sx={{ color: "#14706A" }} />
       </Container>
     );
   }
@@ -641,23 +633,30 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
 
-          {activeStep === 1 &&  (patient ? ( <UploadDocument patient={patient} five={five} setPatient = {setPatient}/>) : (
+          {activeStep === 1 &&
+            (patient ? (
+              <UploadDocument
+                patient={patient}
+                five={five}
+                setPatient={setPatient}
+              />
+            ) : (
               <Container
                 style={{
                   display: "flex",
                   width: "100%",
                   height: "100%",
                   justifyContent: "center",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
-                <CircularProgress sx={{color:"#14706A"}} />
-              </Container>) )}
+                <CircularProgress sx={{ color: "#14706A" }} />
+              </Container>
+            ))}
 
           {activeStep === 3 &&
             (patient ? (
-            
-             <PatientDetails
+              <PatientDetails
                 patient={patient}
                 admitted={admitted}
                 handleRadioChange={handleRadioChange}
@@ -666,9 +665,9 @@ const CustomField = (props: CustomFieldProps) => {
                 hospiceMain={hospice}
                 setHospiceMain={setHospice}
                 medicare={medicare}
-                setPreventNext = {setPreventNext}
+                setPreventNext={setPreventNext}
                 setMedicare={setMedicare}
-              /> 
+              />
             ) : (
               <Container
                 style={{
@@ -676,10 +675,10 @@ const CustomField = (props: CustomFieldProps) => {
                   width: "100%",
                   height: "100%",
                   justifyContent: "center",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
               >
-                <CircularProgress sx={{color:"#14706A"}} />
+                <CircularProgress sx={{ color: "#14706A" }} />
               </Container>
             ))}
           {activeStep === 2 && (
@@ -702,7 +701,12 @@ const CustomField = (props: CustomFieldProps) => {
             />
           )}
           {activeStep === 5 && (
-            <Products five={five} setProducts={setProducts} productsSaved={products} account={account} />
+            <Products
+              five={five}
+              setProducts={setProducts}
+              productsSaved={products}
+              account={account}
+            />
           )}
           {activeStep === 6 && (
             <ICDCode
@@ -804,6 +808,7 @@ const CustomField = (props: CustomFieldProps) => {
                 }}
               >
                 <Button
+                  id="button-save"
                   onClick={() => handleSubmit(false)}
                   style={{
                     width: "100px",
@@ -817,6 +822,7 @@ const CustomField = (props: CustomFieldProps) => {
                   Save
                 </Button>
                 <Button
+                  id="button-previous"
                   onClick={handleBack}
                   style={{
                     width: "100px",
@@ -834,6 +840,7 @@ const CustomField = (props: CustomFieldProps) => {
 
             {activeStep === 8 ? (
               <Button
+                id="button-submit"
                 onClick={() => handleSubmit(true)}
                 style={{
                   width: "100px",
@@ -846,20 +853,25 @@ const CustomField = (props: CustomFieldProps) => {
               >
                 Submit
               </Button>
-            ) : activeStep !== 0 ? ( (activeStep === 2 && preventNext === true) ? <></> : (
-              <Button
-                onClick={handleNext}
-                style={{
-                  width: "100px",
-                  height: "50px",
-                  borderRadius: "0px",
-                  background: "#14706A",
-                  color: "white",
-                  margin: "20px",
-                }}
-              >
-                Next
-              </Button>)
+            ) : activeStep !== 0 ? (
+              activeStep === 2 && preventNext === true ? (
+                <></>
+              ) : (
+                <Button
+                  id="button-next"
+                  onClick={handleNext}
+                  style={{
+                    width: "100px",
+                    height: "50px",
+                    borderRadius: "0px",
+                    background: "#14706A",
+                    color: "white",
+                    margin: "20px",
+                  }}
+                >
+                  Next
+                </Button>
+              )
             ) : null}
           </Box>
         </DialogContent>
@@ -888,15 +900,29 @@ const CustomField = (props: CustomFieldProps) => {
           </Alert>
         </Snackbar>
       </Dialog>
-      <Dialog open={customDialogOpen} onClose={handleCustomDialogClose} TransitionComponent={Zoom}>
-        <DialogTitle>Submission</DialogTitle>
+      <Dialog
+        open={customDialogOpen}
+        onClose={handleCustomDialogClose}
+        TransitionComponent={Zoom}
+        id='lottie-dialog-box'
+      >
+        <DialogTitle id='lottie-dialog-title'>Submission</DialogTitle>
         <CustomDialogContent>
           <DialogContentText>
-            <Lottie animationData={animationData} style={{ height: 200, width: 200 }} loop={false}/>
+            <Lottie
+              id='lottie-dialog-animation'
+              animationData={animationData}
+              style={{ height: 200, width: 200 }}
+              loop={false}
+            />
           </DialogContentText>
         </CustomDialogContent>
         <DialogActions>
-          <Button onClick={handleCustomDialogClose} style={{ color: "#14706A" }}>
+          <Button
+            id="lottie-button-ok"
+            onClick={handleCustomDialogClose}
+            style={{ color: "#14706A" }}
+          >
             OK
           </Button>
         </DialogActions>

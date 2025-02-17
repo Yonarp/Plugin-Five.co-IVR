@@ -15,6 +15,8 @@ import {
   DialogContent,
   DialogActions,
   ListItemButton,
+  CircularProgress,
+  Container
 } from "@mui/material";
 
 const UploadDocument = ({ patient, five, setPatient }) => {
@@ -23,6 +25,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedFilesBase64, setSelectedFilesBase64] = useState([]);
   const [documentTypes, setDocumentTypes] = useState([]);
+  const [loading, setLoading] = useState(false)
   const [documentNames, setDocumentNames] = useState([]);
 
   // Form field states
@@ -40,7 +43,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
     selectedFiles: false,
   });
 
-  useEffect(() => {}, []);
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -68,6 +71,9 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   };
 
   const pushDocument = async (base64String) => {
+
+
+
     const documentObj = {
       PatientKey: patient.data.___PAT,
       Category: documentType,
@@ -75,7 +81,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
       Base64: base64String,
     };
 
-    console.log("Document being pushed:", documentObj);
+    setLoading(true)
 
     await five.executeFunction(
       "pushDocument",
@@ -96,6 +102,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
           ...prevPatient,
           document: [...prevPatient.document, newDocument],
         }));
+        setLoading(false)
       }
     );
   };
@@ -211,6 +218,20 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   };
 
 
+  if (loading) {
+    return (
+      <Container
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress sx={{color:"#14706A"}} />
+      </Container>
+    );
+  }
 
   return (
     <Box

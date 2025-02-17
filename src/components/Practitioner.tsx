@@ -6,24 +6,27 @@ import {
   ListItemText,
   Typography,
 } from "../FivePluginApi";
-const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,account }) => {
-  const [selectedIndex, setSelectedIndex] = React.useState( practitioner ? practitioner : null);
+const Practitioner = ({
+  five,
+  setPractitioner,
+  practitioner,
+  existingPatient,
+  account,
+}) => {
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    practitioner ? practitioner : null
+  );
   const [practitioners, setPractitioners] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-
 
   const handleClick = (index, practitioner) => {
     setSelectedIndex(index);
     setPractitioner(practitioner, index);
   };
 
-  
-
   useEffect(() => {
-
-
     if (practitioner) {
-      setSelectedIndex(practitioner?.index)
+      setSelectedIndex(practitioner?.index);
     }
 
     if (practitioners === null) {
@@ -36,8 +39,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
           null,
           null,
           (result) => {
-
-            const data = JSON.parse(result.serverResponse.results)
+            const data = JSON.parse(result.serverResponse.results);
             const sortedData = data.sort((a, b) => {
               if (a.NameFirst < b.NameFirst) {
                 return -1;
@@ -47,15 +49,14 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
               }
               return 0;
             });
-            
 
             setPractitioners(sortedData);
-            if(existingPatient){
-              data.map((item,index) => {
-                if(item?.___USR === practitioner?.data.___USR){
-                  setSelectedIndex(index)
-               }
-              })
+            if (existingPatient) {
+              data.map((item, index) => {
+                if (item?.___USR === practitioner?.data.___USR) {
+                  setSelectedIndex(index);
+                }
+              });
             }
             setLoading(false);
           }
@@ -78,13 +79,13 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
           alignItems: "center",
         }}
       >
-        <CircularProgress sx={{color:"#14706A"}} />
+        <CircularProgress sx={{ color: "#14706A" }} />
       </Container>
     );
   }
 
   return (
-    <Container>
+    <Container id="practitioner-container">
       <Typography
         mt={6}
         variant="h5"
@@ -92,16 +93,13 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
       >
         Select a practitioner for this request
       </Typography>
-      <List style={{marginBottom: '70px'}}>
+      <List id="practitioners-list" style={{ marginBottom: "70px" }}>
         {practitioners ? (
           practitioners.map((practitionerItem, index) => {
-            
-      
-            return  practitionerItem.Title === 'Practitioner' ? 
-             (
+            return practitionerItem.Title === "Practitioner" ? (
               <ListItemButton
+                id={`practitioner-item-${index}`}
                 key={index}
-                //@ts-ignore
                 selected={selectedIndex === index}
                 onClick={() => handleClick(index, practitionerItem)}
                 sx={{
@@ -116,6 +114,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
                 }}
               >
                 <ListItemText
+                  id={`practitioner-text-${index}`}
                   primary={practitionerItem.NameFull}
                   secondary={practitionerItem.Email}
                 />
@@ -123,7 +122,7 @@ const Practitioner = ({ five, setPractitioner, practitioner, existingPatient,acc
             ) : null;
           })
         ) : (
-          <CircularProgress sx={{color:"#14706A"}} />
+          <CircularProgress sx={{ color: "#14706A" }} />
         )}
       </List>
     </Container>
