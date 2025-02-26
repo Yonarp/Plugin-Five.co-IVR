@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -8,6 +8,7 @@ import {
   FormControlLabel,
   ListItemButton,
   Container,
+  CircularProgress,
 } from "@mui/material";
 import {
   Button,
@@ -28,15 +29,18 @@ const Summary = ({
   lCode,
   cdCode,
   cptCode,
+  account,
+  five,
   npi,
   payors,
   setReadyToSubmit,
 }) => {
-  
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false)
+  //@ts-ignore
+  const [personalNPI, setPersonalNPI] = useState("")
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-
   // Handle checkbox change
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -68,7 +72,41 @@ const Summary = ({
     return mimeType ? mimeType[1] : null;
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      five.executeFunction(
+        "getAccount",
+        account,
+        null,
+        null,
+        null,
+        (result) => {
+          const data = JSON.parse(result.serverResponse.results);
+          console.log("From Get Accounts", data )
+          setPersonalNPI(data?.response.NPIPersonal)
+          setLoading(false);
+        }
+      );
+    };
+    fetchData()
+  }, []);
+  console.log("Logging Practitoner", practitioner)
 
+
+  if (loading) {
+      return (
+        <Container
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress sx={{color:"#14706A"}} />
+        </Container>
+      );
+    }
 
   return (
     <Container id="summary-container" style={{ width: "100%" }}>
@@ -81,7 +119,7 @@ const Summary = ({
         <Typography variant="h6" gutterBottom>
           Insurance Verification Request
         </Typography>
-        
+
         <TextField
           id="practitioner-field"
           label="Practitioner"
@@ -94,10 +132,22 @@ const Summary = ({
           size="small"
         />
 
-        <TextField                                                                      
+        <TextField
           id="npi-field"
-          label="NPI"
+          label="Group NPI"
           value={npi}
+          fullWidth
+          margin="dense"
+          InputProps={{
+            readOnly: true,
+          }}
+          size="small"
+        />
+        
+        <TextField
+          id="npi-field"
+          label="Personal NPI"
+          value={practitioner.data.NPI}
           fullWidth
           margin="dense"
           InputProps={{
@@ -134,14 +184,18 @@ const Summary = ({
           {products && products.length > 0 && products[0]?.name ? (
             <Grid id="product-1-grid" item xs={6}>
               <Typography variant="body1">Product 1</Typography>
-              <Typography variant="body2">{products[0].brandname} - {products[0].qcode}</Typography>
+              <Typography variant="body2">
+                {products[0].brandname} - {products[0].qcode}
+              </Typography>
             </Grid>
           ) : null}
 
           {products && products.length > 1 && products[1]?.name ? (
             <Grid id="product-2-grid" item xs={6}>
               <Typography variant="body1">Product 2</Typography>
-              <Typography variant="body2">{products[1].brandname} - {products[1].qcode}</Typography>
+              <Typography variant="body2">
+                {products[1].brandname} - {products[1].qcode}
+              </Typography>
             </Grid>
           ) : null}
         </Grid>
@@ -273,9 +327,9 @@ const Summary = ({
         </DialogContent>
 
         <DialogActions>
-          <Button 
+          <Button
             id="close-preview-btn"
-            onClick={handleDialogClose} 
+            onClick={handleDialogClose}
             color="primary"
           >
             Close

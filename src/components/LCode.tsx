@@ -51,8 +51,6 @@ const LCodeSelector = ({
     { label: "Calf", value: "calf" },
     { label: "Ankle", value: "ankle" },
     { label: "Heel", value: "heel" },
-    { label: "Other Part of Foot", value: "other_foot" },
-    { label: "Other Part of Lower Leg", value: "other_lower_leg" },
     { label: "Unspecified Part of Lower Leg", value: "unspecified" },
     { label: "Buttock", value: "buttock" },
     { label: "Hip", value: "hip" },
@@ -1672,7 +1670,7 @@ const LCodeSelector = ({
                 }),
               }}
             >
-              <MenuItem id="side-default" value="" disabled>
+              <MenuItem id="side-default" value="">
                 <em>Select</em>
               </MenuItem>
               {lCodeSides.map((item) => (
@@ -1717,7 +1715,7 @@ const LCodeSelector = ({
               displayEmpty
               sx={{ flex: 1 }}
             >
-              <MenuItem id="severity-default" value="" disabled>
+              <MenuItem id="severity-default" value="">
                 <em>Select</em>
               </MenuItem>
               {lCodeSeverity.map((item) => (

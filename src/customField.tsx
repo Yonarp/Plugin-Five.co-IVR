@@ -1,6 +1,5 @@
 //@ts-nocheck
 
-
 //import { ThemeProvider } from "@mui/system";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -118,7 +117,6 @@ const CustomField = (props: CustomFieldProps) => {
 
   const AccountDetails = selectedRecord?.data;
 
-
   const totalSteps = 9;
   const existingPatient =
     //@ts-ignore
@@ -142,7 +140,6 @@ const CustomField = (props: CustomFieldProps) => {
           (result) => {
             const data = JSON.parse(result.serverResponse.results);
             const ivr = data.ivr;
-
             /* setData(JSON.parse(result.serverResponse.results)); */
             setIVR(data);
             handlePatient(data?.patient);
@@ -160,7 +157,8 @@ const CustomField = (props: CustomFieldProps) => {
             setPlaceOfService(ivr?.PlaceofService);
           }
         );
-      }
+      } 
+
       await five.executeFunction(
         "getAccountPatients",
         //@ts-ignore
@@ -180,9 +178,7 @@ const CustomField = (props: CustomFieldProps) => {
       // Check patient selection status
       //@ts-ignore
     }
-
     fetchData();
-
     //@ts-ignore
   };
 
@@ -398,6 +394,7 @@ const CustomField = (props: CustomFieldProps) => {
     }
   }, [dialogOpen, existingPatient, activeStep, ivr, hospice, patient]);
 
+
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
     if (activeStep === 1) {
@@ -546,7 +543,7 @@ const CustomField = (props: CustomFieldProps) => {
         style={{
           background: "#14706A",
           color: "white",
-        }} // Open the dialog on button click
+        }}
       >
         {existingPatient ? "Open IVR" : "Start IVR"}
       </Button>
@@ -751,12 +748,14 @@ const CustomField = (props: CustomFieldProps) => {
           )}
           {activeStep === 8 && (
             <Summary
+              account={account}
               patient={patient}
               products={products}
               payors={payors}
               practitioner={practitioner}
               iCode={iCode}
               lCode={lCode}
+              five={five}
               eCode={eCode}
               cdCode={cdCode}
               cptCode={cptCode}
@@ -904,13 +903,13 @@ const CustomField = (props: CustomFieldProps) => {
         open={customDialogOpen}
         onClose={handleCustomDialogClose}
         TransitionComponent={Zoom}
-        id='lottie-dialog-box'
+        id="lottie-dialog-box"
       >
-        <DialogTitle id='lottie-dialog-title'>Submission</DialogTitle>
+        <DialogTitle id="lottie-dialog-title">Submission</DialogTitle>
         <CustomDialogContent>
           <DialogContentText>
             <Lottie
-              id='lottie-dialog-animation'
+              id="lottie-dialog-animation"
               animationData={animationData}
               style={{ height: 200, width: 200 }}
               loop={false}
