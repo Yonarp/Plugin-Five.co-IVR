@@ -31,7 +31,7 @@ const Summary = ({
   cptCode,
   account,
   five,
-  npi,
+  //npi,
   payors,
   setReadyToSubmit,
 }) => {
@@ -39,6 +39,7 @@ const Summary = ({
   const [loading, setLoading] = useState(false)
   //@ts-ignore
   const [personalNPI, setPersonalNPI] = useState("")
+  const [accountNPI, setAccountNPI] = useState("")
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   // Handle checkbox change
@@ -82,8 +83,9 @@ const Summary = ({
         null,
         (result) => {
           const data = JSON.parse(result.serverResponse.results);
-          console.log("From Get Accounts", data )
-          setPersonalNPI(data?.response.NPIPersonal)
+          console.log("From Get Accounts", data );
+          setPersonalNPI(data?.response?.NPIPersonal);
+          setAccountNPI(data?.response?.NPI);
           setLoading(false);
         }
       );
@@ -135,7 +137,7 @@ const Summary = ({
         <TextField
           id="npi-field"
           label="Group NPI"
-          value={npi}
+          value={accountNPI}
           fullWidth
           margin="dense"
           InputProps={{
@@ -147,7 +149,7 @@ const Summary = ({
         <TextField
           id="npi-field"
           label="Personal NPI"
-          value={practitioner.data.NPI}
+          value={personalNPI}
           fullWidth
           margin="dense"
           InputProps={{
