@@ -30,6 +30,7 @@ const MedicareForm = ({placeOfServiceExternal, setPlaceOfServiceExternal, medica
             justifyContent: "space-around",
             marginLeft: "10px",
           }}
+          value={medicare ? "B" : "A"}
           onChange={(event) => handleChange(event.target.value)}
         >
           <FormControlLabel 

@@ -25,13 +25,14 @@ const PatientDetails = ({
   // const [hospice, setHospice] = React.useState("");
   const [loading, setLoading] = React.useState(true);
 
+
   useEffect(() => {
     setLoading(true);
 
     if (patient) {
       setLoading(false);
     }
-  }, []);
+  }, [patient]);
 
   if (loading) {
     return (
@@ -76,7 +77,7 @@ const PatientDetails = ({
               marginLeft: "10px",
             }}
             onChange={(event) => handleRadioChange(event.target.value)}
-            value={admitted === null ? "" : admitted ? "Yes" : "No"}
+            value={admitted}
           >
             <FormControlLabel
               id="admission-yes"
@@ -104,7 +105,7 @@ const PatientDetails = ({
           alignItems: "center",
         }}
       >
-        {admitted === null ? null : admitted ? (
+        {admitted === null ? null : (admitted === "Yes"  ? (
           <MedicareForm
             placeOfServiceExternal={placeOfService}
             setPlaceOfServiceExternal={setPlaceOfService}
@@ -117,7 +118,7 @@ const PatientDetails = ({
             placeOfServiceExternal={placeOfService}
             setPlaceOfServiceExternal={setPlaceOfService}
           />
-        )}
+        ))}
       </div>
       <div
         id="hospice-section"
@@ -144,7 +145,7 @@ const PatientDetails = ({
               marginLeft: "10px",
             }}
             onChange={(event) => setHospiceMain(event.target.value)}
-            value={hospiceMain === null ? "" : hospiceMain}
+            value={hospiceMain}
           >
             <FormControlLabel
               id="hospice-yes"

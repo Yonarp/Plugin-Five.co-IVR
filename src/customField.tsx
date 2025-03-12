@@ -33,7 +33,7 @@ import ICDCode from "./components/ICDCode";
 import Summary from "./components/Summary";
 import NewPatient from "./components/NewPatient";
 import PatientDetails from "./components/PatientDetails";
-import { Padding } from "@mui/icons-material";
+import { Description, Padding } from "@mui/icons-material";
 import UploadDocument from "./components/UploadDocument";
 
 FiveInitialize();
@@ -70,6 +70,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [payors, setPayors] = useState([]);
   const [products, setProducts] = useState([]);
   const [practitioner, setPractitioner] = useState(null);
+  const [primaryPractitioner, setPrimaryPractitioner] = useState(null);
   const [newPatient, setNewPatient] = useState(false);
   const [iCode, setICode] = useState(null);
   const [lCode, setLCode] = useState(null);
@@ -100,7 +101,10 @@ const CustomField = (props: CustomFieldProps) => {
   const [loading, setLoading] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [readyToSubmit, setReadyToSubmit] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState([])
   const [hospice, setHospice] = useState(null);
+  const [accountKey, setAccountKey] = useState(null);
+  const [account, setAccount] = useState({});
   const [medicare, setMedicare] = useState(null);
   // A state to check if the next button should be displayed or not based on the answer on the medicare Form
   const [preventNext, setPreventNext] = useState(false);
@@ -111,10 +115,6 @@ const CustomField = (props: CustomFieldProps) => {
 
   //@ts-ignore
 
-  const account = {
-    AccountKey: selectedRecord?.data?.ACT,
-  };
-
   const AccountDetails = selectedRecord?.data;
 
   const totalSteps = 9;
@@ -124,12 +124,38 @@ const CustomField = (props: CustomFieldProps) => {
     five.actionID() !== "Accounts" &&
     five.actionID() !== "AccountsDis" &&
     five.actionID() !== "AccountsSalesRep";
+  /*   let account;
+
+  if (!existingPatient) {
+    let account = {
+      AccountKey: selectedRecord?.data?.ACT,
+    };
+  } */
+
+  const getPrimaryPractitionerData = async (account) => {
+    await five.executeFunction(
+      "getPrimaryPractitioner",
+      //@ts-ignore
+      account,
+      null,
+      null,
+      null,
+      (result) => {
+        const dataPrac = JSON.parse(result.serverResponse.results);
+        setPrimaryPractitioner(dataPrac?.response);
+      }
+    );
+  };
+
+  const getPatients = async (account) => {};
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
+    setLoading(true);
 
     const fetchData = async () => {
       if (existingPatient) {
+        setActiveStep(1);
         await five.executeFunction(
           "getIVRDetails",
           //@ts-ignore
@@ -138,39 +164,111 @@ const CustomField = (props: CustomFieldProps) => {
           null,
           null,
           (result) => {
+
+            /*  patient: patient?.data?.___PAT,
+                products,
+                admitted,
+                placeOfService,
+                practitioner,
+                status: complete ? "Pending" : "Unsubmitted",
+                eCode,
+                iCode,
+                lCode,
+                cdCode,
+                cptCode,
+                cptCode2,
+                Date: getFormattedDate(),
+                vlu,
+                mohs,
+                diabeticFU,
+                cptWound,
+                pressureUlcer,
+                cptWoundSize,
+                cptWoundSize2,
+                payors,
+                AccountKey: selectedRecord?.data?.ACT, 
+            */
+
+
             const data = JSON.parse(result.serverResponse.results);
             const ivr = data.ivr;
-            /* setData(JSON.parse(result.serverResponse.results)); */
+            console.log("Logging IVR details -----------------------------------------------------> ",data)
             setIVR(data);
-            handlePatient(data?.patient);
+            setAccountKey(ivr.__ACT);
+            setAccount({
+              AccountKey: ivr.__ACT,
+            });
+            const accountObj = {
+              AccountKey: ivr.__ACT,
+            };
+            getPrimaryPractitionerData(accountObj);
+            handlePatient(data?.patient, null, data?.document);
             setLCode(ivr?.ICD10_L);
             setICode(ivr?.ICD10_I);
             setCPTCode(ivr?.CPTCODE);
+            setCPTCode2(ivr?.CPTCODE2);
+            setDiabeticFU(ivr?.WoundSubTypeE)
+            setMedicare(ivr?.MedicareCoverage);
+            setPressureUlcer((prevState) => ({
+              ...prevState,
+              location: ivr?.WoundSubLocationL,
+              side: ivr?.WoundSubSideL,
+              severity: ivr?.WoundSubSeverityL,
+              stage: ivr?.WoundSubStageL
+            }));
+            setVLU((prevState) => ({
+              ...prevState,
+              location: ivr?.WoundSubLocationI,
+              condition: ivr?.WoundSubConditionI,
+              side: ivr?.SideI,
+              inflamation: ivr?.WoundSubInflamationI
+            }))
+            setCPTWoundLocation(ivr?.WoundLocation)
+            setCPTWoundSize(ivr?.WoundSize)
+            setCPTWoundSize2(ivr?.WoundSize2)
             setECode(ivr?.ICD10_E);
+            setHospice(ivr?.Hospice);
+            setProducts(() => ([
+              {
+               name: data?.product.Description,
+               qty: "",
+               key: data?.product.___PRD,
+               brandname:  data?.product.Brand,
+               qcode: data?.product.QCode,
+               Description: data?.product.Brand + '-' + data?.product.QCode
+              }
+            ]))
             setCDCode(ivr?.ICD10_CD);
             handlePractitioner(data?.practitioner);
             setCPTWound(ivr?.WoundType);
-            setLoading(false);
-            setAdmitted(() =>
+            /*setAdmitted(() =>
               ivr?.SNFAttendance ? ivr?.SNFAttendance : false
-            );
+            ); */
+            setAdmitted(ivr?.SNFAttendance);
             setPlaceOfService(ivr?.PlaceofService);
+            setLoading(false);
           }
         );
-      } 
+      } else {
+        const accountObj = {
+          AccountKey: selectedRecord?.data?.ACT,
+        };
 
-      await five.executeFunction(
-        "getAccountPatients",
-        //@ts-ignore
-        account,
-        null,
-        null,
-        null,
-        (result) => {
-          setData(JSON.parse(result.serverResponse.results));
-          setLoading(false);
-        }
-      );
+        setAccount(accountObj);
+        getPrimaryPractitionerData(accountObj);
+        await five.executeFunction(
+          "getAccountPatients",
+          //@ts-ignore
+          accountObj,
+          null,
+          null,
+          null,
+          (result) => {
+            setData(JSON.parse(result.serverResponse.results));
+            setLoading(false);
+          }
+        );
+      }
     };
 
     if (data === null) {
@@ -198,7 +296,7 @@ const CustomField = (props: CustomFieldProps) => {
     setECode(null);
     setCDCode(null);
     setCPTCode(null);
-    setVLU({ condition: "", location: "", type: "" });
+    setVLU({ condition: "", location: "", side: "", inflamation: "" });
     setMohs("");
     setCPTWound(null);
     setCPTWoundSize(null);
@@ -244,7 +342,7 @@ const CustomField = (props: CustomFieldProps) => {
   //@ts-ignore
 
   const handleRadioChange = useCallback((value) => {
-    setAdmitted(value === "Yes");
+    setAdmitted(value);
   }, []);
   //@ts-ignore
   const handlePatientSelected = useCallback(() => {
@@ -285,7 +383,7 @@ const CustomField = (props: CustomFieldProps) => {
         admitted,
         placeOfService,
         practitioner,
-        status: complete ? "Pending" : "Unsubmitted",
+        status: complete ? "Submitted" : "Unsubmitted",
         eCode,
         iCode,
         lCode,
@@ -295,11 +393,13 @@ const CustomField = (props: CustomFieldProps) => {
         Date: getFormattedDate(),
         vlu,
         mohs,
+        hospice,
         diabeticFU,
         cptWound,
         pressureUlcer,
         cptWoundSize,
         cptWoundSize2,
+        cptWoundLocation,
         payors,
         AccountKey: selectedRecord?.data?.ACT,
       };
@@ -332,8 +432,10 @@ const CustomField = (props: CustomFieldProps) => {
         mohs,
         diabeticFU,
         cptWound,
+        payors,
         pressureUlcer,
         cptWoundSize,
+        patient: patient?.data,
       };
 
       await five.executeFunction(
@@ -350,20 +452,6 @@ const CustomField = (props: CustomFieldProps) => {
     const submissionText = {
       message: complete ? "Submission Successful" : "The IVR has been saved.",
     };
-
-    /*     await five.executeFunction(
-      "submissionSuccessful",
-      //@ts-ignore
-      submissionText,
-      null,
-      null,
-      null,
-      //@ts-ignore
-      (result) => {
-        console.log("Loggin submissionSuccessful");
-      }
-    );
- */
 
     setSubmissionText(submissionText.message);
     setCustomDialogOpen(true);
@@ -385,15 +473,14 @@ const CustomField = (props: CustomFieldProps) => {
   // Revised useEffect
   useEffect(() => {
     //@ts-ignore
-
     if (five.internal.actionID === "IVR") {
       handleDialogOpen();
     }
+
     if (existingPatient && activeStep === 0) {
       setActiveStep(1);
     }
   }, [dialogOpen, existingPatient, activeStep, ivr, hospice, patient]);
-
 
   // Define handleNext and handleBack using useCallback to ensure stability
   const handleNext = useCallback(() => {
@@ -442,8 +529,8 @@ const CustomField = (props: CustomFieldProps) => {
       return 0;
     }
 
-    if (activeStep === 5 && products.length < 1) {
-      five.message("Please select atleast one product.");
+    if (activeStep === 5 && products?.length < 1) {
+      five.message("Please select at least one product.");
       return 0;
     }
 
@@ -594,22 +681,24 @@ const CustomField = (props: CustomFieldProps) => {
                 </p>
               ) : (
                 <></>
-              )}{" "}
-              <p>
-                <strong>{AccountDetails.OfficeName}</strong>
-                <br />
-                {AccountDetails.AddressStreet}
-                <br />
-                {AccountDetails.AddressCity +
-                  ", " +
-                  AccountDetails.AddressState +
-                  " " +
-                  AccountDetails.AddressZip}
-                <br />
-                {AccountDetails.Email}
-                <br />
-                {AccountDetails.Phone}
-              </p>
+              )}
+              {!existingPatient ? (
+                <p>
+                  <strong>{AccountDetails.OfficeName}</strong>
+                  <br />
+                  {AccountDetails.AddressStreet}
+                  <br />
+                  {AccountDetails.AddressCity +
+                    ", " +
+                    AccountDetails.AddressState +
+                    " " +
+                    AccountDetails.AddressZip}
+                  <br />
+                  {primaryPractitioner.Email}
+                  <br />
+                  {AccountDetails.Phone}
+                </p>
+              ) : null}
             </div>
           ) : null}
           {activeStep === 0 && (
@@ -660,6 +749,7 @@ const CustomField = (props: CustomFieldProps) => {
                 placeOfService={placeOfService}
                 setPlaceOfService={setPlaceOfService}
                 hospiceMain={hospice}
+                snf={snf}
                 setHospiceMain={setHospice}
                 medicare={medicare}
                 setPreventNext={setPreventNext}
@@ -703,6 +793,7 @@ const CustomField = (props: CustomFieldProps) => {
               setProducts={setProducts}
               productsSaved={products}
               account={account}
+              
             />
           )}
           {activeStep === 6 && (

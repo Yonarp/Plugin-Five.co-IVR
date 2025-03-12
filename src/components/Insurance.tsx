@@ -55,7 +55,7 @@ const Insurance = React.memo(
         }
       }
     };
-
+    console.log("Logging Set Payors Main", payorExternal, payors)
     const getPayorLabel = (index) => {
       switch (index) {
         case 0:

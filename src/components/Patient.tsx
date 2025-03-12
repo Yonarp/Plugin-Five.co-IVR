@@ -20,7 +20,7 @@ const Patient = ({ patients, handlePatient, five, patientSaved, setPage, handleN
     
     if (dateString.includes('-')) {
       [year, month, day] = dateString.split('-');
-    } else if (dateString.length === 8) {
+    } else if (dateString?.length === 8) {
       year = dateString.substring(0, 4);
       month = dateString.substring(4, 6);
       day = dateString.substring(6, 8);

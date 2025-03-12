@@ -13,6 +13,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const Products = ({five, setProducts, productsSaved, account}) => {
+  console.log("Products Saved ===> ", productsSaved)
   const [selectedProducts, setSelectedProducts] = useState(productsSaved ? productsSaved : [
     { name: "", qty: "", key: "", brandname: "", qcode: "" },
   ]);
@@ -73,7 +74,7 @@ const products = [
 
 
   const handleAddProduct = () => {
-    if(selectedProducts.length < 2){
+    if(selectedProducts?.length < 2){
     setSelectedProducts([...selectedProducts, { name: "", qty: "", key: "", brandname: "", qcode: "" }]);
     }
   };

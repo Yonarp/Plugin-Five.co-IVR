@@ -25,7 +25,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedFilesBase64, setSelectedFilesBase64] = useState([]);
   const [documentTypes, setDocumentTypes] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [documentNames, setDocumentNames] = useState([]);
 
   // Form field states
@@ -33,7 +33,6 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   const [otherDocumentType, setOtherDocumentType] = useState("");
   const [documentName, setDocumentName] = useState("");
   const [currentFile, setCurrentFile] = useState(null);
-
   const [dialogOpen, setDialogOpen] = useState(false);
 
   // Error states
@@ -71,8 +70,6 @@ const UploadDocument = ({ patient, five, setPatient }) => {
   };
 
   const pushDocument = async (base64String) => {
-
-
 
     const documentObj = {
       PatientKey: patient.data.___PAT,
@@ -156,7 +153,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
       return;
     }
 
-    if (selectedFiles.length >= 5) {
+    if (selectedFiles?.length >= 5) {
       alert("Cannot upload more than 5 files.");
       return;
     }
@@ -338,7 +335,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
         </Button>
       </Box>
 
-      {patient.document.length > 0 && (
+      {patient?.document?.length > 0 && (
         <Box id="uploaded-files-section" sx={{ mt: 4 }}>
           <Typography variant="h6">Uploaded files:</Typography>
           <List id="uploaded-files-list">

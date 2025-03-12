@@ -69,10 +69,16 @@ const CPTCode = ({
       setCptCode2(cptCode2Main);
       setWoundSize2(cptWoundSize2Main);
     }
-
+  
     setWoundLocation(cptWoundLocationMain);
     setTotalWoundSize(parseFloat(cptTotalWoundSizeMain));
   }, [woundLocation, woundSize, totalWoundSize]);
+
+  useEffect(() => {
+    if(cptWoundSize2Main || cptWoundSizeMain){
+      setTotalWoundSize(cptWoundSize2Main + cptWoundSizeMain)
+    }
+  },[])
 
   const handleWoundLocationChange = (event) => {
     setWoundLocation(event.target.value);

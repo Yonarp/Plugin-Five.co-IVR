@@ -122,9 +122,9 @@ const NewPatient = ({
       selectedFiles: false,
     });
 
-    if (selectedFiles.length >= 5) {
+    if (selectedFiles?.length >= 5) {
       return five.message(
-        "Cannot upload more than " + selectedFiles.length.toString() + " files."
+        "Cannot upload more than " + selectedFiles?.length.toString() + " files."
       );
     }
 
@@ -176,7 +176,7 @@ const NewPatient = ({
       hasError = true;
     }
 
-    if (dialogSelectedFiles.length === 0) {
+    if (dialogSelectedFiles?.length === 0) {
       newErrors.selectedFiles = true;
       hasError = true;
     }
@@ -525,7 +525,7 @@ const NewPatient = ({
               </Box>
             </Grid>
 
-            {selectedFiles.length > 0 && (
+            {selectedFiles?.length > 0 && (
               <Box id="uploaded-files-section" mt={2}>
                 <Typography variant="h6">Uploaded files:</Typography>
                 {selectedFiles.map((file, index) => (

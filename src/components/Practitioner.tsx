@@ -23,6 +23,7 @@ const Practitioner = ({
     setSelectedIndex(index);
     setPractitioner(practitioner, index);
   };
+  console.log("Logging from Practitoner", account)
 
   useEffect(() => {
     if (practitioner) {

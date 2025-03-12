@@ -561,6 +561,11 @@ const ICDCode = ({
     { label: "Other...", value: "other" }, */
 
   useEffect(() => {
+
+  },[])
+
+
+  useEffect(() => {
     let code = "";
 
     if (vluCondition && vluLocation) {
@@ -1026,8 +1031,19 @@ const ICDCode = ({
           break;
       }
     }
+/* 
+    setLLocation(codes.pressureUlcer?.location)
+    setLSeverity(codes.pressureUlcer?.severity)
+    setLSide(codes.pressureUlcer?.side)
+    setLStage(codes.pressureUlcer?.stage) */
+
+
   }, [vluCondition, vluLocation, vluSide, inflammation]);
   /* TODO: Makes Labels consistent with  */
+
+  console.log("Logging Codes from ICD", codes)
+
+
   return (
     <Container id="icd-code-container">
       <Typography
