@@ -31,6 +31,7 @@ import CPTCode from "./components/CPTCode";
 import Practitioner from "./components/Practitioner";
 import ICDCode from "./components/ICDCode";
 import Summary from "./components/Summary";
+import PatientSummary from "./components/PatientSummary";
 import NewPatient from "./components/NewPatient";
 import PatientDetails from "./components/PatientDetails";
 import { Description, Padding } from "@mui/icons-material";
@@ -155,7 +156,7 @@ const CustomField = (props: CustomFieldProps) => {
 
     const fetchData = async () => {
       if (existingPatient) {
-        setActiveStep(1);
+        setActiveStep(0);
         await five.executeFunction(
           "getIVRDetails",
           //@ts-ignore
@@ -477,9 +478,9 @@ const CustomField = (props: CustomFieldProps) => {
       handleDialogOpen();
     }
 
-    if (existingPatient && activeStep === 0) {
+    /* if (existingPatient && activeStep === 0) {
       setActiveStep(1);
-    }
+    } */
   }, [dialogOpen, existingPatient, activeStep, ivr, hospice, patient]);
 
   // Define handleNext and handleBack using useCallback to ensure stability
@@ -701,7 +702,17 @@ const CustomField = (props: CustomFieldProps) => {
               ) : null}
             </div>
           ) : null}
-          {activeStep === 0 && (
+          {activeStep === 0 && ( existingPatient ? (
+            <PatientSummary 
+              ivr={ivr}
+              practitioner={practitioner}
+              handleNext={handleNext}
+              handleDialogClose={handleDialogClose}
+              payors={payors}
+              five={five}
+              patient={patient}
+            />
+          ) :
             <NewPatient
               data={data}
               setMainForm={setFormState}
