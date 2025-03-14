@@ -38,7 +38,7 @@ const Summary = ({
   const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false)
   //@ts-ignore
-  const [personalNPI, setPersonalNPI] = useState("")
+  //const [personalNPI, setPersonalNPI] = useState("")
   const [accountNPI, setAccountNPI] = useState("")
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -84,7 +84,7 @@ const Summary = ({
         (result) => {
           const data = JSON.parse(result.serverResponse.results);
           console.log("From Get Accounts", data );
-          setPersonalNPI(data?.response?.NPIPersonal);
+          //setPersonalNPI(data?.response?.NPIPersonal);
           setAccountNPI(data?.response?.NPI);
           setLoading(false);
         }
@@ -149,7 +149,7 @@ const Summary = ({
         <TextField
           id="npi-field"
           label="Personal NPI"
-          value={personalNPI}
+          value={practitioner?.data?.NPI}
           fullWidth
           margin="dense"
           InputProps={{
