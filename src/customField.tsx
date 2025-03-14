@@ -194,7 +194,10 @@ const CustomField = (props: CustomFieldProps) => {
             const data = JSON.parse(result.serverResponse.results);
             const ivr = data.ivr;
             console.log("Logging IVR details -----------------------------------------------------> ",data)
-            setIVR(data);
+            setIVR(ivr);
+            if (ivr?.Status === "Unsubmitted") {
+              setActiveStep(1);
+            }
             setAccountKey(ivr.__ACT);
             setAccount({
               AccountKey: ivr.__ACT,
@@ -477,7 +480,7 @@ const CustomField = (props: CustomFieldProps) => {
     if (five.internal.actionID === "IVR") {
       handleDialogOpen();
     }
-
+    
     /* if (existingPatient && activeStep === 0) {
       setActiveStep(1);
     } */
@@ -662,7 +665,7 @@ const CustomField = (props: CustomFieldProps) => {
                 margin: "20px 0",
               }}
             >
-              {patient ? (
+              {patient && activeStep !== 0 ? (
                 <p>
                   <strong>
                     {patient?.data?.NameFirst + " " + patient?.data?.NameLast}
@@ -729,7 +732,7 @@ const CustomField = (props: CustomFieldProps) => {
               account={account}
             />
           )}
-
+          
           {activeStep === 1 &&
             (patient ? (
               <UploadDocument
