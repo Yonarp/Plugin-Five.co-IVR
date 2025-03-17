@@ -36,6 +36,7 @@ import NewPatient from "./components/NewPatient";
 import PatientDetails from "./components/PatientDetails";
 import { Description, Padding } from "@mui/icons-material";
 import UploadDocument from "./components/UploadDocument";
+import OpenIVRSummary from "./components/OpenIVRSummary";
 
 FiveInitialize();
 const CustomField = (props: CustomFieldProps) => {
@@ -102,7 +103,7 @@ const CustomField = (props: CustomFieldProps) => {
   const [loading, setLoading] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [readyToSubmit, setReadyToSubmit] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState([])
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [hospice, setHospice] = useState(null);
   const [accountKey, setAccountKey] = useState(null);
   const [account, setAccount] = useState({});
@@ -165,7 +166,6 @@ const CustomField = (props: CustomFieldProps) => {
           null,
           null,
           (result) => {
-
             /*  patient: patient?.data?.___PAT,
                 products,
                 admitted,
@@ -190,10 +190,12 @@ const CustomField = (props: CustomFieldProps) => {
                 AccountKey: selectedRecord?.data?.ACT, 
             */
 
-
             const data = JSON.parse(result.serverResponse.results);
             const ivr = data.ivr;
-            console.log("Logging IVR details -----------------------------------------------------> ",data)
+            console.log(
+              "Logging IVR details -----------------------------------------------------> ",
+              data
+            );
             setIVR(ivr);
             if (ivr?.Status === "Unsubmitted") {
               setActiveStep(1);
@@ -211,37 +213,37 @@ const CustomField = (props: CustomFieldProps) => {
             setICode(ivr?.ICD10_I);
             setCPTCode(ivr?.CPTCODE);
             setCPTCode2(ivr?.CPTCODE2);
-            setDiabeticFU(ivr?.WoundSubTypeE)
+            setDiabeticFU(ivr?.WoundSubTypeE);
             setMedicare(ivr?.MedicareCoverage);
             setPressureUlcer((prevState) => ({
               ...prevState,
               location: ivr?.WoundSubLocationL,
               side: ivr?.WoundSubSideL,
               severity: ivr?.WoundSubSeverityL,
-              stage: ivr?.WoundSubStageL
+              stage: ivr?.WoundSubStageL,
             }));
             setVLU((prevState) => ({
               ...prevState,
               location: ivr?.WoundSubLocationI,
               condition: ivr?.WoundSubConditionI,
               side: ivr?.SideI,
-              inflamation: ivr?.WoundSubInflamationI
-            }))
-            setCPTWoundLocation(ivr?.WoundLocation)
-            setCPTWoundSize(ivr?.WoundSize)
-            setCPTWoundSize2(ivr?.WoundSize2)
+              inflamation: ivr?.WoundSubInflamationI,
+            }));
+            setCPTWoundLocation(ivr?.WoundLocation);
+            setCPTWoundSize(ivr?.WoundSize);
+            setCPTWoundSize2(ivr?.WoundSize2);
             setECode(ivr?.ICD10_E);
             setHospice(ivr?.Hospice);
-            setProducts(() => ([
+            setProducts(() => [
               {
-               name: data?.product.Description,
-               qty: "",
-               key: data?.product.___PRD,
-               brandname:  data?.product.Brand,
-               qcode: data?.product.QCode,
-               Description: data?.product.Brand + '-' + data?.product.QCode
-              }
-            ]))
+                name: data?.product.Description,
+                qty: "",
+                key: data?.product.___PRD,
+                brandname: data?.product.Brand,
+                qcode: data?.product.QCode,
+                Description: data?.product.Brand + "-" + data?.product.QCode,
+              },
+            ]);
             setCDCode(ivr?.ICD10_CD);
             handlePractitioner(data?.practitioner);
             setCPTWound(ivr?.WoundType);
@@ -485,7 +487,7 @@ const CustomField = (props: CustomFieldProps) => {
     if (five.internal.actionID === "IVR") {
       handleDialogOpen();
     }
-    
+
     /* if (existingPatient && activeStep === 0) {
       setActiveStep(1);
     } */
@@ -710,8 +712,44 @@ const CustomField = (props: CustomFieldProps) => {
               ) : null}
             </div>
           ) : null}
-          {activeStep === 0 && ( existingPatient ? (
-            <PatientSummary 
+          {activeStep === 0 &&
+            (existingPatient ? ( ivr?.Status === 'Submitted' ? ( <OpenIVRSummary 
+              five={five}
+              selectedRecord={selectedRecord}
+              handleDialogClose={handleDialogClose}
+              existingIvrData={ivr} // The existing IVR data
+              patient={patient}
+              practitioner={practitioner}
+              setPractitioner={handlePractitioner}
+              payors={payors}
+              setPayors={setPayors}
+              products={products}
+              setProducts={setProducts}
+              iCode={iCode}
+              setICode={setICode}
+              lCode={lCode}
+              setLCode={setLCode}
+              eCode={eCode}
+              setECode={setECode}
+              cdCode={cdCode}
+              setCDCode={setCDCode}
+              cptCode={cptCode}
+              setCPTCode={setCPTCode}
+              cptCode2={cptCode2}
+              setCPTCode2={setCPTCode2}
+              cptWoundSize1={cptWoundSize}
+              setCPTWoundSize1={setCPTWoundSize}
+              cptWoundSize2={cptWoundSize2}
+              setCPTWoundSize2={setCPTWoundSize2}
+              cptWound={cptWound}
+              setCPTWound={setCPTWound}
+              admitted={admitted}
+              setAdmitted={setAdmitted}
+              placeOfService={placeOfService}
+              setPlaceOfService={setPlaceOfService}
+              handleSubmit={handleSubmit}
+            />) :
+               <PatientSummary 
               ivr={ivr}
               practitioner={practitioner}
               handleNext={handleNext}
@@ -719,25 +757,27 @@ const CustomField = (props: CustomFieldProps) => {
               payors={payors}
               five={five}
               patient={patient}
-            />
-          ) :
-            <NewPatient
-              data={data}
-              setMainForm={setFormState}
-              mainForm={formState}
-              handlePatient={handlePatient}
-              five={five}
-              page={page}
-              setPage={setPage}
-              patient={patient}
-              setPatient={setPatient}
-              handleNext={handleNext}
-              handleDialogCloseExternal={handleDialogClose}
-              setNewPatient={setNewPatient}
-              account={account}
-            />
-          )}
-          
+            /> 
+
+             
+            ) : (
+              <NewPatient
+                data={data}
+                setMainForm={setFormState}
+                mainForm={formState}
+                handlePatient={handlePatient}
+                five={five}
+                page={page}
+                setPage={setPage}
+                patient={patient}
+                setPatient={setPatient}
+                handleNext={handleNext}
+                handleDialogCloseExternal={handleDialogClose}
+                setNewPatient={setNewPatient}
+                account={account}
+              />
+            ))}
+
           {activeStep === 1 &&
             (patient ? (
               <UploadDocument
@@ -812,7 +852,6 @@ const CustomField = (props: CustomFieldProps) => {
               setProducts={setProducts}
               productsSaved={products}
               account={account}
-              
             />
           )}
           {activeStep === 6 && (
