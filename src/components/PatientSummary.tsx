@@ -16,9 +16,12 @@ import {
   TableContainer,
   TableRow,
 } from "../FivePluginApi";
+import html2pdf from "html2pdf.js";
 import { TableCell } from "@mui/material";
 import { css, Global } from "@emotion/react";
 import styled from "@emotion/styled";
+import { svgData } from "../strings";
+
 
 const svgData = `<svg width="976" height="494" viewBox="0 0 976 494" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <path d="M0.5 0.5L505 256L976 493.5H0.5L0.5 0.5Z" fill="url(#pattern0_504_34)"/>
@@ -35,7 +38,6 @@ const svgData = `<svg width="976" height="494" viewBox="0 0 976 494" fill="none"
 </defs>
 </svg>
 `;
-
 const svgBase64 = btoa(svgData);
 const svgDataUrl = `data:image/svg+xml;base64,${svgBase64}`;
 
@@ -67,7 +69,32 @@ const PatientSummary = forwardRef((props, ref) => {
 
 
   const pdfRef = useRef();
+  
+  // Add useImperativeHandle for external ref access
+  useImperativeHandle(ref, () => ({
+    downloadPdf,
+  }));
 
+  // Add downloadPdf function from Summary component
+  const downloadPdf = () => {
+    const element = pdfRef.current;
+    element.classList.add("pdf-mode");
+
+    const options = {
+      filename: "Patient_Benefit_Verification_Summary.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    };
+
+    html2pdf()
+      .from(element)
+      .set(options)
+      .save()
+      .then(() => {
+        element.classList.remove("pdf-mode");
+      });
+  };
 
   /*   const convertImageToBase64 = async () => {
     try {
@@ -118,11 +145,36 @@ const PatientSummary = forwardRef((props, ref) => {
             maxWidth: "100%",
           }}
         >
+          {/* Download PDF Button */}
+          <Box 
+            position="absolute" 
+            top="-50px" 
+            right="-1px" 
+            zIndex="10"
+            className="no-print" // Add this class to hide in PDF
+          >
+            <Button
+              id="download-pdf-btn"
+              onClick={downloadPdf}
+              style={{
+                backgroundColor: "#14706A",
+                color: "white",
+                padding: "8px 16px",
+                borderRadius: "4px",
+              }}
+            >
+              Download PDF
+            </Button>
+          </Box>
+          
           <Global
             styles={css`
               .pdf-mode .MuiTableCell-root {
                 font-size: 0.7rem; /* Adjust font size */
                 margin: 10px; /* Add padding */
+              }
+              .pdf-mode .no-print {
+                display: none !important;
               }
             `}
           />

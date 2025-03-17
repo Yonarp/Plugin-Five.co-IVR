@@ -313,7 +313,7 @@ const CPTCode = ({
 
             <Typography variant="subtitle1" ml={3}>
               Second CPT Code
-              <span style={{ textAlign: "left", color: "red" }}>*</span>{" "}
+             
             </Typography>
             <Select
               id="cpt-code-secondary"
