@@ -57,7 +57,7 @@ const products = [
   const handleProductChange = (index, event) => {
     const newProducts = [...selectedProducts];
     newProducts[index].name = event.target.value;
-    const matchingProduct = products.find(product => product.Description === newProducts[index].name);
+    const matchingProduct = products?.find(product => product?.Description === newProducts[index].name);
     if (matchingProduct) {
       newProducts[index].key = matchingProduct.PRD;
       newProducts[index].qcode = matchingProduct.QCode;
@@ -152,7 +152,7 @@ const products = [
               <MenuItem 
                 id={`product-option-${index}-${idx}`} 
                 key={idx} 
-                value={product.Description}
+                value={product?.Description}
               >
                 {product.Brand} - {product.QCode}
               </MenuItem>

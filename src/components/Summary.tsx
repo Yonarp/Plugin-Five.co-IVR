@@ -148,7 +148,7 @@ const Summary = ({
         
         <TextField
           id="npi-field"
-          label="Personal NPI"
+          label="Individual NPI"
           value={practitioner?.data?.NPI}
           fullWidth
           margin="dense"

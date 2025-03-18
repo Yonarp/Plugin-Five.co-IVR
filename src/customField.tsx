@@ -236,12 +236,12 @@ const CustomField = (props: CustomFieldProps) => {
             setHospice(ivr?.Hospice);
             setProducts(() => [
               {
-                name: data?.product.Description,
+                name: data?.product?.Description,
                 qty: "",
-                key: data?.product.___PRD,
-                brandname: data?.product.Brand,
-                qcode: data?.product.QCode,
-                Description: data?.product.Brand + "-" + data?.product.QCode,
+                key: data?.product?.___PRD,
+                brandname: data?.product?.Brand,
+                qcode: data?.product?.QCode,
+                Description: data?.product?.Brand + "-" + data?.product?.QCode,
               },
             ]);
             setCDCode(ivr?.ICD10_CD);
@@ -446,6 +446,7 @@ const CustomField = (props: CustomFieldProps) => {
         cptWoundSize2,
         cptWoundLocation,
         payors,
+        readyToSubmit,
         patient: patient?.data,
       };
 
