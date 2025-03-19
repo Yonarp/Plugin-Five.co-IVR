@@ -181,7 +181,7 @@ const OpenIVRSummary = ({
     setErrors((prev) => ({ ...prev, selectedFiles: false }));
   };
 
-  console.log("Logging the patient Object I am getting here ", patient)
+  console.log("Logging the patient Object I am getting here ", patient, existingIvrData, practitioner)
 
   const handleDocumentDialogSubmit = () => {
     let hasError = false;
@@ -550,7 +550,7 @@ const OpenIVRSummary = ({
   // Renders a single label-value pair
   const renderField = (label, value) => (
     <Box sx={{ mb: 2 }}>
-      <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+      <Typography variant="subtitle2" sx={{ color: "text.secondary", width: '200px' }}>
         {label}
       </Typography>
       <Typography variant="body1" sx={{ fontWeight: 500 }}>
@@ -587,13 +587,20 @@ const OpenIVRSummary = ({
       <Paper variant="outlined" sx={{ p: 3, borderRadius: 2, boxShadow: 2 }}>
       <SectionHeader>IVR Summary</SectionHeader>
         {/* Header */}
-        <Box display="flex" flexDirection='row' width='100%' justifyContent="space-around" alignItems="center" >
+        <Box display="flex" flexDirection='row' width='50%' justifyContent="space-between" alignItems="center" >
+        {renderField("Patient ID", patient.data?.ID)}
         {renderField("Patient Name", patient.data?.NameFirst + " " + patient.data?.NameLast)}
-        {renderField("ID", patient.data?.ID)}
-
+        </Box>
+        <Box display="flex" flexDirection='row' width='50%' justifyContent="space-between" alignItems="center" >
+        {renderField("Account", existingIvrData.Account)}
+        {renderField("Practitioner", existingIvrData.Provider)}
+        </Box>
+        <Box display="flex" flexDirection='row' width='50%' justifyContent="space-between" alignItems="center" >
+        {renderField("Group NPI", npi)}
+        {renderField("Individual NPI", existingIvrData?.ProviderNPI)}
         </Box>
         {/* NPI */}
-        {renderField("NPI", npi)}
+       
 
         {/* Primary Payor */}
         <SectionHeader>Primary Insurance</SectionHeader>
