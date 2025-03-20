@@ -521,9 +521,10 @@ const PatientSummary = forwardRef((props, ref) => {
             marginRight: "10px",
           }}
         >
-          {ivr?.Status === "Approved" ? "Close" : "Cancel"}
+          {(ivr?.Status !== "Approved" && ivr?.Status !== "Archived")? "Cancel" : "Close"}
         </Button>
-        {ivr?.Status !== "Approved" && (
+        {(ivr?.Status !== "Approved" && ivr?.Status !== "Archived") ? (
+       
         <Button
           id="confirm-summary-btn"
           onClick={handleNext}
@@ -534,9 +535,12 @@ const PatientSummary = forwardRef((props, ref) => {
             marginLeft: "10px",
           }}
         >
+        
           Confirm
+
         </Button>
-        )}
+     
+      ): null}
       </Box>
     </Container>
   );

@@ -457,8 +457,11 @@ const CustomField = (props: CustomFieldProps) => {
         null,
         null,
         null,
-        (result) => {}
+        (result) => {
+          five.refreshDataViews()
+        }
       );
+      five.refreshDataViews()
     }
 
     const submissionText = {
@@ -471,6 +474,9 @@ const CustomField = (props: CustomFieldProps) => {
     if (five.internal.actionID === "IVR") {
       five.previousAction(true, 1);
     }
+
+    five.refreshDataViews()
+
   };
 
   const handleCloseSnackbar = () => {
@@ -1055,7 +1061,7 @@ const CustomField = (props: CustomFieldProps) => {
         TransitionComponent={Zoom}
         id="lottie-dialog-box"
       >
-        <DialogTitle id="lottie-dialog-title">Submission</DialogTitle>
+        {/* <DialogTitle id="lottie-dialog-title"></DialogTitle> */}
         <CustomDialogContent>
           <DialogContentText>
             <Lottie
