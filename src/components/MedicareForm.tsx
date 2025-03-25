@@ -18,7 +18,7 @@ const MedicareForm = ({placeOfServiceExternal, setPlaceOfServiceExternal, medica
   
   return (
     <div id="medicare-form" className="medicare">
-      <p>Do you know if the patient had Medicare Part A or Medicare Part B</p>
+      <p>Do you know if the patient is in Medicare Part A or Medicare Part B</p>
       <FormControl component="fieldset">
         <RadioGroup
           id="medicare-type-group"

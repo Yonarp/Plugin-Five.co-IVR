@@ -529,7 +529,7 @@ const CustomField = (props: CustomFieldProps) => {
 
     if (
       activeStep === 3 &&
-      (hospice === null || admitted === null || placeOfService === null)
+      (admitted === null || placeOfService === null)
     ) {
       five.message("Please fill in the required fields.");
       return 0;

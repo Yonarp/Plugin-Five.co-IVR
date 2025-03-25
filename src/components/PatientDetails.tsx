@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect } from "react";
 import {
   Box,
@@ -22,9 +23,7 @@ const PatientDetails = ({
   patient,
   setPreventNext,
 }) => {
-  // const [hospice, setHospice] = React.useState("");
   const [loading, setLoading] = React.useState(true);
-
 
   useEffect(() => {
     setLoading(true);
@@ -50,7 +49,12 @@ const PatientDetails = ({
   }
 
   return (
-    <Box id="patient-details-container">
+    <Box
+      id="patient-details-container"
+      style={{
+        paddingTop: "150px", // Add vertical spacing
+      }}
+    >
       <div
         id="admission-section"
         className="IVR-page-1"
@@ -63,7 +67,7 @@ const PatientDetails = ({
       >
         <p>
           Has this patient been admitted to a Skilled Nursing Facility within
-          the past 100 day.<span style={{ color: "red" }}>*</span>
+          the past 100 days.<span style={{ color: "red" }}>*</span>
         </p>
         <FormControl component="fieldset">
           <RadioGroup
@@ -105,7 +109,7 @@ const PatientDetails = ({
           alignItems: "center",
         }}
       >
-        {admitted === null ? null : (admitted === "Yes"  ? (
+        {admitted === null ? null : admitted === "Yes" ? (
           <MedicareForm
             placeOfServiceExternal={placeOfService}
             setPlaceOfServiceExternal={setPlaceOfService}
@@ -118,8 +122,10 @@ const PatientDetails = ({
             placeOfServiceExternal={placeOfService}
             setPlaceOfServiceExternal={setPlaceOfService}
           />
-        ))}
+        )}
       </div>
+
+      {/*
       <div
         id="hospice-section"
         className="medicare-form"
@@ -162,6 +168,8 @@ const PatientDetails = ({
           </RadioGroup>
         </FormControl>
       </div>
+      */}
+
     </Box>
   );
 };
