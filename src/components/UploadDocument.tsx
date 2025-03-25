@@ -256,7 +256,7 @@ const UploadDocument = ({ patient, five, setPatient }) => {
           margin: "20px 0",
         }}
       >
-        Upload all relevant documents. Please be sure to include either a facesheet which includes a pay or policy number or a photo of a Medicare card.
+        Upload all relevant documents. Please be sure to include either a facesheet, which includes a pay or policy number or a photo of a Medicare card.
       </Typography>
 
       <Box sx={{ mt: 3 }}>

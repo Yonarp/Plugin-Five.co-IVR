@@ -16,7 +16,7 @@ import {
 
 import Lottie from "lottie-react";
 import animationData from "./lottieComplete.json";
-import { CustomFieldProps } from "../../../common";
+import { CustomFieldProps } from "../../common";
 import {
   Alert,
   Container,
